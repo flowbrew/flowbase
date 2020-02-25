@@ -5,4 +5,4 @@ gatsby build
 cd ../
 
 terraform init
-terraform apply -auto-approve
+terraform apply -auto-approve -var="branch=$BRANCH_NAME"

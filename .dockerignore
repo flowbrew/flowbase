@@ -1,0 +1,4 @@
+node_modules/
+gatsbybrew/node_modules/
+gatsbybrew/.cache/
+gatsbybrew/public/

@@ -23,7 +23,7 @@ module "lambda" {
 
 module "distribution" {
   source               = "./terraform_modules/website_bucket"
-  path_to_distribution = "./public"
+  path_to_distribution = "./gatsbybrew/public"
   name                 = format("flowbase-distribution-%s", local.branch)
 }
 

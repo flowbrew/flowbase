@@ -23,4 +23,12 @@ DOCKER_BUILDKIT=1 docker build \
     --build-arg BACKEND_AWS_REGION=$AWS_DEFAULT_REGION \
     -t "$DOCKERNAME" .
 
+if $?
+then
+    echo docker built sucessfully
+else
+    echo ERROR: cant build docker
+    exit 1
+fi
+
 docker push "$DOCKERNAME"

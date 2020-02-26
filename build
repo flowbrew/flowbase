@@ -13,7 +13,7 @@ if docker pull ${DOCKERNAME} 2>/dev/null; then
     BUILDPARAMS="$BUILDPARAMS --cache-from ${DOCKERNAME}"
 fi
 
-DOCKER_BUILDKIT=1 docker build \
+if DOCKER_BUILDKIT=1 docker build \
     ${BUILDPARAMS} \
     --build-arg BUILDKIT_INLINE_CACHE=1 \
     --build-arg BRANCH=$BRANCH \
@@ -21,9 +21,7 @@ DOCKER_BUILDKIT=1 docker build \
     --build-arg AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY \
     --build-arg CLOUDFLARE_API_TOKEN=$CLOUDFLARE_API_TOKEN \
     --build-arg BACKEND_AWS_REGION=$AWS_DEFAULT_REGION \
-    -t "$DOCKERNAME" .
-
-if $?
+    -t "$DOCKERNAME" . 
 then
     echo docker built sucessfully
 else

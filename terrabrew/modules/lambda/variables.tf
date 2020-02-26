@@ -7,3 +7,7 @@ variable "name" {
   description = "Lambda name"
   type        = string
 }
+
+variable "python_version" {
+  type = string
+}

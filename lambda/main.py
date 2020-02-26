@@ -16,6 +16,7 @@ from toolz.curried import map
 
 
 def lambda_handler(event, context):
+    
     # params = json.loads(event.get("body", dict()))
 
     res = pipe(

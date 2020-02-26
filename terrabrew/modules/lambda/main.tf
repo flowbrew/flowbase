@@ -1,40 +1,7 @@
 locals {
-  main_path         = format("%s/main.py", var.path_to_lambda)
-  requirements_path = format("%s/requirements.txt", var.path_to_lambda)
-  lib_path          = format("%s/lib", var.path_to_lambda)
   zip_path          = format("%s/lambda.zip", var.path_to_lambda)
   arp_path          = format("%s/assume_role_policy.json", var.path_to_lambda)
   policy_path       = format("%s/policy.json", var.path_to_lambda)
-}
-
-resource "null_resource" "pip" {
-  triggers = {
-    main         = filebase64sha256(local.main_path)
-    requirements = filebase64sha256(local.requirements_path)
-  }
-
-  provisioner "local-exec" {
-    command = format(
-      "rm -rf %s && pip3 install -r %s -t %s",
-      local.lib_path,
-      local.requirements_path,
-      local.lib_path
-    )
-  }
-}
-
-data "archive_file" "lambda_zip" {
-  type        = "zip"
-  source_dir  = var.path_to_lambda
-  output_path = local.zip_path
-  excludes = [
-    "requirements.txt",
-    "lambda.zip",
-    "policy.json",
-    "assume_role_policy.json"
-  ]
-
-  depends_on = [null_resource.pip]
 }
 
 resource "aws_iam_role" "iam_for_lambda" {
@@ -44,9 +11,9 @@ resource "aws_iam_role" "iam_for_lambda" {
 
 resource "aws_lambda_function" "lambda" {
   function_name    = var.name
-  filename         = data.archive_file.lambda_zip.output_path
-  source_code_hash = data.archive_file.lambda_zip.output_base64sha256
-  runtime          = "python3.8"
+  filename         = local.zip_path
+  source_code_hash = filebase64sha256(local.zip_path)
+  runtime          = format("python%s", var.python_version)
   handler          = "main.lambda_handler"
   timeout          = 60
   role             = aws_iam_role.iam_for_lambda.arn

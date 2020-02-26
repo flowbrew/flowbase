@@ -1,5 +1,5 @@
 locals {
-  routing_rules_path = format("%s/../routing_rules.json", var.path_to_distribution)
+  routing_rules_path = format("%s/routing_rules.json", var.path_to_distribution)
   bucket_name        = format("s3-sweb-%s", var.name)
 }
 

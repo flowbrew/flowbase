@@ -1,0 +1,29 @@
+terraform {
+  backend "s3" {
+    encrypt        = true
+    bucket         = "flowbase-terraform-remote-state-storage-s3"
+    dynamodb_table = "terraform-state-lock-dynamo"
+    region         = "$BACKEND_AWS_REGION"
+    key            = "flowbase/$BRANCH/backend.tfstate"
+  }
+}
+
+provider "aws" {
+  profile = "$BACKEND_AWS_PROFILE"
+  region  = "$BACKEND_AWS_REGION"
+}
+
+# -----
+
+module "lambda" {
+  source         = "../../modules/lambda"
+  path_to_lambda = "./lambda"
+  python_version = "$BACKEND_PYTHON_VERSION"
+  name           = "flowbase_lambda_$BRANCH"
+}
+
+# -----
+
+output "rest_api_url" {
+  value = module.lambda.rest_api_url
+}

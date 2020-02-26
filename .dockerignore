@@ -2,3 +2,10 @@ node_modules/
 gatsbybrew/node_modules/
 gatsbybrew/.cache/
 gatsbybrew/public/
+.git
+.terraform
+.vscode
+.DS_Store
+terraform.tfstate
+terraform.tfstate.backup
+terraform.tfstate.d

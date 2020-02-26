@@ -1,0 +1,53 @@
+terraform {
+  backend "s3" {
+    encrypt        = true
+    bucket         = "flowbase-terraform-remote-state-storage-s3"
+    dynamodb_table = "terraform-state-lock-dynamo"
+    region         = "$BACKEND_AWS_REGION"
+    key            = "flowbase/$BRANCH/frontend.tfstate"
+  }
+}
+
+provider "aws" {
+  profile = "$BACKEND_AWS_PROFILE"
+  region  = "$BACKEND_AWS_REGION"
+}
+
+provider "cloudflare" {
+  version = "~> 2.0"
+}
+
+locals {
+  domain             = "matchaharmony.ru"
+  cloudflare_zone_id = "201b8a9c3f715c567326b99e6d7a3080"
+}
+
+# -----
+
+module "distribution" {
+  source               = "../../modules/website_bucket"
+  path_to_distribution = "./public"
+  name                 = "flowbase-distribution-$BRANCH"
+}
+
+resource "cloudflare_record" "root" {
+  zone_id = local.cloudflare_zone_id
+  name    = local.domain
+  value   = module.distribution.website_endpoint
+  type    = "CNAME"
+  proxied = true
+}
+
+resource "cloudflare_record" "www" {
+  zone_id = local.cloudflare_zone_id
+  name    = "www"
+  value   = module.distribution.website_endpoint
+  type    = "CNAME"
+  proxied = true
+}
+
+# -----
+
+output "website_endpoint" {
+  value = module.distribution.website_endpoint
+}

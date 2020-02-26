@@ -9,7 +9,6 @@ jobs:
   ci-cd:
     runs-on: ubuntu-latest
     steps:
-      - uses: nelonoel/branch-name@v1
       - uses: actions/checkout@v2
       - name: CI/CD
         env:
@@ -26,4 +25,4 @@ jobs:
           YANDEX_BOT_TOKEN: ${{ secrets.YANDEX_BOT_TOKEN }}
           GOOGLE_ANALYTICS: ${{ secrets.GOOGLE_ANALYTICS }}
         run: |
-          ./run_in_context github_action ./scripts/deploy
+          ./build

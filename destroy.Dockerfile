@@ -30,3 +30,13 @@ COPY terrabrew/modules ./modules
 
 # 
 
+FROM terraform-base AS destroyer
+COPY terrabrew/roots/ ./roots/
+
+WORKDIR /flowbase/terrabrew/roots/frontend
+RUN     envsubst < main.tfx | tee main.tf && \
+        terraform init && terraform destroy -auto-approve
+
+WORKDIR /flowbase/terrabrew/roots/backend
+RUN     envsubst < main.tfx | tee main.tf && \
+        terraform init && terraform destroy -auto-approve

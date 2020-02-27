@@ -34,6 +34,15 @@ module "distribution" {
   name                 = format("$BRANCH.%s", local.domain)
 }
 
+resource "cloudflare_record" "root" {
+  count   = "$BRANCH" == "www" ? 1 : 0
+  zone_id = local.cloudflare_zone_id
+  name    = local.domain
+  value   = module.distribution.website_endpoint
+  type    = "CNAME"
+  proxied = true
+}
+
 resource "cloudflare_record" "subdomain" {
   zone_id = local.cloudflare_zone_id
   name    = "$BRANCH"

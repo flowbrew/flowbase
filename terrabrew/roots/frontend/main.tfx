@@ -26,12 +26,16 @@ locals {
   cloudflare_zone_id = "201b8a9c3f715c567326b99e6d7a3080"
 }
 
+locals {
+  full_domain = format("$BRANCH.%s", local.domain)
+}
+
 # -----
 
 module "distribution" {
   source               = "../../modules/website_bucket"
   path_to_distribution = "./public"
-  name                 = format("$BRANCH.%s", local.domain)
+  name                 = local.full_domain
 }
 
 resource "cloudflare_record" "root" {
@@ -55,4 +59,8 @@ resource "cloudflare_record" "subdomain" {
 
 output "website_endpoint" {
   value = module.distribution.website_endpoint
+}
+
+output "website_dns_endpoint" {
+  value = local.full_domain
 }

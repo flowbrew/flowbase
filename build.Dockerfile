@@ -28,6 +28,15 @@ ENV BACKEND_PYTHON_VERSION $BACKEND_PYTHON_VERSION
 WORKDIR /flowbase/terrabrew
 COPY terrabrew/modules ./modules
 
+# 
+
+FROM jupyter/datascience-notebook:latest AS pybrew
+WORKDIR /flowbase/pybrew
+COPY pybrew/requirements.txt .
+RUN pip install -r requirements.txt
+COPY pybrew/ .
+RUN pip install .
+
 # BUILDING BACKEND
 
 FROM python:$BACKEND_PYTHON_VERSION-alpine AS backend-builder
@@ -70,6 +79,15 @@ COPY --from=backend-deployer \
         /flowbase/terrabrew/roots/backend/rest_api_url rest_api_url
 RUN GATSBY_REST_API=$(cat rest_api_url) gatsby build
 
+# TEST FRONTEND BUILD
+
+FROM pybrew AS build-tester
+WORKDIR /flowbase/pybrew
+COPY --from=frontend-builder /flowbase/gatsbybrew/public/ ./public/
+RUN pytest --runslow \
+        --WEBSITE_BUILD_PATH=./public/ \
+        ./tests/test_website_build.py
+
 # DEPLOYING FRONTEND
 
 FROM terraform-base AS frontend-deployer
@@ -77,12 +95,18 @@ RUN apk add --no-cache python3 && pip3 install awscli
 COPY terrabrew/roots/frontend ./roots/frontend
 
 WORKDIR /flowbase/terrabrew/roots/frontend
-COPY --from=frontend-builder \
-        /flowbase/gatsbybrew/public/ ./public
-COPY --from=frontend-builder \
-        /flowbase/gatsbybrew/routing_rules.json ./public
+COPY /gatsbybrew/routing_rules.json ./public/
+COPY --from=build-tester /flowbase/pybrew/public/ ./public
 RUN     envsubst < main.tfx | tee main.tf && \
         terraform init && terraform apply -auto-approve && \
-        terraform output website_endpoint > website_endpoint
+        terraform output website_dns_endpoint > website_url
 
 # E2E TESTS
+
+FROM pybrew AS e2e-tester
+WORKDIR /flowbase/pybrew
+COPY --from=frontend-deployer \
+        /flowbase/terrabrew/roots/frontend/website_url ./website_url
+RUN pytest --runslow \
+        --WEBSITE_URL="$(cat website_url)" \
+        ./tests/test_e2e.py

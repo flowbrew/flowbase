@@ -1,3 +1,7 @@
+# Modify this comment to force Docker to ignore cache and re apply terraform
+# This may be needed if state changed outside of typical workflow
+# Bump: 1
+
 terraform {
   backend "s3" {
     encrypt        = true

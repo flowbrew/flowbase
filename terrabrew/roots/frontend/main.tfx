@@ -27,20 +27,12 @@ locals {
 module "distribution" {
   source               = "../../modules/website_bucket"
   path_to_distribution = "./public"
-  name                 = "flowbase-distribution-$BRANCH"
+  name                 = format("$BRANCH.%s", local.domain)
 }
 
-resource "cloudflare_record" "root" {
+resource "cloudflare_record" "subdomain" {
   zone_id = local.cloudflare_zone_id
-  name    = local.domain
-  value   = module.distribution.website_endpoint
-  type    = "CNAME"
-  proxied = true
-}
-
-resource "cloudflare_record" "www" {
-  zone_id = local.cloudflare_zone_id
-  name    = "www"
+  name    = "$BRANCH"
   value   = module.distribution.website_endpoint
   type    = "CNAME"
   proxied = true

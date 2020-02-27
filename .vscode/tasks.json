@@ -4,9 +4,9 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "Local run",
+            "label": "Local build and deploy",
             "type": "shell",
-            "command": "./run_in_context local ./scripts/deploy",
+            "command": "./build",
             "group": {
                 "kind": "build",
                 "isDefault": true

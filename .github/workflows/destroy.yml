@@ -1,7 +1,7 @@
-name: Main
+name: Destroy
 
 on:
-  push:
+  delete:
     branches:
       - "*"
 
@@ -10,8 +10,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: CI/CD
+      - name: Destroy
         env:
+          BRANCH: ${{ github.event.ref }}
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           GITHUB_WEBSITE_USERNAME: ${{ secrets.GITHUB_WEBSITE_USERNAME }}
@@ -26,4 +27,4 @@ jobs:
           GOOGLE_ANALYTICS: ${{ secrets.GOOGLE_ANALYTICS }}
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
         run: |
-          ./build
+          ./destroy

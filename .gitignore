@@ -33,3 +33,5 @@ lambda/lib
 lambda/lambda.zip
 
 .DS_Store
+node_modules/
+examples/

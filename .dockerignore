@@ -9,3 +9,4 @@ gatsbybrew/public/
 terraform.tfstate
 terraform.tfstate.backup
 terraform.tfstate.d
+examples/

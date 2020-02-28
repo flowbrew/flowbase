@@ -103,10 +103,12 @@ RUN     envsubst < main.tfx | tee main.tf && \
 
 # E2E TESTS
 
-FROM pybrew AS e2e-tester
-WORKDIR /flowbase/pybrew
+FROM cypress/included:4.0.2 AS e2e-tester
+WORKDIR /flowbase/cypressbrew
+COPY cypressbrew/package*.json .
+RUN npm install
+
+COPY cypressbrew/ .
 COPY --from=frontend-deployer \
-        /flowbase/terrabrew/roots/frontend/website_url ./website_url
-RUN pytest --runslow \
-        --WEBSITE_URL="$(cat website_url)" \
-        ./tests/test_e2e.py
+        /flowbase/terrabrew/roots/frontend/website_url website_url
+RUN CYPRESS_WEBSITE_URL=$(cat website_url) cypress run

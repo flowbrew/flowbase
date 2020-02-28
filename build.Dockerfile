@@ -79,7 +79,7 @@ COPY --from=backend-deployer \
         /flowbase/terrabrew/roots/backend/rest_api_url rest_api_url
 RUN GATSBY_REST_API=$(cat rest_api_url) gatsby build
 
-# TEST FRONTEND BUILD
+# TESTING FRONTEND BUILD
 
 FROM pybrew AS build-tester
 WORKDIR /flowbase/pybrew

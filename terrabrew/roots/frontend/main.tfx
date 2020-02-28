@@ -32,19 +32,30 @@ locals {
 
 # -----
 
-module "distribution" {
-  source               = "../../modules/website_bucket"
-  path_to_distribution = "./public"
-  name                 = local.full_domain
+resource "aws_s3_bucket" "root_bucket" {
+  count         = "$BRANCH" == "www" ? 1 : 0
+  bucket        = local.domain
+  acl           = "public-read"
+  force_destroy = true
+
+  website {
+    redirect_all_requests_to = local.full_domain
+  }
 }
 
 resource "cloudflare_record" "root" {
   count   = "$BRANCH" == "www" ? 1 : 0
   zone_id = local.cloudflare_zone_id
   name    = local.domain
-  value   = module.distribution.website_endpoint
+  value   = aws_s3_bucket.root_bucket[0].website_endpoint
   type    = "CNAME"
   proxied = true
+}
+
+module "distribution" {
+  source               = "../../modules/website_bucket"
+  path_to_distribution = "./public"
+  name                 = local.full_domain
 }
 
 resource "cloudflare_record" "subdomain" {

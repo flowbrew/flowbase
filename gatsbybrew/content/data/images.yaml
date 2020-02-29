@@ -1,0 +1,43 @@
+- name: matcha_tea_dry_in_bowl_flowbrew
+  image: matcha_tea_dry_in_bowl_flowbrew.jpg
+  alt: Сухой порошок чая матча Flow Brew в чаше
+
+- name: gift_matcha_tea_box_from_top_ex
+  image: gift_matcha_tea_box_from_top_ex.jpg
+  alt: Чай матча, венчик и чаша в подарочной коробке Flow Brew
+
+- name: matcha_tea_in_hand
+  image: matcha_tea_in_hand.jpg
+  alt: Чай матча Flow Brew в чаше в руке
+
+- name: matcha_tea_in_bowl
+  image: matcha_tea_in_bowl.jpg
+  alt: Заваренный чай матча Flow Brew в чаше
+
+- name: matcha_tea_in_test_tube
+  image: matcha_tea_in_test_tube.jpg
+  alt: Чай матча в пробирках
+
+- name: gift_matcha_tea_box_from_front
+  image: gift_matcha_tea_box_from_front.jpg
+  alt: Венчик часен и чаша чаван для чая матча от Flow Brew
+
+- name: whisk
+  image: whisk.jpg
+  alt: Венчик часен
+
+- name: japan_tea_plantation
+  image: japan_tea_plantation.jpg
+  alt: Плантация японского чая и гора Фудзияма
+
+- name: logo_text
+  image: logo_text.svg
+  alt: Логотип Flow Brew
+  
+- name: kozin_aleksey
+  image: kozin_aleksey.jpg
+  alt: Козин Алексей
+
+- name: signature
+  image: signature.jpg
+  alt: Подпись Козина Алексея

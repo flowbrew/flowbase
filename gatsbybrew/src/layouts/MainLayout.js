@@ -185,7 +185,7 @@ const Main = ({ children }) => {
 
   return (
     <Box component="main" className={classes.main}>
-      <Box className={classes.skipper} />
+      {/* <Box className={classes.skipper} /> */}
       {children}
     </Box>
   )
@@ -244,7 +244,7 @@ function ShowOnScroll(props) {
 function HideOnScroll(props) {
   const { children, window } = props
 
-  const trigger = useScrollTrigger({ disableHysteresis: true })
+  const trigger = useScrollTrigger()
 
   return (
     <Slide direction="down" in={!trigger}>
@@ -263,13 +263,13 @@ const BottomAppBar = ({ navigation }) => {
           <Fab color="secondary" aria-label="add" className={classes.fabButton}>
             <LiveHelpIcon />
           </Fab>
-          <div className={classes.grow} />
+          {/* <div className={classes.grow} />
           <NavMenuButton
             anchor="top"
             navigation={navigation}
             edge="end"
             color="inherit"
-          />
+          /> */}
         </Toolbar>
       </AppBar>
     </ShowOnScroll>

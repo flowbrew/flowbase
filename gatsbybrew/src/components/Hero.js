@@ -1,5 +1,7 @@
 import React from "react"
 import { useStaticQuery, graphql } from "gatsby"
+import Img from "gatsby-image"
+import BackgroundImage from 'gatsby-background-image'
 import { Parallax } from "react-parallax"
 
 import { makeStyles } from "@material-ui/core/styles"
@@ -22,9 +24,9 @@ const useStyles = makeStyles(theme => ({
 const Hero = () => {
   const data = useStaticQuery(graphql`
     query {
-      file(relativePath: { regex: "/japan_tea_plantation/" }) {
+      file(relativePath: { regex: "/ravi-pinisetti-ySQXoZLAsmc-unsplash/" }) {
         childImageSharp {
-          fluid(quality: 100) {
+          fluid(quality: 90) {
             ...GatsbyImageSharpFluid
             originalName
           }
@@ -38,12 +40,7 @@ const Hero = () => {
   const classes = useStyles()
 
   return (
-    <Parallax
-      bgImage={img.src}
-      bgImageSrcSet={img.srcSet}
-      bgImageAlt="the cat"
-      strength={50}
-    >
+    <BackgroundImage fluid={img} >
       <Box style={{ height: "100vh" }}>
         <Box mt={2}>
           <Container
@@ -63,7 +60,7 @@ const Hero = () => {
           </Container>
         </Box>
       </Box>
-    </Parallax>
+    </BackgroundImage>
   )
 }
 

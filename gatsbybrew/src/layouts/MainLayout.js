@@ -161,19 +161,22 @@ const Header = ({ navigation }) => {
   const classes = useStyles()
 
   return (
-    <>
+    <HideOnScroll>
       <AppBar>
         <Toolbar>
-          {/* <IconButton color="inherit" aria-label="menu" onClick={toggleDrawer}>
-            <MenuIcon />
-          </IconButton> */}
-          <LogoText className={classes.logo} />
           <IconButton color="inherit" className={classes.hidden}>
             <MenuIcon />
           </IconButton>
+          <LogoText className={classes.logo} />
+          <NavMenuButton
+            anchor="left"
+            navigation={navigation}
+            edge="end"
+            color="inherit"
+          />
         </Toolbar>
       </AppBar>
-    </>
+    </HideOnScroll>
   )
 }
 
@@ -182,7 +185,7 @@ const Main = ({ children }) => {
 
   return (
     <Box component="main" className={classes.main}>
-      {/* <Box className={classes.skipper} /> */}
+      <Box className={classes.skipper} />
       {children}
     </Box>
   )
@@ -219,6 +222,8 @@ const Footer = ({ navigation }) => {
         </Grid>
         <ShortDivider />
         <Copyright />
+        <Box className={classes.skipper} />
+        <Box className={classes.skipper} />
       </Container>
     </footer>
   )
@@ -231,6 +236,18 @@ function ShowOnScroll(props) {
 
   return (
     <Slide direction="up" in={trigger}>
+      {children}
+    </Slide>
+  )
+}
+
+function HideOnScroll(props) {
+  const { children, window } = props
+
+  const trigger = useScrollTrigger({ disableHysteresis: true })
+
+  return (
+    <Slide direction="down" in={!trigger}>
       {children}
     </Slide>
   )
@@ -283,7 +300,7 @@ const MainLayout = ({ children, location }) => {
         <MdxContextProvider>
           <Seo />
           <CssBaseline />
-          {/* <Header navigation={data.navigation} /> */}
+          <Header navigation={data.navigation} />
           <Main>{children}</Main>
           <BottomAppBar navigation={data.navigation} />
           <Footer navigation={data.navigation} />

@@ -8,6 +8,7 @@ import { faMugHot } from "@fortawesome/free-solid-svg-icons"
 import { Link } from "gatsby"
 import uniqueId from "lodash/uniqueId"
 import { Parallax } from "react-parallax"
+import Ratio from "react-ratio"
 
 import { makeStyles } from "@material-ui/core/styles"
 import Typography from "@material-ui/core/Typography"
@@ -16,7 +17,9 @@ import Box from "@material-ui/core/Box"
 import Grid from "@material-ui/core/Grid"
 import Paper from "@material-ui/core/Paper"
 import Card from "@material-ui/core/Card"
+import CardHeader from "@material-ui/core/CardHeader"
 import CardContent from "@material-ui/core/CardContent"
+import Avatar from "@material-ui/core/Avatar"
 import Button from "@material-ui/core/Button"
 import Rating from "@material-ui/lab/Rating"
 import ExpansionPanel from "@material-ui/core/ExpansionPanel"
@@ -75,11 +78,17 @@ const H = ({ children }) => (
 )
 
 const P = ({ children }) => (
-  <Box mb={2}>
-    <Typography variant="body1" component="p">
-      {children}
-    </Typography>
-  </Box>
+  <Typography variant="body1" paragraph={true}>
+    {children}
+  </Typography>
+)
+
+const UL = ({ children }) => <Typography component="ul">{children}</Typography>
+
+const LI = ({ children }) => (
+  <Typography component="li" paragraph={true}>
+    {children}
+  </Typography>
 )
 
 const SimpleInDepthBenefits = () => {
@@ -94,7 +103,7 @@ const SimpleInDepthBenefits = () => {
         bgImageSrcSet={imageSharp.fluid.srcSet}
         strength={60}
       >
-        <Box style={{ height: "70vh" }}></Box>
+        <Ratio ratio={1 / 1}></Ratio>
       </Parallax>
     )
 
@@ -108,10 +117,10 @@ const SimpleInDepthBenefits = () => {
     return (
       <Grid className={classes.feature} container>
         <Grid item xs={12}>
-          {imageBlock}
+          {textBlock}
         </Grid>
         <Grid item xs={12}>
-          {textBlock}
+          {imageBlock}
         </Grid>
       </Grid>
     )
@@ -120,27 +129,19 @@ const SimpleInDepthBenefits = () => {
   return (
     <>
       <Benefit title="Японское Качество" image="matcha_tea_in_test_tube">
-        <P>Мы попробовали 20 сортов японского чая матча и отобрали лучший.</P>
+        <P>Я попробовал 20 сортов японского чая матча и отобрал лучший.</P>
         <P>
-          Мы уделили внимание как и вкусу чая, так и его тонизирующему эффекту.
+          Я уделил внимание как и вкусу чая, так и его тонизирующему эффекту.
         </P>
       </Benefit>
       <Benefit
         title="Венчик и Чаша в Подарок"
         image="gift_matcha_tea_box_from_front"
       >
-        <P>Мы дарим бесплатный набор для заварки новым клиентам.</P>
-        <P>
-          Для заварки чая матча следует использовать венчик часен и чашу чаван.
-          Иначе в чае останутся комочки, которые испортят вкус.
-        </P>
+        <P>Я дарю бесплатный набор для заварки новым клиентам.</P>
       </Benefit>
       <Benefit title="Программа Замены Венчика" image="whisk">
-        <P>Мы бесплатно заменим вам венчик в случае его износа.</P>
-        <P>
-          Для этого в комментарии к заказу чая укажите "нужен новый венчик". И
-          вместе с чаем мы вышлем вам замену.
-        </P>
+        <P>Я бесплатно заменю вам венчик в случае его износа.</P>
       </Benefit>
     </>
   )
@@ -248,17 +249,19 @@ const BuyButton = () => {
 
   return (
     <Box mb={6}>
-      <Paper className={classes.buyButtonWrapper}>
-        <Button
-          href="/checkout"
-          size="large"
-          variant="contained"
-          color="secondary"
-          fullWidth={true}
-        >
-          Купить
-        </Button>
-      </Paper>
+      <Container>
+        <Paper className={classes.buyButtonWrapper}>
+          <Button
+            href="/checkout"
+            size="large"
+            variant="contained"
+            color="secondary"
+            fullWidth={true}
+          >
+            Купить
+          </Button>
+        </Paper>
+      </Container>
     </Box>
   )
 }
@@ -278,8 +281,8 @@ const WorkWithRejections = () => {
   return (
     <List>
       <Rejection text="Оплата после получения." to="/" />
-      <Rejection text="Гарантируем возврат средств." to="/" />
-      <Rejection text="Ответим на ваши вопросы." to="/" />
+      <Rejection text="Гарантирую возврат средств." to="/" />
+      <Rejection text="Отвечу на ваши вопросы." to="/" />
     </List>
   )
 }
@@ -297,45 +300,59 @@ const OfferSection = ({ data }) => {
   )
 }
 
-const PaperSection = ({ title, children }) => (
-  <Box mb={6}>
+const PaperSection = ({ title, children, ...props }) => (
+  <Box mb={6} {...props}>
     <Box mb={4}>
       <Typography variant="h2" align="center">
         {title}
       </Typography>
     </Box>
-    <Paper>{children}</Paper>
+    <Container>{children}</Container>
   </Box>
 )
 
 const ReviewsSection = () => {
-  const Review = ({ author, text }) => (
-    <Box m={6}>
-      <Card p={1}>
-        <CardContent>
-          <Box mb={1}>
-            <Rating name="size-medium" defaultValue={5} readOnly />
-          </Box>
-          <Typography variant="body1">{text}</Typography>
-          <Box fontStyle="italic" mt={1}>
-            <Typography variant="body1" fontStyle="italic">
-              - {author}
-            </Typography>
-          </Box>
-        </CardContent>
-      </Card>
-    </Box>
-  )
+  const Review = ({ author, text, image }) => {
+    const avatar = useImage(image)
+    return (
+      <Box mb={2}>
+        <Card p={1}>
+          <CardHeader
+            avatar={
+              <Avatar
+                alt={avatar.imageData.alt}
+                src={avatar.imageSharp.fluid.src}
+              />
+            }
+            title={author}
+          />
+          <CardContent>
+            <Box mb={1}>
+              <Rating name="size-medium" defaultValue={5} readOnly />
+            </Box>
+            <Typography variant="body1">{text}</Typography>
+          </CardContent>
+        </Card>
+      </Box>
+    )
+  }
+
   return (
-    <PaperSection title="Отзывы">
+    <PaperSection title="Отзывы" id="reviews">
       <Box p={1}>
-        <Review author="Мария" text="Вкус, насыщенный и не на что не похожий" />
+        <Review
+          author="Мария"
+          image="maria"
+          text="Вкус, насыщенный и не на что не похожий"
+        />
         <Review
           author="Марат"
+          image="marat"
           text="Послевкусие как от улуна, смородиновый лист. также вкус чистый, приятный."
         />
         <Review
           author="Марина"
+          image="marina"
           text="Мой любимый вариант заварки с молоком. Нежный и мягкий вкус )"
         />
       </Box>
@@ -365,11 +382,13 @@ const FAQSection = () => {
           <Typography>Можно ли заварить чай без венчика</Typography>
         </ExpansionPanelSummary>
         <ExpansionPanelDetails>
-          <P>
-            Можно, но вкус будет хуже. В чае будут плавать небольшие комочки.
-            Даже электрический вспениватель для молока оставляет комочки. Для
-            идеального вкуса нужны венчик и чаша.
-          </P>
+          <Box>
+            <P>
+              Можно, но вкус будет хуже. В чае будут плавать небольшие комочки.
+              Даже электрический вспениватель для молока оставляет комочки. Для
+              идеального вкуса нужны венчик и чаша.
+            </P>
+          </Box>
         </ExpansionPanelDetails>
       </ExpansionPanel>
       <ExpansionPanel
@@ -384,18 +403,20 @@ const FAQSection = () => {
           <Typography>Почему чай поставляется в двух упаковках</Typography>
         </ExpansionPanelSummary>
         <ExpansionPanelDetails>
-          <ul>
-            <li>
-              Такой объем чая в вашем заказе позволяет доставлять его бесплатно.
-              А также позволяет дарить бесплатный набор для заварки новым
-              клиентам.
-            </li>
-            <li>
-              Чай матча портится от контакта с воздухом. После открытия упаковки
-              у вас есть 3 недели, чтобы им насладиться. 60 г можно не успеть
-              выпить за такой короткий срок.
-            </li>
-          </ul>
+          <Box>
+            <UL>
+              <LI>
+                Такой объем чая в вашем заказе позволяет доставлять его
+                бесплатно. А также позволяет дарить бесплатный набор для заварки
+                новым клиентам.
+              </LI>
+              <LI>
+                Чай матча портится от контакта с воздухом. После открытия
+                упаковки у вас есть 3 недели, чтобы им насладиться. 60 г можно
+                не успеть выпить за такой короткий срок.
+              </LI>
+            </UL>
+          </Box>
         </ExpansionPanelDetails>
       </ExpansionPanel>
       <ExpansionPanel
@@ -410,12 +431,15 @@ const FAQSection = () => {
           <Typography>Зачем пить чай матча</Typography>
         </ExpansionPanelSummary>
         <ExpansionPanelDetails>
-          <P>Читайте о полезных свойствах чая матча в нашем блоге:</P>
-          <P>
-            <Link to="/blog">
-              7 причин почему вы подсядете на полезный чай матча
-            </Link>
-          </P>
+          <Box>
+            <P>
+              Читайте о полезных свойствах чая матча в нашем блоге:
+              <br />
+              <Link to="/blog">
+                7 причин почему вы подсядете на полезный чай матча
+              </Link>
+            </P>
+          </Box>
         </ExpansionPanelDetails>
       </ExpansionPanel>
       <ExpansionPanel
@@ -430,37 +454,41 @@ const FAQSection = () => {
           <Typography>Как заваривать чай матча</Typography>
         </ExpansionPanelSummary>
         <ExpansionPanelDetails>
-          <P>
-            Чай матча легко заваривается. При должной практике заварка займет у
-            вас не больше 1 минуты.
-          </P>
-          <ul>
-            <li>
-              Подготовьте воду, температура которой не превышает 70-80С° (можно
-              использовать холодную воду). Чай матча нельзя заваривать кипятком,
-              иначе он будет горчить. Если у вас нет чайника с термометром,
-              можно заранее смешать горячую и холодную воду в отдельной чашке.
-              Простое правило: если вода обжигает вас, она обожжёт и чай.
-            </li>
-            <li>
-              Возьмите 1г чая и положите в чаван. Это половина чайной ложки.
-            </li>
-            <li>
-              Добавьте 10 мл воды и аккуратно размешайте порошок венчиком до
-              однородного состояния, чтобы не оставалось комочков. В итоге
-              должна получиться однородная паста.
-            </li>
-            <li>
-              Вода активирует свойства чая. Вдохните и насладитесь его ароматом.
-            </li>
-            <li>
-              Добавьте воды или молока по вкусу. Дополнительная жидкость изменит
-              вкус чая. Я, как правило, доливаю 40 мл воды. А вот моей жене
-              нравится тёплое кокосовое молоко.
-            </li>
-            <li>V-образными движениями взбейте чай венчиком.</li>
-            <li>Напиток готов.</li>
-          </ul>
+          <Box>
+            <P>
+              Чай матча легко заваривается. При должной практике заварка займет
+              у вас не больше 1 минуты.
+            </P>
+            <UL>
+              <LI>
+                Подготовьте воду, температура которой не превышает 70-80С°
+                (можно использовать холодную воду). Чай матча нельзя заваривать
+                кипятком, иначе он будет горчить. Если у вас нет чайника с
+                термометром, можно заранее смешать горячую и холодную воду в
+                отдельной чашке. Простое правило: если вода обжигает вас, она
+                обожжёт и чай.
+              </LI>
+              <LI>
+                Возьмите 1г чая и положите в чаван. Это половина чайной ложки.
+              </LI>
+              <LI>
+                Добавьте 10 мл воды и аккуратно размешайте порошок венчиком до
+                однородного состояния, чтобы не оставалось комочков. В итоге
+                должна получиться однородная паста.
+              </LI>
+              <LI>
+                Вода активирует свойства чая. Вдохните и насладитесь его
+                ароматом.
+              </LI>
+              <LI>
+                Добавьте воды или молока по вкусу. Дополнительная жидкость
+                изменит вкус чая. Я, как правило, доливаю 40 мл воды. А вот моей
+                жене нравится тёплое кокосовое молоко.
+              </LI>
+              <LI>V-образными движениями взбейте чай венчиком.</LI>
+              <LI>Напиток готов.</LI>
+            </UL>
+          </Box>
         </ExpansionPanelDetails>
       </ExpansionPanel>
     </PaperSection>
@@ -480,8 +508,7 @@ const SignatureSection = () => {
           <Box p={2}>
             <H>Здравствуйте</H>
             <P>
-              Меня зовут Алексей Козин. Я директор Flow Brew. Спасибо за ваш
-              выбор.
+              Меня зовут Алексей Козин. Я директор Flow Brew.
             </P>
           </Box>
           <Parallax
@@ -491,9 +518,6 @@ const SignatureSection = () => {
           >
             <Box style={{ height: "70vh" }}></Box>
           </Parallax>
-          <Box width={1 / 2} align="center">
-            <Img fluid={{ ...signature.imageSharp.fluid, aspectRatio: 1 }} />
-          </Box>
         </Grid>
       </Grid>
     </Box>
@@ -518,12 +542,12 @@ export default ({ location }) => {
   return (
     <MainLayout location={location}>
       <Hero />
+      <SignatureSection />
       <SimpleInDepthBenefits />
       <OfferSection />
       <ReviewsSection />
-      <FAQSection />
       <BuyButtonSection />
-      <SignatureSection />
+      <FAQSection />
     </MainLayout>
   )
 }

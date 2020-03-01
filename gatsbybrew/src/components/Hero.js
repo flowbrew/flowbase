@@ -6,6 +6,7 @@ import { makeStyles } from "@material-ui/core/styles"
 import Typography from "@material-ui/core/Typography"
 import Container from "@material-ui/core/Container"
 import Box from "@material-ui/core/Box"
+import ArrowDownwardIcon from "@material-ui/icons/ArrowDownward"
 
 const useStyles = makeStyles(theme => ({
   insideStyles: {
@@ -41,21 +42,26 @@ const Hero = () => {
       bgImage={img.src}
       bgImageSrcSet={img.srcSet}
       bgImageAlt="the cat"
-      strength={300}
+      strength={50}
     >
       <Box style={{ height: "100vh" }}>
-        <Container
-          className={classes.insideStyles}
-          width={4 / 5}
-          align="center"
-        >
-          <Typography variant="h2" component="h1" gutterBottom>
-            <Box fontWeight="fontWeightBold">Чай Матча</Box>
-          </Typography>
-          <Typography variant="h5" component="h2" gutterBottom>
-            <Box fontWeight="fontWeightBold">Ваша энергия и настроение</Box>
-          </Typography>
-        </Container>
+        <Box mt={2}>
+          <Container
+            className={classes.insideStyles}
+            width={4 / 5}
+            align="center"
+          >
+            <Typography variant="h2" component="h1" gutterBottom>
+              <Box fontWeight="fontWeightBold">Чай Матча</Box>
+            </Typography>
+            <Typography variant="h5" component="h2" gutterBottom>
+              <Box fontWeight="fontWeightBold">Ваша энергия и настроение</Box>
+            </Typography>
+            <Box mt={5}>
+              <ArrowDownwardIcon fontSize="large" />
+            </Box>
+          </Container>
+        </Box>
       </Box>
     </Parallax>
   )

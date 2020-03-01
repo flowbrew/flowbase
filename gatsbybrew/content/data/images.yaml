@@ -41,3 +41,15 @@
 - name: signature
   image: signature.jpg
   alt: Подпись Козина Алексея
+
+- name: marina
+  image: marina.jpg
+  alt: Марина
+
+- name: maria
+  image: maria.jpg
+  alt: Мария
+
+- name: marat
+  image: marat.jpg
+  alt: Марат

@@ -16,9 +16,9 @@ const theme = R.compose(responsiveFontSizes, createMuiTheme)({
     secondary: {
       main: '#0097a7',
     },
-    background: {
-      default: "white"
-    }
+    // background: {
+    //   default: "white"
+    // }
   },
 })
 

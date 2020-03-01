@@ -180,7 +180,7 @@ const OfferImages = () => {
   })
 
   const { imageData, imageSharp } = useImage(
-    state.selectedImage || "matcha_tea_dry_in_bowl_flowbrew"
+    state.selectedImage || "flowbrew"
   )
 
   const click = imageName => {
@@ -208,10 +208,10 @@ const OfferImages = () => {
           alwaysInPlace={true}
         /> */}
       </Grid>
-      <PreviewImage image="matcha_tea_dry_in_bowl_flowbrew" />
-      <PreviewImage image="gift_matcha_tea_box_from_top_ex" />
+      <PreviewImage image="flowbrew" />
       <PreviewImage image="matcha_tea_in_hand" />
-      <PreviewImage image="matcha_tea_in_bowl" />
+      <PreviewImage image="gift_matcha_tea_box_from_top_ex" />
+      <PreviewImage image="matcha_tea_dry_in_bowl_flowbrew" />
     </Grid>
   )
 }

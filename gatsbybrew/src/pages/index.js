@@ -5,7 +5,7 @@ import { MDXRenderer } from "gatsby-plugin-mdx"
 import { SideBySideMagnifier } from "react-image-magnifiers"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faMugHot } from "@fortawesome/free-solid-svg-icons"
-import { Link } from "gatsby"
+import Link from "@material-ui/core/Link"
 import uniqueId from "lodash/uniqueId"
 import { Parallax } from "react-parallax"
 import Ratio from "react-ratio"
@@ -37,10 +37,12 @@ import List from "@material-ui/core/List"
 import ListItem from "@material-ui/core/ListItem"
 import ListItemIcon from "@material-ui/core/ListItemIcon"
 import ListItemText from "@material-ui/core/ListItemText"
+import CheckIcon from "@material-ui/icons/Check"
 
 import MainLayout from "../layouts/MainLayout"
 import { useImage } from "../components/ImageContext"
 import { useMdx } from "../components/MdxContext"
+import StyledLink from "../components/StyledLink"
 import { mapi } from "../common"
 import Hero from "../components/Hero"
 
@@ -69,10 +71,14 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-const Section = Box
+const Section = ({ children, ...props }) => (
+  <Box mb={4} {...props}>
+    {children}
+  </Box>
+)
 
 const H = ({ children }) => (
-  <Typography variant="h2" component="h2" gutterBottom>
+  <Typography variant="h2" component="h2" paragraph={true}>
     {children}
   </Typography>
 )
@@ -108,26 +114,31 @@ const SimpleInDepthBenefits = () => {
     )
 
     const textBlock = (
-      <Section className={classes.text}>
+      <Container className={classes.text}>
         <H>{title}</H>
         {children}
-      </Section>
+      </Container>
     )
 
     return (
-      <Grid className={classes.feature} container>
-        <Grid item xs={12}>
-          {textBlock}
+      <Section>
+        <Grid className={classes.feature} container>
+          <Grid item xs={12}>
+            {textBlock}
+          </Grid>
+          <Grid item xs={12}>
+            {imageBlock}
+          </Grid>
         </Grid>
-        <Grid item xs={12}>
-          {imageBlock}
-        </Grid>
-      </Grid>
+      </Section>
     )
   }
 
   return (
     <>
+      <Benefit title="Здравствуйте" image="kozin_aleksey">
+        <P>Меня зовут Алексей Козин. Я директор Flow Brew.</P>
+      </Benefit>
       <Benefit title="Японское Качество" image="matcha_tea_in_test_tube">
         <P>Я попробовал 20 сортов японского чая матча и отобрал лучший.</P>
         <P>
@@ -153,7 +164,7 @@ const OfferHeader = () => {
   return (
     <List>
       <ListItem>
-        <Typography variant="h2" component="h2" className={classes.fancy}>
+        <Typography variant="h2" component="h2">
           Чай Матча
         </Typography>
       </ListItem>
@@ -161,7 +172,9 @@ const OfferHeader = () => {
         <Rating name="size-medium" defaultValue={5} readOnly />
         <Box ml={1}>
           <Typography variant="body1">
-            <Link to="#reviews">3 отзыва</Link>
+            <StyledLink to="#reviews">
+              3 отзыва
+            </StyledLink>
           </Typography>
         </Box>
       </ListItem>
@@ -179,9 +192,7 @@ const OfferImages = () => {
     selectedImage: null,
   })
 
-  const { imageData, imageSharp } = useImage(
-    state.selectedImage || "flowbrew"
-  )
+  const { imageData, imageSharp } = useImage(state.selectedImage || "flowbrew")
 
   const click = imageName => {
     setState({ selectedImage: imageName })
@@ -201,7 +212,14 @@ const OfferImages = () => {
   return (
     <Grid container>
       <Grid item xs={12}>
-        <Img fluid={{ ...imageSharp.fluid, aspectRatio: 1 }} />
+        {/* <Img fluid={{ ...imageSharp.fluid, aspectRatio: 1 }} /> */}
+        <Parallax
+          bgImage={imageSharp.fluid.src}
+          bgImageSrcSet={imageSharp.fluid.srcSet}
+          strength={50}
+        >
+          <Ratio ratio={1 / 1}></Ratio>
+        </Parallax>
       </Grid>
       <PreviewImage image="flowbrew" />
       <PreviewImage image="matcha_tea_in_hand" />
@@ -222,12 +240,15 @@ const OfferBenefits = () => {
   return (
     <List>
       <Benefit
-        icon={<LocalShippingRounded />}
+        icon={<LocalShippingRounded color="primary" />}
         text="Бесплатная доставка по Москве и Спб."
       />
-      <Benefit icon={<EcoRounded />} text="Изготовлен в Японии, Киото." />
       <Benefit
-        icon={<FavoriteRounded />}
+        icon={<EcoRounded color="primary" />}
+        text="Изготовлен в Японии, Киото."
+      />
+      <Benefit
+        icon={<FavoriteRounded color="primary" />}
         text="Обволакивающий вкус и кремово-ореховое послевкусие. Ягодный аромат."
       />
     </List>
@@ -244,7 +265,7 @@ const BuyButton = () => {
   const classes = useStyles()
 
   return (
-    <Box mb={6}>
+    <Box>
       <Container>
         <Paper className={classes.buyButtonWrapper}>
           <Button
@@ -266,20 +287,24 @@ const WorkWithRejections = () => {
   const Rejection = ({ text, to }) => (
     <ListItem>
       <ListItemIcon>
-        <CheckCircleIcon />
+        <CheckCircleIcon color="primary"  />
       </ListItemIcon>
       <ListItemText>
-        <Link to={to}>{text}</Link>
+        <StyledLink to={to}>
+          {text}
+        </StyledLink>
       </ListItemText>
     </ListItem>
   )
 
   return (
-    <List>
-      <Rejection text="Оплата после получения." to="/" />
-      <Rejection text="Гарантирую возврат средств." to="/" />
-      <Rejection text="Отвечу на ваши вопросы." to="/" />
-    </List>
+    <Section>
+      <List>
+        <Rejection text="Оплата после получения." to="/" />
+        <Rejection text="Гарантирую возврат средств." to="/" />
+        <Rejection text="Отвечу на ваши вопросы." to="/" />
+      </List>
+    </Section>
   )
 }
 
@@ -291,20 +316,17 @@ const OfferSection = ({ data }) => {
       <OfferBenefits />
       {/* <Promotion /> */}
       <BuyButton />
-      <WorkWithRejections />
     </Section>
   )
 }
 
 const PaperSection = ({ title, children, ...props }) => (
-  <Box mb={6} {...props}>
-    <Box mb={4}>
-      <Typography variant="h2" align="center">
-        {title}
-      </Typography>
-    </Box>
-    <Container>{children}</Container>
-  </Box>
+  <Section {...props}>
+    <Container>
+      <H>{title}</H>
+      {children}
+    </Container>
+  </Section>
 )
 
 const ReviewsSection = () => {
@@ -387,7 +409,7 @@ const FAQSection = () => {
           </Box>
         </ExpansionPanelDetails>
       </ExpansionPanel>
-      <ExpansionPanel
+      {/* <ExpansionPanel
         expanded={expanded === "p2"}
         onChange={handleChange("p2")}
       >
@@ -414,8 +436,8 @@ const FAQSection = () => {
             </UL>
           </Box>
         </ExpansionPanelDetails>
-      </ExpansionPanel>
-      <ExpansionPanel
+      </ExpansionPanel> */}
+      {/* <ExpansionPanel
         expanded={expanded === "p3"}
         onChange={handleChange("p3")}
       >
@@ -431,13 +453,13 @@ const FAQSection = () => {
             <P>
               Читайте о полезных свойствах чая матча в нашем блоге:
               <br />
-              <Link to="/blog">
+              <StyledLink color="secondary" href="/blog" underline="always">
                 7 причин почему вы подсядете на полезный чай матча
-              </Link>
+              </StyledLink>
             </P>
           </Box>
         </ExpansionPanelDetails>
-      </ExpansionPanel>
+      </ExpansionPanel> */}
       <ExpansionPanel
         expanded={expanded === "p4"}
         onChange={handleChange("p4")}
@@ -491,34 +513,11 @@ const FAQSection = () => {
   )
 }
 
-const BuyButtonSection = () => <BuyButton />
-const SignatureSection = () => {
-  const classes = useStyles()
-  const kozin_aleksey = useImage("kozin_aleksey")
-  const signature = useImage("signature")
-
-  return (
-    <Box>
-      <Grid container>
-        <Grid item xs={12}>
-          <Box p={2}>
-            <H>Здравствуйте</H>
-            <P>
-              Меня зовут Алексей Козин. Я директор Flow Brew.
-            </P>
-          </Box>
-          <Parallax
-            bgImage={kozin_aleksey.imageSharp.fluid.src}
-            bgImageSrcSet={kozin_aleksey.imageSharp.fluid.srcSet}
-            strength={60}
-          >
-            <Box style={{ height: "70vh" }}></Box>
-          </Parallax>
-        </Grid>
-      </Grid>
-    </Box>
-  )
-}
+const BuyButtonSection = () => (
+  <Section>
+    <BuyButton />
+  </Section>
+)
 
 export default ({ location }) => {
   const data = useStaticQuery(graphql`
@@ -537,13 +536,15 @@ export default ({ location }) => {
 
   return (
     <MainLayout location={location}>
-      <Hero />
-      <SignatureSection />
+      <Section>
+        <Hero />
+      </Section>
       <SimpleInDepthBenefits />
       <OfferSection />
+      <WorkWithRejections />
       <ReviewsSection />
-      <BuyButtonSection />
       <FAQSection />
+      <BuyButtonSection />
     </MainLayout>
   )
 }

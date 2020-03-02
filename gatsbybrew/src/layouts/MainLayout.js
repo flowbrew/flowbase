@@ -177,7 +177,9 @@ const Header = ({ navigation }) => {
           <IconButton color="inherit" className={classes.hidden}>
             <MenuIcon />
           </IconButton>
-          <LogoText className={classes.logo} />
+          <StyledLink to="/" style={{ display: "contents" }}>
+            <LogoText className={classes.logo} />
+          </StyledLink>
           <NavMenuButton
             anchor="left"
             navigation={navigation}
@@ -215,12 +217,13 @@ const Footer = ({ navigation }) => {
 
   return (
     <footer className={classes.footer}>
+      <Box mt={2} />
       <Container>
         <Grid container spacing={2}>
           {R.map(
             ({ link, title, icon }) => (
               <Grid item xs={12} sm={3} key={link}>
-                <StyledLink to={link}>
+                <StyledLink to={link} style={{ textDecoration: "none" }}>
                   <Typography variant="button" className={classes.footerLnk}>
                     {title}
                   </Typography>
@@ -309,7 +312,7 @@ const BottomAppBar = ({ navigation }) => {
                   />
                 }
                 title="Алексей Козин"
-                subheader="С радостью отвечу на все ваши вопросы"
+                subheader="Я с радостью отвечу на все ваши вопросы"
               />
               <List>
                 <Contact

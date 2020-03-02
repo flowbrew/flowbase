@@ -42,7 +42,7 @@ const Hero = () => {
 
   return (
     <Box style={{ overflow: "Hidden" }}>
-      <Parallax speed={-5}>
+      <Parallax speed={-3}>
         <BackgroundImage fluid={img}>
           <Box style={{ height: "100vh" }}></Box>
         </BackgroundImage>

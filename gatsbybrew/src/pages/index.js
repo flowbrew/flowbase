@@ -202,11 +202,6 @@ const OfferImages = () => {
     <Grid container>
       <Grid item xs={12}>
         <Img fluid={{ ...imageSharp.fluid, aspectRatio: 1 }} />
-        {/* <SideBySideMagnifier
-          imageSrc={imageSharp.fluid.src}
-          imageAlt={imageData.alt}
-          alwaysInPlace={true}
-        /> */}
       </Grid>
       <PreviewImage image="flowbrew" />
       <PreviewImage image="matcha_tea_in_hand" />

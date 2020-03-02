@@ -41,6 +41,8 @@
     "react-lazy-hero": "^2.0.0",
     "react-parallax": "^3.0.3",
     "react-ratio": "^0.1.5",
+    "react-rellax": "^1.0.3",
+    "rellax": "^1.12.1",
     "styled-components": "^4.4.1",
     "typeface-roboto": "0.0.75",
     "typescript": "^3.8.2"

@@ -1,6 +1,7 @@
 import React from "react"
 import { useStaticQuery, graphql } from "gatsby"
 import * as R from "ramda"
+import Parallax from "react-rellax"
 
 const ImageContext = React.createContext({})
 
@@ -18,7 +19,7 @@ const solveImage = ({ imagesData, imagesSharp }, imageName) => {
   }
 }
 
-const useImage = (imageName) =>
+const useImage = imageName =>
   solveImage(React.useContext(ImageContext), imageName)
 
 const ImageContextProvider = ({ children }) => {

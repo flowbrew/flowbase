@@ -1,14 +1,15 @@
 import React from "react"
 import { useStaticQuery, graphql } from "gatsby"
 import Img from "gatsby-image"
-import BackgroundImage from 'gatsby-background-image'
-import { Parallax } from "react-parallax"
+import BackgroundImage from "gatsby-background-image"
+import Parallax from "react-rellax"
 
 import { makeStyles } from "@material-ui/core/styles"
 import Typography from "@material-ui/core/Typography"
 import Container from "@material-ui/core/Container"
 import Box from "@material-ui/core/Box"
 import ArrowDownwardIcon from "@material-ui/icons/ArrowDownward"
+import { Hidden } from "@material-ui/core"
 
 const useStyles = makeStyles(theme => ({
   insideStyles: {
@@ -40,27 +41,33 @@ const Hero = () => {
   const classes = useStyles()
 
   return (
-    <BackgroundImage fluid={img} >
-      <Box style={{ height: "100vh" }}>
-        <Box mt={2}>
-          <Container
-            className={classes.insideStyles}
-            width={4 / 5}
-            align="center"
-          >
+    <Box style={{ overflow: "Hidden" }}>
+      <Parallax speed={-5}>
+        <BackgroundImage fluid={img}>
+          <Box style={{ height: "100vh" }}></Box>
+        </BackgroundImage>
+      </Parallax>
+
+      <Box mt={2}>
+        <Container
+          className={classes.insideStyles}
+          width={4 / 5}
+          align="center"
+        >
+          <Box mt={8}>
             <Typography variant="h2" component="h1" gutterBottom>
               <Box fontWeight="fontWeightBold">Чай Матча</Box>
             </Typography>
             <Typography variant="h5" component="h2" gutterBottom>
               <Box fontWeight="fontWeightBold">Ваша энергия и настроение</Box>
             </Typography>
-            <Box mt={5}>
-              <ArrowDownwardIcon fontSize="large" />
-            </Box>
-          </Container>
-        </Box>
+          </Box>
+          <Box mt={5}>
+            <ArrowDownwardIcon fontSize="large" />
+          </Box>
+        </Container>
       </Box>
-    </BackgroundImage>
+    </Box>
   )
 }
 

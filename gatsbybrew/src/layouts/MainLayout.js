@@ -32,6 +32,13 @@ import FavoriteIcon from "@material-ui/icons/Favorite"
 import RemoveIcon from "@material-ui/icons/Remove"
 import Slide from "@material-ui/core/Slide"
 import useScrollTrigger from "@material-ui/core/useScrollTrigger"
+import ListSubheader from "@material-ui/core/ListSubheader"
+
+import TelegramIcon from "@material-ui/icons/Telegram"
+import WhatsAppIcon from "@material-ui/icons/WhatsApp"
+import PhoneIcon from "@material-ui/icons/Phone"
+import EmailIcon from "@material-ui/icons/Email"
+import SmsIcon from "@material-ui/icons/Sms"
 
 import StyledLink from "../components/StyledLink"
 import LogoText from "../../content/images/logo_text.svg"
@@ -256,20 +263,74 @@ function HideOnScroll(props) {
 const BottomAppBar = ({ navigation }) => {
   const classes = useStyles()
 
+  const [state, setState] = React.useState({
+    drawer: false,
+  })
+
+  const toggleDrawer = () => {
+    setState({ ...state, drawer: !state.drawer })
+  }
+
+  const Contact = ({ icon, title, to }) => (
+    <ListItem button component="a" href={to}>
+      <ListItemIcon>{icon}</ListItemIcon>
+      <ListItemText primary={title} />
+    </ListItem>
+  )
+
   return (
     <ShowOnScroll>
       <AppBar position="fixed" color="primary" className={classes.appBar}>
         <Toolbar>
-          <Fab color="secondary" aria-label="add" className={classes.fabButton}>
+          <Fab
+            color="secondary"
+            aria-label="add"
+            className={classes.fabButton}
+            onClick={toggleDrawer}
+          >
             <LiveHelpIcon />
           </Fab>
-          {/* <div className={classes.grow} />
-          <NavMenuButton
-            anchor="top"
-            navigation={navigation}
-            edge="end"
-            color="inherit"
-          /> */}
+          <Drawer anchor="top" open={state.drawer} onClose={toggleDrawer}>
+            <div
+              role="presentation"
+              onClick={toggleDrawer}
+              onKeyDown={toggleDrawer}
+            >
+              <List
+                subheader={
+                  <ListSubheader component="div" id="nested-list-subheader">
+                    С радостью отвечу на все ваши вопросы
+                  </ListSubheader>
+                }
+              >
+                <Contact
+                  icon={<SmsIcon />}
+                  title="SMS"
+                  to="sms:+7-921-920-3135"
+                />
+                <Contact
+                  icon={<TelegramIcon />}
+                  title="Telegram"
+                  to="https://tele.gg/NToss"
+                />
+                <Contact
+                  icon={<WhatsAppIcon />}
+                  title="WhatsApp"
+                  to="https://wa.me/79219203135"
+                />
+                <Contact
+                  icon={<EmailIcon />}
+                  title="Email"
+                  to="mailto: ak@flowbrew.ru"
+                />
+                <Contact
+                  icon={<PhoneIcon />}
+                  title="Phone"
+                  to="tel:+7-921-920-3135"
+                />
+              </List>
+            </div>
+          </Drawer>
         </Toolbar>
       </AppBar>
     </ShowOnScroll>

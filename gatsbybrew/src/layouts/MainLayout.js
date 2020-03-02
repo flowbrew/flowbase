@@ -33,6 +33,8 @@ import RemoveIcon from "@material-ui/icons/Remove"
 import Slide from "@material-ui/core/Slide"
 import useScrollTrigger from "@material-ui/core/useScrollTrigger"
 import ListSubheader from "@material-ui/core/ListSubheader"
+import Avatar from "@material-ui/core/Avatar"
+import CardHeader from "@material-ui/core/CardHeader"
 
 import TelegramIcon from "@material-ui/icons/Telegram"
 import WhatsAppIcon from "@material-ui/icons/WhatsApp"
@@ -45,6 +47,7 @@ import LogoText from "../../content/images/logo_text.svg"
 import Theme, { lowContrastText } from "../components/Theme"
 import { ImageContextProvider } from "../components/ImageContext"
 import { MdxContextProvider } from "../components/MdxContext"
+import { useImage } from "../components/ImageContext"
 
 const Seo = () => <Helmet></Helmet>
 
@@ -278,6 +281,8 @@ const BottomAppBar = ({ navigation }) => {
     </ListItem>
   )
 
+  const avatar = useImage("kozin_aleksey")
+
   return (
     <ShowOnScroll>
       <AppBar position="fixed" color="primary" className={classes.appBar}>
@@ -296,13 +301,17 @@ const BottomAppBar = ({ navigation }) => {
               onClick={toggleDrawer}
               onKeyDown={toggleDrawer}
             >
-              <List
-                subheader={
-                  <ListSubheader component="div" id="nested-list-subheader">
-                    С радостью отвечу на все ваши вопросы
-                  </ListSubheader>
+              <CardHeader
+                avatar={
+                  <Avatar
+                    alt={avatar.imageData.alt}
+                    src={avatar.imageSharp.fluid.src}
+                  />
                 }
-              >
+                title="Алексей Козин"
+                subheader="С радостью отвечу на все ваши вопросы"
+              />
+              <List>
                 <Contact
                   icon={<SmsIcon />}
                   title="SMS"

@@ -45,6 +45,7 @@ import { useMdx } from "../components/MdxContext"
 import StyledLink from "../components/StyledLink"
 import { mapi } from "../common"
 import Hero from "../components/Hero"
+import LogoText from "../../content/images/logo_text.svg"
 
 const useStyles = makeStyles(theme => ({
   feature: {
@@ -57,8 +58,8 @@ const useStyles = makeStyles(theme => ({
     padding: theme.spacing(2),
   },
   fancy: {
-    fontFamily: "Annabelle",
-    fontSize: "3.2rem",
+    fontFamily: "Isadora",
+    // fontSize: "3.2rem",
   },
   insideStyles: {
     // background: "#FFFFFF",
@@ -68,6 +69,14 @@ const useStyles = makeStyles(theme => ({
     top: "50%",
     left: "50%",
     transform: "translate(-50%,-50%)",
+  },
+  flowbrew: {
+    // maxHeight: theme.spacing(1),
+    // margin: "auto",
+    // "& path": {
+    //   stroke: "#000000",
+    //   fill: "red",
+    // },
   },
 }))
 
@@ -164,25 +173,23 @@ const OfferHeader = () => {
   return (
     <List>
       <ListItem>
-        <Typography variant="h2" component="h2">
-          Чай Матча
+        <Typography variant="h1" component="h2" className={classes.fancy}>
+          Flow Brew
         </Typography>
       </ListItem>
       <ListItem>
         <Rating name="size-medium" defaultValue={5} readOnly />
         <Box ml={1}>
           <Typography variant="body1">
-            <StyledLink to="#reviews">
-              3 отзыва
-            </StyledLink>
+            <StyledLink to="#reviews">3 отзыва</StyledLink>
           </Typography>
         </Box>
       </ListItem>
-      <ListItem>
+      {/* <ListItem>
         <Typography variant="body1">
           3880 руб · 60 г · 60 <FontAwesomeIcon icon={faMugHot} />
         </Typography>
-      </ListItem>
+      </ListItem> */}
     </List>
   )
 }
@@ -240,16 +247,16 @@ const OfferBenefits = () => {
   return (
     <List>
       <Benefit
-        icon={<LocalShippingRounded color="primary" />}
-        text="Бесплатная доставка по Москве и Спб."
+        icon={<FavoriteRounded  color="primary" />}
+        text="Обволакивающий вкус и кремово-ореховое послевкусие. Ягодный аромат."
       />
       <Benefit
         icon={<EcoRounded color="primary" />}
         text="Изготовлен в Японии, Киото."
       />
       <Benefit
-        icon={<FavoriteRounded color="primary" />}
-        text="Обволакивающий вкус и кремово-ореховое послевкусие. Ягодный аромат."
+        icon={<LocalShippingRounded color="primary" />}
+        text="Бесплатная доставка по Москве и Спб."
       />
     </List>
   )
@@ -287,12 +294,10 @@ const WorkWithRejections = () => {
   const Rejection = ({ text, to }) => (
     <ListItem>
       <ListItemIcon>
-        <CheckCircleIcon color="primary"  />
+        <CheckCircleIcon color="primary" />
       </ListItemIcon>
       <ListItemText>
-        <StyledLink to={to}>
-          {text}
-        </StyledLink>
+        <StyledLink to={to}>{text}</StyledLink>
       </ListItemText>
     </ListItem>
   )
@@ -308,11 +313,29 @@ const WorkWithRejections = () => {
   )
 }
 
+const PriceBlock = () => {
+  return (
+    <Box mt={3}>
+      <Container>
+        <Typography variant="body1">
+          3880 руб · 60 г · 60 <FontAwesomeIcon icon={faMugHot} />
+        </Typography>
+      </Container>
+    </Box>
+  )
+}
+
 const OfferSection = ({ data }) => {
   return (
     <Section>
+      <Box mb={2}>
+      <Container>
+        <H>Я представляю вам чай матча</H>
+      </Container>
+      </Box>
       <OfferHeader />
       <OfferImages />
+      <PriceBlock />
       <OfferBenefits />
       {/* <Promotion /> */}
       <BuyButton />

@@ -3,3 +3,9 @@
   src: url("Annabelle-regular.ttf");
   font-display: swap;
 }
+
+@font-face {
+  font-family: Isadora;
+  src: url("IsadoraStd-Regular.otf");
+  font-display: swap;
+}

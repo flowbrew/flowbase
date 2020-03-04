@@ -57,7 +57,7 @@ import MainLayout from "../layouts/MainLayout"
 import { useImage } from "../components/ImageContext"
 import { useMdx } from "../components/MdxContext"
 import StyledLink from "../components/StyledLink"
-import { mapi } from "../common"
+import { mapi, useIsDesktop } from "../common"
 import Hero from "../components/Hero"
 import LogoText from "../../content/images/logo_text.svg"
 
@@ -167,11 +167,6 @@ const FLBPaper = ({ children, ...props }) => {
       </Paper>
     </Box>
   )
-}
-
-const useIsDesktop = () => {
-  const theme = useTheme()
-  return useMediaQuery(theme.breakpoints.up("sm"))
 }
 
 const SimpleInDepthBenefits = () => {

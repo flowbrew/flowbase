@@ -28,6 +28,7 @@ import SearchIcon from "@material-ui/icons/Search"
 import MoreIcon from "@material-ui/icons/MoreVert"
 import LiveHelpIcon from "@material-ui/icons/LiveHelp"
 import MenuBookIcon from "@material-ui/icons/MenuBook"
+import GitHubIcon from "@material-ui/icons/GitHub"
 import FavoriteIcon from "@material-ui/icons/Favorite"
 import RemoveIcon from "@material-ui/icons/Remove"
 import Slide from "@material-ui/core/Slide"
@@ -48,6 +49,7 @@ import Theme, { lowContrastText } from "../components/Theme"
 import { ImageContextProvider } from "../components/ImageContext"
 import { MdxContextProvider } from "../components/MdxContext"
 import { useImage } from "../components/ImageContext"
+import { useIsDesktop } from "../common"
 
 const Seo = () => <Helmet></Helmet>
 
@@ -127,15 +129,8 @@ const NavMenuButton = ({ anchor, navigation, ...props }) => {
     }
   }
 
-  // TODO: link color
-  // TODO: icons
   const sideList = () => (
-    <div
-      // className={classes.list}
-      role="presentation"
-      onClick={toggleDrawer}
-      onKeyDown={toggleDrawer}
-    >
+    <div role="presentation" onClick={toggleDrawer} onKeyDown={toggleDrawer}>
       <List>
         {R.map(
           ({ link, title, icon }) => (
@@ -160,26 +155,74 @@ const NavMenuButton = ({ anchor, navigation, ...props }) => {
       >
         <MenuIcon />
       </IconButton>
-      <Drawer anchor={anchor} open={state.drawer} onClose={toggleDrawer}>
+      <Drawer
+        anchor={anchor}
+        open={state.drawer}
+        onClick={toggleDrawer}
+        onClose={toggleDrawer}
+      >
         {sideList()}
       </Drawer>
     </>
   )
 }
 
-const Header = ({ navigation }) => {
+const Header = ({ navigation, toggleContacts }) => {
   const classes = useStyles()
+  const isDesktop = useIsDesktop()
 
   return (
     <HideOnScroll>
       <AppBar>
         <Toolbar>
-          <IconButton color="inherit" className={classes.hidden}>
-            <MenuIcon />
-          </IconButton>
+          {isDesktop ? (
+            <>
+              <IconButton color="inherit" className={classes.hidden}>
+                <MenuIcon />
+              </IconButton>
+              <IconButton color="inherit" className={classes.hidden}>
+                <MenuIcon />
+              </IconButton>
+              <IconButton color="inherit" className={classes.hidden}>
+                <MenuIcon />
+              </IconButton>
+            </>
+          ) : (
+            <IconButton
+              color="inherit"
+              edge="start"
+              aria-label="contacts"
+              onClick={() => toggleContacts("bottom")}
+            >
+              <LiveHelpIcon />
+            </IconButton>
+          )}
+
           <StyledLink to="/" style={{ display: "contents" }}>
             <LogoText className={classes.logo} />
           </StyledLink>
+
+          {isDesktop && (
+            <>
+              <a
+                href="https://github.com/flowbrew/flowbase"
+                style={{ color: "unset" }}
+              >
+                <IconButton color="inherit" edge="end" aria-label="github">
+                  <GitHubIcon />
+                </IconButton>
+              </a>
+              <IconButton
+                color="inherit"
+                edge="end"
+                aria-label="contacts"
+                onClick={() => toggleContacts("left")}
+              >
+                <LiveHelpIcon />
+              </IconButton>
+            </>
+          )}
+
           <NavMenuButton
             anchor="left"
             navigation={navigation}
@@ -266,16 +309,8 @@ function HideOnScroll(props) {
   )
 }
 
-const BottomAppBar = ({ navigation }) => {
+const ContactsDrawer = ({ open, toggleContacts, anchor }) => {
   const classes = useStyles()
-
-  const [state, setState] = React.useState({
-    drawer: false,
-  })
-
-  const toggleDrawer = () => {
-    setState({ ...state, drawer: !state.drawer })
-  }
 
   const Contact = ({ icon, title, to }) => (
     <ListItem button component="a" href={to}>
@@ -285,6 +320,68 @@ const BottomAppBar = ({ navigation }) => {
   )
 
   const avatar = useImage("kozin_aleksey")
+  const isDesktop = useIsDesktop()
+
+  return (
+    <Drawer
+      anchor={anchor}
+      open={open}
+      onClick={() => toggleContacts(anchor)}
+      onClose={() => toggleContacts(anchor)}
+    >
+      <div
+        role="presentation"
+        onClick={() => toggleContacts(anchor)}
+        onKeyDown={() => toggleContacts(anchor)}
+      >
+        <CardHeader
+          avatar={
+            <Avatar
+              alt={avatar.imageData.alt}
+              src={avatar.imageSharp.fluid.src}
+            />
+          }
+          title="Алексей Козин"
+          subheader="Я с радостью отвечу на все ваши вопросы"
+        />
+        <List>
+          <Contact icon={<SmsIcon />} title="SMS" to="sms:+7-921-920-3135" />
+          <Contact
+            icon={<TelegramIcon />}
+            title="Telegram"
+            to="https://tele.gg/NToss"
+          />
+          <Contact
+            icon={<WhatsAppIcon />}
+            title="WhatsApp"
+            to="https://wa.me/79219203135"
+          />
+          <Contact
+            icon={<EmailIcon />}
+            title="Email"
+            to="mailto: ak@flowbrew.ru"
+          />
+          <Contact
+            icon={<PhoneIcon />}
+            title="Phone"
+            to="tel:+7-921-920-3135"
+          />
+          <Contact
+            icon={<GitHubIcon />}
+            title="GitHub"
+            to="https://github.com/flowbrew/flowbase/issues/new?title=%D0%92%D0%BE%D0%BF%D1%80%D0%BE%D1%81"
+          />
+        </List>
+      </div>
+    </Drawer>
+  )
+}
+
+const BottomAppBar = ({ navigation, toggleContacts }) => {
+  const classes = useStyles()
+  const isDesktop = useIsDesktop()
+
+  const anchor = isDesktop ? "left" : "top"
 
   return (
     <ShowOnScroll>
@@ -294,55 +391,10 @@ const BottomAppBar = ({ navigation }) => {
             color="secondary"
             aria-label="add"
             className={classes.fabButton}
-            onClick={toggleDrawer}
+            onClick={() => toggleContacts(anchor)}
           >
             <LiveHelpIcon />
           </Fab>
-          <Drawer anchor="top" open={state.drawer} onClose={toggleDrawer}>
-            <div
-              role="presentation"
-              onClick={toggleDrawer}
-              onKeyDown={toggleDrawer}
-            >
-              <CardHeader
-                avatar={
-                  <Avatar
-                    alt={avatar.imageData.alt}
-                    src={avatar.imageSharp.fluid.src}
-                  />
-                }
-                title="Алексей Козин"
-                subheader="Я с радостью отвечу на все ваши вопросы"
-              />
-              <List>
-                <Contact
-                  icon={<SmsIcon />}
-                  title="SMS"
-                  to="sms:+7-921-920-3135"
-                />
-                <Contact
-                  icon={<TelegramIcon />}
-                  title="Telegram"
-                  to="https://tele.gg/NToss"
-                />
-                <Contact
-                  icon={<WhatsAppIcon />}
-                  title="WhatsApp"
-                  to="https://wa.me/79219203135"
-                />
-                <Contact
-                  icon={<EmailIcon />}
-                  title="Email"
-                  to="mailto: ak@flowbrew.ru"
-                />
-                <Contact
-                  icon={<PhoneIcon />}
-                  title="Phone"
-                  to="tel:+7-921-920-3135"
-                />
-              </List>
-            </div>
-          </Drawer>
         </Toolbar>
       </AppBar>
     </ShowOnScroll>
@@ -367,16 +419,38 @@ const MainLayout = ({ children, location }) => {
     }
   `)
 
+  const [state, setState] = React.useState({
+    contacts: { open: false, anchor: "top" },
+  })
+
+  const toggleContacts = anchor => {
+    setState({
+      ...state,
+      contacts: { open: !state.contacts.open, anchor: anchor },
+    })
+  }
+
   return (
     <Theme>
       <ImageContextProvider>
         <MdxContextProvider>
           <Seo />
           <CssBaseline />
-          <Header navigation={data.navigation} />
+          <Header
+            navigation={data.navigation}
+            toggleContacts={toggleContacts}
+          />
           <Main>{children}</Main>
-          <BottomAppBar navigation={data.navigation} />
+          <BottomAppBar
+            navigation={data.navigation}
+            toggleContacts={toggleContacts}
+          />
           <Footer navigation={data.navigation} />
+          <ContactsDrawer
+            open={state.contacts.open}
+            anchor={state.contacts.anchor}
+            toggleContacts={toggleContacts}
+          />
         </MdxContextProvider>
       </ImageContextProvider>
     </Theme>

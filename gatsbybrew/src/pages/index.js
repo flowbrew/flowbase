@@ -9,6 +9,7 @@ import Link from "@material-ui/core/Link"
 import uniqueId from "lodash/uniqueId"
 import { Parallax } from "react-parallax"
 import Ratio from "react-ratio"
+import { isFunction } from "lodash"
 
 import { makeStyles, useTheme } from "@material-ui/core/styles"
 import Typography from "@material-ui/core/Typography"
@@ -62,6 +63,11 @@ import Hero from "../components/Hero"
 import LogoText from "../../content/images/logo_text.svg"
 
 const useStyles = makeStyles(theme => ({
+  lnk: {
+    color: theme.palette.secondary.main,
+    textDecoration: "underline",
+    cursor: "pointer"
+  },
   root: {
     display: "flex",
     flexWrap: "wrap",
@@ -376,9 +382,7 @@ const WorkWithRejections = ({ rejections }) => {
         <CheckCircleOutlineOutlinedIcon color="secondary" />
       </ListItemIcon>
       <ListItemText>
-        {/* <Box align="center"> */}
-        <StyledLink to={to}>{text}</StyledLink>
-        {/* </Box> */}
+        <WorkWithRejectionsLink to={to} text={text}/>
       </ListItemText>
     </ListItem>
   )
@@ -399,6 +403,14 @@ const WorkWithRejections = ({ rejections }) => {
   )
 }
 
+const WorkWithRejectionsLink = ({ to, text }) => {
+  const classes = useStyles()
+  if (isFunction(to)) {
+    return <a onClick={to} className={classes.lnk}>{text}</a>
+  }
+  return <StyledLink to={to}>{text}</StyledLink>
+}
+
 const WorkWithRejectionsList = ({ rejections }) => {
   const Rejection = ({ text, to }) => (
     <Grid item sm={4}>
@@ -410,7 +422,7 @@ const WorkWithRejectionsList = ({ rejections }) => {
                 <CheckCircleOutlineOutlinedIcon color="secondary" />
               </Grid>
               <Grid xs={12}>
-                <StyledLink to={to}>{text}</StyledLink>
+                <WorkWithRejectionsLink to={to} text={text}/>
               </Grid>
             </Grid>
           </Box>
@@ -457,19 +469,21 @@ const PriceBlock = () => {
   )
 }
 
-const OfferSection = ({ data }) => {
+const OfferSection = ({ toggleContacts }) => {
+  const isDesktop = useIsDesktop()
+
   const rejections = [
     {
       text: "Оплата после получения",
-      to: "/",
+      to: "/оплата",
     },
     {
       text: "Гарантирую возврат средств",
-      to: "/",
+      to: "/гарантии+и+возврат",
     },
     {
       text: "Отвечу на ваши вопросы",
-      to: "/",
+      to: () => toggleContacts(isDesktop ? "left" : "top"),
     },
   ]
 
@@ -824,15 +838,30 @@ export default ({ location }) => {
     }
   `)
 
+  const [state, setState] = React.useState({
+    contacts: { open: false, anchor: "top" },
+  })
+
+  const toggleContacts = anchor => {
+    setState({
+      ...state,
+      contacts: { open: !state.contacts.open, anchor: anchor },
+    })
+  }
+
   return (
-    <MainLayout location={location}>
+    <MainLayout
+      location={location}
+      state={state}
+      toggleContacts={toggleContacts}
+    >
       <Box mb={4}>
         <Container disableGutters={true} maxWidth={false}>
           <Hero />
         </Container>
       </Box>
       <SimpleInDepthBenefits />
-      <OfferSection />
+      <OfferSection toggleContacts={toggleContacts} />
       <BottomSection />
       <BuyButtonSection />
     </MainLayout>

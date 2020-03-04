@@ -345,7 +345,11 @@ const ContactsDrawer = ({ open, toggleContacts, anchor }) => {
           subheader="Я с радостью отвечу на все ваши вопросы"
         />
         <List>
-          <Contact icon={<SmsIcon />} title="SMS" to="sms:+7-921-920-3135" />
+          <Contact
+            icon={<SmsIcon />}
+            title={isDesktop ? "SMS +7-921-920-3135" : "SMS"}
+            to="sms:+7-921-920-3135"
+          />
           <Contact
             icon={<TelegramIcon />}
             title="Telegram"
@@ -363,7 +367,7 @@ const ContactsDrawer = ({ open, toggleContacts, anchor }) => {
           />
           <Contact
             icon={<PhoneIcon />}
-            title="Phone"
+            title={isDesktop ? "Phone +7-921-920-3135" : "Phone"}
             to="tel:+7-921-920-3135"
           />
           <Contact
@@ -401,7 +405,7 @@ const BottomAppBar = ({ navigation, toggleContacts }) => {
   )
 }
 
-const MainLayout = ({ children, location }) => {
+const MainLayout = ({ children, location, state, toggleContacts }) => {
   const data = useStaticQuery(graphql`
     query {
       navigation: allNavigationYaml {
@@ -418,17 +422,6 @@ const MainLayout = ({ children, location }) => {
       }
     }
   `)
-
-  const [state, setState] = React.useState({
-    contacts: { open: false, anchor: "top" },
-  })
-
-  const toggleContacts = anchor => {
-    setState({
-      ...state,
-      contacts: { open: !state.contacts.open, anchor: anchor },
-    })
-  }
 
   return (
     <Theme>

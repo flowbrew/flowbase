@@ -16,10 +16,22 @@ const theme = R.compose(responsiveFontSizes, createMuiTheme)({
     secondary: {
       main: '#0097a7',
     },
-    // background: {
-    //   default: "white"
-    // }
   },
+  // palette: {
+  //   // primary: {
+  //   //   main: '#000000',
+  //   // },
+  //   // secondary: {
+  //   //   main: '#0097a7',
+  //   // },
+    
+  //   // background: {
+  //   //   default: "white"
+  //   // }
+  // },
+  shape: {
+    borderRadius: 20,
+  }
 })
 
 export const lowContrastText = fade(theme.palette.background.paper, 0.6)

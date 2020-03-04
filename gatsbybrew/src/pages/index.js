@@ -10,12 +10,13 @@ import uniqueId from "lodash/uniqueId"
 import { Parallax } from "react-parallax"
 import Ratio from "react-ratio"
 
-import { makeStyles } from "@material-ui/core/styles"
+import { makeStyles, useTheme } from "@material-ui/core/styles"
 import Typography from "@material-ui/core/Typography"
 import Container from "@material-ui/core/Container"
 import Box from "@material-ui/core/Box"
 import Grid from "@material-ui/core/Grid"
 import Paper from "@material-ui/core/Paper"
+import Hidden from "@material-ui/core/Hidden"
 import Card from "@material-ui/core/Card"
 import CardHeader from "@material-ui/core/CardHeader"
 import CardContent from "@material-ui/core/CardContent"
@@ -30,14 +31,27 @@ import LocalCafeRounded from "@material-ui/icons/LocalCafeRounded"
 import Icon from "@material-ui/core/Icon"
 import FolderIcon from "@material-ui/icons/Folder"
 import LocalShippingRounded from "@material-ui/icons/LocalShippingRounded"
+import LocalShippingOutlinedIcon from "@material-ui/icons/LocalShippingOutlined"
 import FavoriteRounded from "@material-ui/icons/FavoriteRounded"
+import FavoriteBorderOutlinedIcon from "@material-ui/icons/FavoriteBorderOutlined"
 import EcoRounded from "@material-ui/icons/EcoRounded"
+import EcoOutlinedIcon from "@material-ui/icons/EcoOutlined"
 import CheckCircleIcon from "@material-ui/icons/CheckCircle"
+import CheckCircleOutlineOutlinedIcon from "@material-ui/icons/CheckCircleOutlineOutlined"
+import FreeBreakfastOutlinedIcon from "@material-ui/icons/FreeBreakfastOutlined"
 import List from "@material-ui/core/List"
 import ListItem from "@material-ui/core/ListItem"
 import ListItemIcon from "@material-ui/core/ListItemIcon"
 import ListItemText from "@material-ui/core/ListItemText"
 import CheckIcon from "@material-ui/icons/Check"
+import useMediaQuery from "@material-ui/core/useMediaQuery"
+import GridList from "@material-ui/core/GridList"
+import GridListTile from "@material-ui/core/GridListTile"
+import GridListTileBar from "@material-ui/core/GridListTileBar"
+import IconButton from "@material-ui/core/IconButton"
+import StarBorderIcon from "@material-ui/icons/StarBorder"
+import Tabs from "@material-ui/core/Tabs"
+import Tab from "@material-ui/core/Tab"
 
 import MainLayout from "../layouts/MainLayout"
 import { useImage } from "../components/ImageContext"
@@ -48,8 +62,28 @@ import Hero from "../components/Hero"
 import LogoText from "../../content/images/logo_text.svg"
 
 const useStyles = makeStyles(theme => ({
+  root: {
+    display: "flex",
+    flexWrap: "wrap",
+    justifyContent: "space-around",
+    overflow: "hidden",
+    backgroundColor: theme.palette.background.paper,
+  },
+  gridList: {
+    flexWrap: "nowrap",
+    // Promote the list into his own layer on Chrome. This cost memory but helps keeping high FPS.
+    transform: "translateZ(0)",
+  },
+  title: {
+    color: theme.palette.primary.light,
+  },
+  titleBar: {
+    background:
+      "linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 70%, rgba(0,0,0,0) 100%)",
+  },
+  //
   feature: {
-    marginBottom: theme.spacing(4),
+    // marginBottom: theme.spacing(4),
   },
   text: {
     padding: theme.spacing(2),
@@ -59,7 +93,9 @@ const useStyles = makeStyles(theme => ({
   },
   fancy: {
     fontFamily: "Isadora",
-    // fontSize: "3.2rem",
+    [theme.breakpoints.down("xs")]: {
+      fontSize: 52,
+    },
   },
   insideStyles: {
     // background: "#FFFFFF",
@@ -78,12 +114,18 @@ const useStyles = makeStyles(theme => ({
     //   fill: "red",
     // },
   },
+  secondaryColor: {
+    color: theme.palette.secondary.main,
+  },
+  tab: {
+    padding: 0,
+  },
 }))
 
 const Section = ({ children, ...props }) => (
-  <Box mb={4} {...props}>
+  <Container mb={4} disableGutters={true} maxWidth="md" {...props}>
     {children}
-  </Box>
+  </Container>
 )
 
 const H = ({ children }) => (
@@ -106,20 +148,48 @@ const LI = ({ children }) => (
   </Typography>
 )
 
+const FLBPaper = ({ children, ...props }) => {
+  const isDesktop = useIsDesktop()
+  const p = isDesktop ? 1 : 0
+
+  if (!isDesktop) {
+    return (
+      <Box p={p} {...props}>
+        {children}
+      </Box>
+    )
+  }
+
+  return (
+    <Box p={p}>
+      <Paper style={{ overflow: "hidden" }} elevation={0}>
+        <Box {...props}>{children}</Box>
+      </Paper>
+    </Box>
+  )
+}
+
+const useIsDesktop = () => {
+  const theme = useTheme()
+  return useMediaQuery(theme.breakpoints.up("sm"))
+}
+
 const SimpleInDepthBenefits = () => {
   const classes = useStyles()
 
-  const Benefit = ({ children, image, title }) => {
+  const Benefit = ({ children, image, title, swap }) => {
     const { imageSharp } = useImage(image)
-    // const imageBlock = <Img fluid={{ ...imageSharp.fluid, aspectRatio: 1 }} />
-    const imageBlock = (
-      <Parallax
-        bgImage={imageSharp.fluid.src}
-        bgImageSrcSet={imageSharp.fluid.srcSet}
-        strength={60}
-      >
-        <Ratio ratio={1 / 1}></Ratio>
-      </Parallax>
+
+    const ImageBlock = ({ ratio }) => (
+      <FLBPaper>
+        <Parallax
+          bgImage={imageSharp.fluid.src}
+          bgImageSrcSet={imageSharp.fluid.srcSet}
+          strength={120}
+        >
+          <Ratio ratio={ratio}></Ratio>
+        </Parallax>
+      </FLBPaper>
     )
 
     const textBlock = (
@@ -129,16 +199,20 @@ const SimpleInDepthBenefits = () => {
       </Container>
     )
 
+    const swap2 = !(useIsDesktop() && !swap)
+
     return (
       <Section>
+        {/* <FLBPaper> */}
         <Grid className={classes.feature} container>
-          <Grid item xs={12}>
-            {textBlock}
+          <Grid item xs={12} sm={6}>
+            {swap2 ? textBlock : <ImageBlock ratio={1 / 1} />}
           </Grid>
-          <Grid item xs={12}>
-            {imageBlock}
+          <Grid item xs={12} sm={6}>
+            {!swap2 ? textBlock : <ImageBlock ratio={1 / 1} />}
           </Grid>
         </Grid>
+        {/* </FLBPaper> */}
       </Section>
     )
   }
@@ -148,7 +222,11 @@ const SimpleInDepthBenefits = () => {
       <Benefit title="Здравствуйте" image="kozin_aleksey">
         <P>Меня зовут Алексей Козин. Я директор Flow Brew.</P>
       </Benefit>
-      <Benefit title="Японское Качество" image="matcha_tea_in_test_tube">
+      <Benefit
+        title="Японское Качество"
+        image="matcha_tea_in_test_tube"
+        swap={true}
+      >
         <P>Я попробовал 20 сортов японского чая матча и отобрал лучший.</P>
         <P>
           Я уделил внимание как и вкусу чая, так и его тонизирующему эффекту.
@@ -160,7 +238,7 @@ const SimpleInDepthBenefits = () => {
       >
         <P>Я дарю бесплатный набор для заварки новым клиентам.</P>
       </Benefit>
-      <Benefit title="Программа Замены Венчика" image="whisk">
+      <Benefit title="Программа Замены Венчика" image="whisk" swap={true}>
         <P>Я бесплатно заменю вам венчик в случае его износа.</P>
       </Benefit>
     </>
@@ -169,28 +247,26 @@ const SimpleInDepthBenefits = () => {
 
 const OfferHeader = () => {
   const classes = useStyles()
+  const isDesktop = useIsDesktop()
 
   return (
-    <List>
-      <ListItem>
-        <Typography variant="h1" component="h2" className={classes.fancy}>
-          Flow Brew
-        </Typography>
-      </ListItem>
-      <ListItem>
-        <Rating name="size-medium" defaultValue={5} readOnly />
-        <Box ml={1}>
-          <Typography variant="body1">
-            <StyledLink to="#reviews">3 отзыва</StyledLink>
-          </Typography>
-        </Box>
-      </ListItem>
-      {/* <ListItem>
-        <Typography variant="body1">
-          3880 руб · 60 г · 60 <FontAwesomeIcon icon={faMugHot} />
-        </Typography>
-      </ListItem> */}
-    </List>
+    <Box ml={1} mb={isDesktop ? 0 : 2} mt={isDesktop ? 3 : 0}>
+      <Typography variant="h2" component="h2" className={classes.fancy}>
+        Flow Brew
+      </Typography>
+      <Grid container>
+        <Grid>
+          <Rating name="size-medium" defaultValue={5} readOnly />
+        </Grid>
+        <Grid>
+          <Box ml={1}>
+            <Typography variant="body1">
+              <StyledLink to="#reviews">3 отзыва</StyledLink>
+            </Typography>
+          </Box>
+        </Grid>
+      </Grid>
+    </Box>
   )
 }
 
@@ -209,8 +285,10 @@ const OfferImages = () => {
     const { imageSharp } = useImage(image)
     return (
       <Grid item xs={3}>
-        <Box onClick={() => click(image)}>
-          <Img fluid={{ ...imageSharp.fluid, aspectRatio: 1 }} />
+        <Box onClick={() => click(image)} p={0}>
+          <FLBPaper>
+            <Img fluid={{ ...imageSharp.fluid, aspectRatio: 1 }} />
+          </FLBPaper>
         </Box>
       </Grid>
     )
@@ -219,14 +297,15 @@ const OfferImages = () => {
   return (
     <Grid container>
       <Grid item xs={12}>
-        {/* <Img fluid={{ ...imageSharp.fluid, aspectRatio: 1 }} /> */}
-        <Parallax
-          bgImage={imageSharp.fluid.src}
-          bgImageSrcSet={imageSharp.fluid.srcSet}
-          strength={50}
-        >
-          <Ratio ratio={1 / 1}></Ratio>
-        </Parallax>
+        <FLBPaper>
+          <Parallax
+            bgImage={imageSharp.fluid.src}
+            bgImageSrcSet={imageSharp.fluid.srcSet}
+            strength={50}
+          >
+            <Ratio ratio={1 / 1}></Ratio>
+          </Parallax>
+        </FLBPaper>
       </Grid>
       <PreviewImage image="flowbrew" />
       <PreviewImage image="matcha_tea_in_hand" />
@@ -245,20 +324,22 @@ const OfferBenefits = () => {
   )
 
   return (
-    <List>
-      <Benefit
-        icon={<FavoriteRounded  color="primary" />}
-        text="Обволакивающий вкус и кремово-ореховое послевкусие. Ягодный аромат."
-      />
-      <Benefit
-        icon={<EcoRounded color="primary" />}
-        text="Изготовлен в Японии, Киото."
-      />
-      <Benefit
-        icon={<LocalShippingRounded color="primary" />}
-        text="Бесплатная доставка по Москве и Спб."
-      />
-    </List>
+    <Box ml={0}>
+      <List>
+        <Benefit
+          icon={<FavoriteBorderOutlinedIcon color="primary" />}
+          text="Обволакивающий вкус и кремово-ореховое послевкусие. Ягодный аромат."
+        />
+        <Benefit
+          icon={<EcoOutlinedIcon color="primary" />}
+          text="Изготовлен в Японии, Киото."
+        />
+        <Benefit
+          icon={<LocalShippingOutlinedIcon color="primary" />}
+          text="Бесплатная доставка по Москве и Спб."
+        />
+      </List>
+    </Box>
   )
 }
 
@@ -270,94 +351,203 @@ const Promotion = () => (
 
 const BuyButton = () => {
   const classes = useStyles()
+  const desktop = useIsDesktop()
 
   return (
-    <Box>
-      <Container>
-        <Paper className={classes.buyButtonWrapper}>
-          <Button
-            href="/checkout"
-            size="large"
-            variant="contained"
-            color="secondary"
-            fullWidth={true}
-          >
-            Купить
-          </Button>
-        </Paper>
-      </Container>
+    <Box ml={2} mr={2} mt={3}>
+      {/* <Paper
+          variant="outlined"
+          elevation={0}
+          className={classes.buyButtonWrapper}
+        > */}
+      <Button
+        href="/checkout"
+        size="large"
+        variant="contained"
+        color="secondary"
+        fullWidth={!desktop}
+      >
+        Купить
+      </Button>
+      {/* </Box> */}
     </Box>
   )
 }
 
-const WorkWithRejections = () => {
+const WorkWithRejections = ({ rejections }) => {
   const Rejection = ({ text, to }) => (
     <ListItem>
       <ListItemIcon>
-        <CheckCircleIcon color="primary" />
+        <CheckCircleOutlineOutlinedIcon color="secondary" />
       </ListItemIcon>
       <ListItemText>
+        {/* <Box align="center"> */}
         <StyledLink to={to}>{text}</StyledLink>
+        {/* </Box> */}
       </ListItemText>
     </ListItem>
   )
 
   return (
-    <Section>
-      <List>
-        <Rejection text="Оплата после получения." to="/" />
-        <Rejection text="Гарантирую возврат средств." to="/" />
-        <Rejection text="Отвечу на ваши вопросы." to="/" />
-      </List>
-    </Section>
+    <Box mt={3}>
+      <Section>
+        <List>
+          {mapi(
+            ({ text, to }, i) => (
+              <Rejection key={text} text={text} to={to} />
+            ),
+            rejections || []
+          )}
+        </List>
+      </Section>
+    </Box>
   )
 }
 
-const PriceBlock = () => {
+const WorkWithRejectionsList = ({ rejections }) => {
+  const Rejection = ({ text, to }) => (
+    <Grid item sm={4}>
+      <ListItem>
+        <ListItemText>
+          <Box align="center">
+            <Grid container>
+              <Grid xs={12}>
+                <CheckCircleOutlineOutlinedIcon color="secondary" />
+              </Grid>
+              <Grid xs={12}>
+                <StyledLink to={to}>{text}</StyledLink>
+              </Grid>
+            </Grid>
+          </Box>
+        </ListItemText>
+      </ListItem>
+    </Grid>
+  )
+
   return (
-    <Box mt={3}>
-      <Container>
-        <Typography variant="body1">
-          3880 руб · 60 г · 60 <FontAwesomeIcon icon={faMugHot} />
-        </Typography>
-      </Container>
+    <Grid container>
+      {mapi(
+        ({ text, to }, i) => (
+          <Rejection key={text} text={text} to={to} />
+        ),
+        rejections || []
+      )}
+    </Grid>
+  )
+
+  // return (
+  //   <Box mt={3}>
+  //     <Section>
+  //       <List>
+  //         <Rejection text="Оплата после получения." to="/" />
+  //         <Rejection text="Гарантирую возврат средств." to="/" />
+  //         <Rejection text="Отвечу на ваши вопросы." to="/" />
+  //       </List>
+  //     </Section>
+  //   </Box>
+  // )
+}
+
+const PriceBlock = () => {
+  const classes = useStyles()
+
+  return (
+    <Box ml={2} mt={4}>
+      <Typography variant="body1">
+        3880 руб · 60 г · 60 чашек
+        {/* <FreeBreakfastOutlinedIcon color="primary" /> */}
+        {/* <FontAwesomeIcon icon={faMugHot} /> */}
+      </Typography>
     </Box>
   )
 }
 
 const OfferSection = ({ data }) => {
+  const rejections = [
+    {
+      text: "Оплата после получения",
+      to: "/",
+    },
+    {
+      text: "Гарантирую возврат средств",
+      to: "/",
+    },
+    {
+      text: "Отвечу на ваши вопросы",
+      to: "/",
+    },
+  ]
+
   return (
     <Section>
-      <Box mb={2}>
-      <Container>
-        <H>Я представляю вам чай матча</H>
-      </Container>
+      <Box mt={10} mb={10} fontStyle="italic">
+        {/* <Typography>
+          <Typography variant="h4" component="h4" paragraph={true}>
+            "...чай матча зарядит вас энергией и настроением..."
+          </Typography>
+        </Typography> */}
       </Box>
-      <OfferHeader />
-      <OfferImages />
-      <PriceBlock />
-      <OfferBenefits />
+
       {/* <Promotion /> */}
-      <BuyButton />
+
+      <Hidden smUp>
+        <OfferHeader />
+        <OfferImages />
+        <PriceBlock />
+        <OfferBenefits />
+        <BuyButton />
+        <Box p={1}>
+          <Paper elevation={0}>
+            <WorkWithRejections rejections={rejections} />
+          </Paper>
+        </Box>
+      </Hidden>
+
+      <Hidden xsDown>
+        <Box mb={7}>
+          <FLBPaper>
+            <Grid container>
+              <Grid item xs={12} sm={6}>
+                <OfferImages />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <OfferHeader />
+                <PriceBlock />
+                <OfferBenefits />
+                <BuyButton />
+              </Grid>
+            </Grid>
+          </FLBPaper>
+          <Box mt={6} p={1}>
+            <Paper elevation={0}>
+              <WorkWithRejectionsList rejections={rejections} />
+            </Paper>
+          </Box>
+        </Box>
+      </Hidden>
     </Section>
   )
 }
 
 const PaperSection = ({ title, children, ...props }) => (
   <Section {...props}>
-    <Container>
-      <H>{title}</H>
-      {children}
-    </Container>
+    <Grid container>
+      <Grid item xs={12} sm={12}>
+        <H>{title}</H>
+        {children}
+      </Grid>
+    </Grid>
   </Section>
 )
 
-const ReviewsSection = () => {
+const ReviewsSection2 = () => {
+  const classes = useStyles()
+
   const Review = ({ author, text, image }) => {
     const avatar = useImage(image)
     return (
-      <Box mb={2}>
-        <Card p={1}>
+      <Box minWidth="sm">
+        <Card elevation={0} variant="outlined">
           <CardHeader
             avatar={
               <Avatar
@@ -369,7 +559,12 @@ const ReviewsSection = () => {
           />
           <CardContent>
             <Box mb={1}>
-              <Rating name="size-medium" defaultValue={5} readOnly />
+              <Rating
+                name="size-medium"
+                // className={classes.secondaryColor}
+                defaultValue={5}
+                readOnly
+              />
             </Box>
             <Typography variant="body1">{text}</Typography>
           </CardContent>
@@ -378,26 +573,42 @@ const ReviewsSection = () => {
     )
   }
 
+  const tileData = [
+    {
+      author: "Марат",
+      image: "marat",
+      text:
+        "Послевкусие как от улуна, смородиновый лист. также вкус чистый, приятный.",
+    },
+    {
+      author: "Марина",
+      image: "marina",
+      text: "Мой любимый вариант заварки с молоком. Нежный и мягкий вкус )",
+    },
+    {
+      author: "Мария",
+      image: "maria",
+      text: "Вкус, насыщенный и не на что не похожий",
+    },
+  ]
+
+  const cols = useIsDesktop() ? 3.0 : 1.2
+
   return (
-    <PaperSection title="Отзывы" id="reviews">
-      <Box p={1}>
-        <Review
-          author="Мария"
-          image="maria"
-          text="Вкус, насыщенный и не на что не похожий"
-        />
-        <Review
-          author="Марат"
-          image="marat"
-          text="Послевкусие как от улуна, смородиновый лист. также вкус чистый, приятный."
-        />
-        <Review
-          author="Марина"
-          image="marina"
-          text="Мой любимый вариант заварки с молоком. Нежный и мягкий вкус )"
-        />
-      </Box>
-    </PaperSection>
+    <Section>
+      <GridList
+        cellHeight="auto"
+        className={classes.gridList}
+        cols={cols}
+        spacing={15}
+      >
+        {tileData.map(tile => (
+          <GridListTile key={tile.image}>
+            <Review author={tile.author} image={tile.image} text={tile.text} />
+          </GridListTile>
+        ))}
+      </GridList>
+    </Section>
   )
 }
 
@@ -410,7 +621,7 @@ const FAQSection = () => {
   }
 
   return (
-    <PaperSection title="Частые Вопросы">
+    <>
       <ExpansionPanel
         expanded={expanded === "p1"}
         onChange={handleChange("p1")}
@@ -532,15 +743,76 @@ const FAQSection = () => {
           </Box>
         </ExpansionPanelDetails>
       </ExpansionPanel>
-    </PaperSection>
+    </>
   )
 }
 
 const BuyButtonSection = () => (
-  <Section>
-    <BuyButton />
-  </Section>
+  <Box mb={15}>
+    <Section>
+      <Hidden smUp>
+        <BuyButton />
+      </Hidden>
+    </Section>
+  </Box>
 )
+
+const BottomSection = () => {
+  const classes = useStyles()
+  const [value, setValue] = React.useState(0)
+
+  const handleChange = (event, newValue) => {
+    setValue(newValue)
+  }
+
+  function TabPanel(props) {
+    const { children, value, index, ...other } = props
+
+    return (
+      <Typography
+        component="div"
+        role="tabpanel"
+        hidden={value !== index}
+        id={`scrollable-force-tabpanel-${index}`}
+        aria-labelledby={`scrollable-force-tab-${index}`}
+        {...other}
+      >
+        {value === index && <Box pt={0}>{children}</Box>}
+      </Typography>
+    )
+  }
+
+  const isDesktop = useIsDesktop()
+
+  return (
+    <Box mb={isDesktop ? 15 : 5} mt={0} id="reviews">
+      <Section>
+        <Box p={1}>
+          <Paper style={{ overflow: "hidden" }} elevation={0}>
+            <Tabs
+              value={value}
+              onChange={handleChange}
+              indicatorColor="primary"
+              textColor="primary"
+              centered
+            >
+              <Tab label="Отзывы" />
+              <Tab label="Частые вопросы" />
+            </Tabs>
+            <TabPanel value={value} index={0}>
+              <Box p={2}>
+                <ReviewsSection2 />
+              </Box>
+            </TabPanel>
+            <TabPanel value={value} index={1}>
+              <FAQSection />
+            </TabPanel>
+          </Paper>
+        </Box>
+      </Section>
+    </Box>
+  )
+}
 
 export default ({ location }) => {
   const data = useStaticQuery(graphql`
@@ -559,14 +831,14 @@ export default ({ location }) => {
 
   return (
     <MainLayout location={location}>
-      <Section>
-        <Hero />
-      </Section>
+      <Box mb={4}>
+        <Container disableGutters={true} maxWidth={false}>
+          <Hero />
+        </Container>
+      </Box>
       <SimpleInDepthBenefits />
       <OfferSection />
-      <WorkWithRejections />
-      <ReviewsSection />
-      <FAQSection />
+      <BottomSection />
       <BuyButtonSection />
     </MainLayout>
   )

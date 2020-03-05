@@ -44,6 +44,7 @@ import EmailIcon from "@material-ui/icons/Email"
 import SmsIcon from "@material-ui/icons/Sms"
 
 import StyledLink from "../components/StyledLink"
+import ContactsButton from "../components/ContactsButton"
 import LogoText from "../../content/images/logo_text.svg"
 import Theme, { lowContrastText } from "../components/Theme"
 import { ImageContextProvider } from "../components/ImageContext"
@@ -188,14 +189,11 @@ const Header = ({ navigation, toggleContacts }) => {
               </IconButton>
             </>
           ) : (
-            <IconButton
-              color="inherit"
-              edge="start"
-              aria-label="contacts"
-              onClick={() => toggleContacts("bottom")}
-            >
-              <LiveHelpIcon />
-            </IconButton>
+            <ContactsButton isHeaderButton={true}>
+              <IconButton color="inherit" edge="start" aria-label="contacts">
+                <LiveHelpIcon />
+              </IconButton>
+            </ContactsButton>
           )}
 
           <StyledLink to="/" style={{ display: "contents" }}>
@@ -212,14 +210,11 @@ const Header = ({ navigation, toggleContacts }) => {
                   <GitHubIcon />
                 </IconButton>
               </a>
-              <IconButton
-                color="inherit"
-                edge="end"
-                aria-label="contacts"
-                onClick={() => toggleContacts("left")}
-              >
-                <LiveHelpIcon />
-              </IconButton>
+              <ContactsButton>
+                <IconButton color="inherit" edge="end" aria-label="contacts">
+                  <LiveHelpIcon />
+                </IconButton>
+              </ContactsButton>
             </>
           )}
 
@@ -309,103 +304,30 @@ function HideOnScroll(props) {
   )
 }
 
-const ContactsDrawer = ({ open, toggleContacts, anchor }) => {
-  const classes = useStyles()
-
-  const Contact = ({ icon, title, to }) => (
-    <ListItem button component="a" href={to}>
-      <ListItemIcon>{icon}</ListItemIcon>
-      <ListItemText primary={title} />
-    </ListItem>
-  )
-
-  const avatar = useImage("kozin_aleksey")
-  const isDesktop = useIsDesktop()
-
-  return (
-    <Drawer
-      anchor={anchor}
-      open={open}
-      onClick={() => toggleContacts(anchor)}
-      onClose={() => toggleContacts(anchor)}
-    >
-      <div
-        role="presentation"
-        onClick={() => toggleContacts(anchor)}
-        onKeyDown={() => toggleContacts(anchor)}
-      >
-        <CardHeader
-          avatar={
-            <Avatar
-              alt={avatar.imageData.alt}
-              src={avatar.imageSharp.fluid.src}
-            />
-          }
-          title="Алексей Козин"
-          subheader="Я с радостью отвечу на все ваши вопросы"
-        />
-        <List>
-          <Contact
-            icon={<SmsIcon />}
-            title={isDesktop ? "SMS +7-921-920-3135" : "SMS"}
-            to="sms:+7-921-920-3135"
-          />
-          <Contact
-            icon={<TelegramIcon />}
-            title="Telegram"
-            to="https://tele.gg/NToss"
-          />
-          <Contact
-            icon={<WhatsAppIcon />}
-            title="WhatsApp"
-            to="https://wa.me/79219203135"
-          />
-          <Contact
-            icon={<EmailIcon />}
-            title="Email"
-            to="mailto: ak@flowbrew.ru"
-          />
-          <Contact
-            icon={<PhoneIcon />}
-            title={isDesktop ? "Phone +7-921-920-3135" : "Phone"}
-            to="tel:+7-921-920-3135"
-          />
-          <Contact
-            icon={<GitHubIcon />}
-            title="GitHub"
-            to="https://github.com/flowbrew/flowbase/issues/new?title=%D0%92%D0%BE%D0%BF%D1%80%D0%BE%D1%81"
-          />
-        </List>
-      </div>
-    </Drawer>
-  )
-}
-
-const BottomAppBar = ({ navigation, toggleContacts }) => {
+const BottomAppBar = ({ navigation }) => {
   const classes = useStyles()
   const isDesktop = useIsDesktop()
-
-  const anchor = isDesktop ? "left" : "top"
 
   return (
     <ShowOnScroll>
       <AppBar position="fixed" color="primary" className={classes.appBar}>
         <Toolbar>
-          <Fab
-            color="secondary"
-            aria-label="add"
-            className={classes.fabButton}
-            onClick={() => toggleContacts(anchor)}
-          >
-            <LiveHelpIcon />
-          </Fab>
+          <ContactsButton>
+            <Fab
+              color="secondary"
+              aria-label="add"
+              className={classes.fabButton}
+            >
+              <LiveHelpIcon />
+            </Fab>
+          </ContactsButton>
         </Toolbar>
       </AppBar>
     </ShowOnScroll>
   )
 }
 
-const MainLayout = ({ children, location, state, toggleContacts }) => {
+const MainLayout = ({ children, location }) => {
   const data = useStaticQuery(graphql`
     query {
       navigation: allNavigationYaml {
@@ -429,21 +351,10 @@ const MainLayout = ({ children, location, state, toggleContacts }) => {
         <MdxContextProvider>
           <Seo />
           <CssBaseline />
-          <Header
-            navigation={data.navigation}
-            toggleContacts={toggleContacts}
-          />
+          <Header navigation={data.navigation} />
           <Main>{children}</Main>
-          <BottomAppBar
-            navigation={data.navigation}
-            toggleContacts={toggleContacts}
-          />
+          <BottomAppBar navigation={data.navigation} />
           <Footer navigation={data.navigation} />
-          <ContactsDrawer
-            open={state.contacts.open}
-            anchor={state.contacts.anchor}
-            toggleContacts={toggleContacts}
-          />
         </MdxContextProvider>
       </ImageContextProvider>
     </Theme>

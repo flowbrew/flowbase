@@ -61,12 +61,13 @@ import StyledLink from "../components/StyledLink"
 import { mapi, useIsDesktop } from "../common"
 import Hero from "../components/Hero"
 import LogoText from "../../content/images/logo_text.svg"
+import ContactsButton from "../components/ContactsButton"
 
 const useStyles = makeStyles(theme => ({
   lnk: {
     color: theme.palette.secondary.main,
     textDecoration: "underline",
-    cursor: "pointer"
+    cursor: "pointer",
   },
   root: {
     display: "flex",
@@ -382,7 +383,7 @@ const WorkWithRejections = ({ rejections }) => {
         <CheckCircleOutlineOutlinedIcon color="secondary" />
       </ListItemIcon>
       <ListItemText>
-        <WorkWithRejectionsLink to={to} text={text}/>
+        <WorkWithRejectionsLink to={to} text={text} />
       </ListItemText>
     </ListItem>
   )
@@ -405,8 +406,14 @@ const WorkWithRejections = ({ rejections }) => {
 
 const WorkWithRejectionsLink = ({ to, text }) => {
   const classes = useStyles()
-  if (isFunction(to)) {
-    return <a onClick={to} className={classes.lnk}>{text}</a>
+  if (to == "/контакты") {
+    return (
+      <ContactsButton>
+        <Box className={classes.lnk}>
+          {text}
+        </Box>
+      </ContactsButton>
+    )
   }
   return <StyledLink to={to}>{text}</StyledLink>
 }
@@ -422,7 +429,7 @@ const WorkWithRejectionsList = ({ rejections }) => {
                 <CheckCircleOutlineOutlinedIcon color="secondary" />
               </Grid>
               <Grid item xs={12}>
-                <WorkWithRejectionsLink to={to} text={text}/>
+                <WorkWithRejectionsLink to={to} text={text} />
               </Grid>
             </Grid>
           </Box>
@@ -469,7 +476,7 @@ const PriceBlock = () => {
   )
 }
 
-const OfferSection = ({ toggleContacts }) => {
+const OfferSection = () => {
   const isDesktop = useIsDesktop()
 
   const rejections = [
@@ -483,7 +490,7 @@ const OfferSection = ({ toggleContacts }) => {
     },
     {
       text: "Отвечу на ваши вопросы",
-      to: () => toggleContacts(isDesktop ? "left" : "top"),
+      to: "/контакты",
     },
   ]
 
@@ -838,30 +845,15 @@ export default ({ location }) => {
     }
   `)
 
-  const [state, setState] = React.useState({
-    contacts: { open: false, anchor: "top" },
-  })
-
-  const toggleContacts = anchor => {
-    setState({
-      ...state,
-      contacts: { open: !state.contacts.open, anchor: anchor },
-    })
-  }
-
   return (
-    <MainLayout
-      location={location}
-      state={state}
-      toggleContacts={toggleContacts}
-    >
+    <MainLayout location={location}>
       <Box mb={4}>
         <Container disableGutters={true} maxWidth={false}>
           <Hero />
         </Container>
       </Box>
       <SimpleInDepthBenefits />
-      <OfferSection toggleContacts={toggleContacts} />
+      <OfferSection />
       <BottomSection />
       <BuyButtonSection />
     </MainLayout>

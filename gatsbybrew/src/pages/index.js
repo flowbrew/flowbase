@@ -418,10 +418,10 @@ const WorkWithRejectionsList = ({ rejections }) => {
         <ListItemText>
           <Box align="center">
             <Grid container>
-              <Grid xs={12}>
+              <Grid item xs={12}>
                 <CheckCircleOutlineOutlinedIcon color="secondary" />
               </Grid>
-              <Grid xs={12}>
+              <Grid item xs={12}>
                 <WorkWithRejectionsLink to={to} text={text}/>
               </Grid>
             </Grid>

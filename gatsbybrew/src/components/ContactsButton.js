@@ -16,9 +16,9 @@ import SmsIcon from "@material-ui/icons/Sms"
 import GitHubIcon from "@material-ui/icons/GitHub"
 import Box from "@material-ui/core/Box"
 import List from "@material-ui/core/List"
+import { useIsDesktop } from "../components/IsDesktopContext"
 
 import { useImage } from "../components/ImageContext"
-import { useIsDesktop } from "../common"
 
 const ContactsDrawer = ({ open, toggleContacts, isDesktop, anchor }) => {
   const Contact = ({ icon, title, to }) => (

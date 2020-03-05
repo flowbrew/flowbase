@@ -48,9 +48,9 @@ import ContactsButton from "../components/ContactsButton"
 import LogoText from "../../content/images/logo_text.svg"
 import Theme, { lowContrastText } from "../components/Theme"
 import { ImageContextProvider } from "../components/ImageContext"
+import { IsDesktopContextProvider, useIsDesktop } from "../components/IsDesktopContext"
 import { MdxContextProvider } from "../components/MdxContext"
 import { useImage } from "../components/ImageContext"
-import { useIsDesktop } from "../common"
 
 const Seo = () => <Helmet></Helmet>
 
@@ -349,12 +349,14 @@ const MainLayout = ({ children, location }) => {
     <Theme>
       <ImageContextProvider>
         <MdxContextProvider>
-          <Seo />
-          <CssBaseline />
-          <Header navigation={data.navigation} />
-          <Main>{children}</Main>
-          <BottomAppBar navigation={data.navigation} />
-          <Footer navigation={data.navigation} />
+          <IsDesktopContextProvider>
+            <Seo />
+            <CssBaseline />
+            <Header navigation={data.navigation} />
+            <Main>{children}</Main>
+            <BottomAppBar navigation={data.navigation} />
+            <Footer navigation={data.navigation} />
+          </IsDesktopContextProvider>
         </MdxContextProvider>
       </ImageContextProvider>
     </Theme>

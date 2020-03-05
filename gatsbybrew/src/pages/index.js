@@ -56,9 +56,10 @@ import Tab from "@material-ui/core/Tab"
 
 import MainLayout from "../layouts/MainLayout"
 import { useImage } from "../components/ImageContext"
+import { useIsDesktop } from "../components/IsDesktopContext"
 import { useMdx } from "../components/MdxContext"
 import StyledLink from "../components/StyledLink"
-import { mapi, useIsDesktop } from "../common"
+import { mapi } from "../common"
 import Hero from "../components/Hero"
 import LogoText from "../../content/images/logo_text.svg"
 import ContactsButton from "../components/ContactsButton"
@@ -287,7 +288,7 @@ const OfferImages = () => {
     const { imageSharp } = useImage(image)
     return (
       <Grid item xs={3}>
-        <Box onClick={() => click(image)} p={0}>
+        <Box onClick={() => click(image)}>
           <FLBPaper>
             <Img fluid={{ ...imageSharp.fluid, aspectRatio: 1 }} />
           </FLBPaper>

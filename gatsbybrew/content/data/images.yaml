@@ -12,7 +12,7 @@
 
 - name: flowbrew
   image: flowbrew.jpeg
-  alt: Чай матча Flow Brew в упаковке
+  alt: Чай матча Flow Brew
 
 - name: matcha_tea_in_bowl
   image: matcha_tea_in_bowl.jpg

@@ -2,6 +2,7 @@ import React, { Component } from "react"
 import Img from "gatsby-image"
 import { useStaticQuery, graphql } from "gatsby"
 
+import * as R from "ramda"
 import PageLayout from "../layouts/PageLayout"
 
 import {
@@ -15,6 +16,8 @@ import {
   FLBPaper,
   ImageBlock,
   SmallImageBlock,
+  RedBox,
+  CrossedBox,
 } from "../common"
 
 import {
@@ -51,7 +54,7 @@ const OutlinedSection = ({ children }) => (
 )
 
 const ProductImage = ({ product }) => {
-  return <SmallImageBlock image={product.images[0]} ratio={1 / 1} />
+  return <SmallImageBlock image={product.images[0]} />
 }
 
 const TF = ({ ...props }) => {
@@ -62,16 +65,33 @@ const TF = ({ ...props }) => {
   )
 }
 
-const Contacts = () => {
+const Contacts = ({ state, onChange }) => {
   return (
     <OutlinedSection>
-      <TF id="name" label="Имя" required />
-      <TF id="phone" label="Телефон" required />
+      <TF
+        name="name"
+        value={state.name}
+        label="Имя"
+        onChange={onChange}
+        required
+      />
+      <TF
+        name="phone"
+        value={state.phone}
+        label="Телефон"
+        onChange={onChange}
+        required
+      />
     </OutlinedSection>
   )
 }
 
-const Shipping = ({ product }) => {
+const shippingFromCity = (product, city) =>
+  R.find(R.pathEq(["destination"], city || ""), product.shipping)
+
+const Shipping = ({ product, state, onChange }) => {
+  const shipping = shippingFromCity(product, state.shipping_city)
+
   return (
     <OutlinedSection>
       <Box mb={MARGIN}>
@@ -80,40 +100,72 @@ const Shipping = ({ product }) => {
             <FormLabel component="legend">Город</FormLabel>
           </Box>
           <RadioGroup
-            defaultValue="moscow"
-            aria-label="gender"
-            name="customized-radios"
+            value={state.shipping_city}
+            name="shipping_city"
+            onChange={onChange}
           >
-            <FormControlLabel
-              value="moscow"
-              control={<Radio />}
-              label="Москва"
-            />
-            <FormControlLabel
-              value="spb"
-              control={<Radio />}
-              label="Санкт-Петербург"
-            />
-            <FormControlLabel
-              value="other"
-              control={<Radio />}
-              label="Другой город"
-            />
+            {mapi(
+              ({ destination, cost, description }, i) => (
+                <FormControlLabel
+                  value={destination}
+                  control={<Radio />}
+                  label={destination}
+                  key={destination}
+                />
+              ),
+              product.shipping || []
+            )}
           </RadioGroup>
         </FormControl>
       </Box>
-
-      <TF id="adress" label="Адрес" required />
-
-      <P>
-        Мы доставим заказ курьером в Москву за 2-4 рабочих дня (не доставляем в
-        выходные и праздники).
-      </P>
+      <TF
+        name="shipping_address"
+        value={state.address}
+        label="Адрес"
+        onChange={onChange}
+        required
+      />
+      {shipping && <P>{shipping.description}</P>}
     </OutlinedSection>
   )
 }
 
-const OrderTable = ({ product }) => {
+function formatFloat(x) {
+  return `${(x || 0.0).toFixed(0)}`
+}
+
+const OrderRow = ({ price, description, old_price, old_price_description }) => {
+  return (
+    <TableRow>
+      <TableCell>
+        {!old_price_description ? (
+          <>{description}</>
+        ) : (
+          <>
+            {description}
+            <br />
+            <RedBox>{old_price_description}</RedBox>
+          </>
+        )}
+      </TableCell>
+      <TableCell align="right">
+        {!(old_price && old_price != price) ? (
+          <>{formatFloat(price)}</>
+        ) : (
+          <>
+            <CrossedBox>{formatFloat(old_price)}</CrossedBox>
+            <br />
+            <RedBox>{formatFloat(price)}</RedBox>
+          </>
+        )}
+      </TableCell>
+    </TableRow>
+  )
+}
+
+const totalOrderPrice = R.compose(R.sum, R.map(R.path(["price"])))
+
+const OrderTable = ({ order }) => {
   return (
     <TableContainer>
       <Table>
@@ -125,17 +177,14 @@ const OrderTable = ({ product }) => {
         </TableHead>
         <TableBody>
           {mapi(
-            ({ x, i }) => (
-              <TableRow key={i}>
-                <TableCell>{0}</TableCell>
-                <TableCell align="right">{0}</TableCell>
-              </TableRow>
+            ({ ...x }, i) => (
+              <OrderRow key={i} index={i} {...x} />
             ),
-            []
+            order || []
           )}
           <TableRow>
             <TableCell>Итого</TableCell>
-            <TableCell align="right">{420.0}</TableCell>
+            <TableCell align="right">{totalOrderPrice(order)}</TableCell>
           </TableRow>
         </TableBody>
       </Table>
@@ -143,25 +192,35 @@ const OrderTable = ({ product }) => {
   )
 }
 
-const Order = ({ product }) => {
+const Order = ({ order }) => {
   return (
     <OutlinedSection>
       <Box mb={MARGIN}>
-        <OrderTable product={product} />
+        <OrderTable order={order} />
       </Box>
+      <P>Оплата после получения.</P>
       <P>
         Если это ваш первый заказ, то вы получите бесплатный набор для заварки.
       </P>
-      <P>Оплата после получения.</P>
     </OutlinedSection>
   )
 }
 
-const Misc = () => (
+const Misc = ({ state, onChange }) => (
   <Box mt={MARGIN}>
     <Container>
-      <TF id="promocode" label="Промокод" />
-      <TF id="comment" label="Комментарий" />
+      <TF
+        name="promocode"
+        value={state.promocode}
+        label="Промокод"
+        onChange={onChange}
+      />
+      <TF
+        name="comment"
+        value={state.comment}
+        label="Комментарий"
+        onChange={onChange}
+      />
     </Container>
   </Box>
 )
@@ -177,20 +236,69 @@ export default ({ location }) => {
         images
         benefits
         in_depth_benefits
+        shipping {
+          destination
+          cost
+          description
+        }
+        weight
       }
     }
   `)
+
+  const product = data.product
+  const title = `${product.name} ${product.weight} г`
+
+  const [state, setState] = React.useState({
+    name: "",
+    phone: "",
+    shipping_city: product.shipping[0].destination,
+    shipping_address: "",
+    promocode: "",
+    comment: "",
+  })
+
+  const handleInputChange = event => {
+    const target = event.target
+    const value = target.type === "checkbox" ? target.checked : target.value
+    const name = target.name
+
+    const value2 = name === "promocode" ? value.toUpperCase() : value
+
+    setState({ ...state, [name]: value2 })
+  }
+
+  const order = [
+    {
+      price: product.price * 0.9,
+      description: title,
+      old_price: product.price,
+      old_price_description: "Скидка 10%",
+    },
+    {
+      price: 0.0,
+      description: "Набор для заварки",
+    },
+    {
+      price: 0.0,
+      description: "Доставка",
+    },
+  ]
 
   return (
     <PageLayout
       location={location}
       pageContext={{ frontmatter: { title: "Оформление заказа" } }}
     >
-      <ProductImage product={data.product} />
-      <Contacts />
-      <Shipping product={data.product} />
-      <Order product={data.product} />
-      <Misc />
+      <ProductImage product={product} />
+      <Contacts state={state} onChange={handleInputChange} />
+      <Shipping
+        state={state}
+        product={data.product}
+        onChange={handleInputChange}
+      />
+      <Order order={order} />
+      <Misc state={state} onChange={handleInputChange} />
       <Container>
         <Box width="100%">
           <Box display="flex" justifyContent="flex-end">

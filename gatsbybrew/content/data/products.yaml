@@ -8,13 +8,13 @@
   weight: 60
 
   shipping:
-    - destination: "Санкт-Петербург"
-      cost: 0
-      description: Мы доставим заказ курьером за 1 день.
-
     - destination: "Москва"
       cost: 0
       description: Мы доставим заказ курьером в Москву за 2-4 рабочих дня (не доставляем в выходные и праздники).
+  
+    - destination: "Санкт-Петербург"
+      cost: 0
+      description: Мы доставим заказ курьером за 1 день.
 
     - destination: "Другой город"
       cost: 100

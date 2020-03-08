@@ -4,7 +4,7 @@ import Ratio from "react-ratio"
 import * as R from "ramda"
 import { Parallax } from "react-parallax"
 
-import { makeStyles } from "@material-ui/core/styles"
+import { makeStyles, styled } from "@material-ui/core/styles"
 import useMediaQuery from "@material-ui/core/useMediaQuery"
 import Container from "@material-ui/core/Container"
 import Typography from "@material-ui/core/Typography"
@@ -174,7 +174,7 @@ const ImageBlock = ({ image, ratio }) => {
   )
 }
 
-const SmallImageBlock = ({ image }) => {
+const SmallImageBlock = ({ image, noTitle }) => {
   const { imageData, imageSharp } = useImage(image)
 
   return (
@@ -189,7 +189,7 @@ const SmallImageBlock = ({ image }) => {
           >
             <Ratio ratio={1 / 1}></Ratio>
           </Parallax>
-          <P mt={1}>{imageData.alt}</P>
+          {!noTitle && <P mt={1}>{imageData.alt}</P>}
         </Box>
       </Hidden>
 
@@ -205,14 +205,31 @@ const SmallImageBlock = ({ image }) => {
               <Ratio ratio={1 / 1}></Ratio>
             </Parallax>
           </Paper>
-          <P mt={1}>{imageData.alt}</P>
+          {!noTitle && <P mt={1}>{imageData.alt}</P>}
         </Box>
       </Hidden>
     </Box>
   )
 }
 
+const SpanBox = ({ children, ...props }) => (
+  <Box component="span" {...props}>
+    {children}
+  </Box>
+)
+
+const RedBox = styled(SpanBox)({
+  color: "red",
+})
+
+const CrossedBox = styled(SpanBox)({
+  textDecoration: "line-through",
+})
+
 export {
+  SpanBox,
+  CrossedBox,
+  RedBox,
   mapi,
   Section,
   H,

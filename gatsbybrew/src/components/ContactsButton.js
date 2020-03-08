@@ -50,7 +50,7 @@ const ContactsDrawer = ({ open, toggleContacts, isDesktop, anchor }) => {
             />
           }
           title="Алексей Козин"
-          subheader="Я с радостью отвечу на все ваши вопросы"
+          subheader="Я с радостью отвечу на ваши вопросы"
         />
         <List>
           <Contact

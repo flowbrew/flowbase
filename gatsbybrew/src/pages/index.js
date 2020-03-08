@@ -59,7 +59,17 @@ import { useImage } from "../components/ImageContext"
 import { useIsDesktop } from "../components/IsDesktopContext"
 import { useMdx } from "../components/MdxContext"
 import StyledLink from "../components/StyledLink"
-import { mapi } from "../common"
+import {
+  mapi,
+  Section,
+  H,
+  H2,
+  P,
+  UL,
+  LI,
+  FLBPaper,
+  ImageBlock,
+} from "../common"
 import Hero from "../components/Hero"
 import LogoText from "../../content/images/logo_text.svg"
 import ContactsButton from "../components/ContactsButton"
@@ -79,7 +89,6 @@ const useStyles = makeStyles(theme => ({
   },
   gridList: {
     flexWrap: "nowrap",
-    // Promote the list into his own layer on Chrome. This cost memory but helps keeping high FPS.
     transform: "translateZ(0)",
   },
   title: {
@@ -88,10 +97,6 @@ const useStyles = makeStyles(theme => ({
   titleBar: {
     background:
       "linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 70%, rgba(0,0,0,0) 100%)",
-  },
-  //
-  feature: {
-    // marginBottom: theme.spacing(4),
   },
   text: {
     padding: theme.spacing(2),
@@ -106,21 +111,12 @@ const useStyles = makeStyles(theme => ({
     },
   },
   insideStyles: {
-    // background: "#FFFFFF",
     color: "white",
     padding: 20,
     position: "absolute",
     top: "50%",
     left: "50%",
     transform: "translate(-50%,-50%)",
-  },
-  flowbrew: {
-    // maxHeight: theme.spacing(1),
-    // margin: "auto",
-    // "& path": {
-    //   stroke: "#000000",
-    //   fill: "red",
-    // },
   },
   secondaryColor: {
     color: theme.palette.secondary.main,
@@ -130,74 +126,15 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-const Section = ({ children, ...props }) => (
-  <Container mb={4} disableGutters={true} maxWidth="md" {...props}>
-    {children}
-  </Container>
-)
-
-const H = ({ children }) => (
-  <Typography variant="h2" component="h2" paragraph={true}>
-    {children}
-  </Typography>
-)
-
-const P = ({ children }) => (
-  <Typography variant="body1" paragraph={true}>
-    {children}
-  </Typography>
-)
-
-const UL = ({ children }) => <Typography component="ul">{children}</Typography>
-
-const LI = ({ children }) => (
-  <Typography component="li" paragraph={true}>
-    {children}
-  </Typography>
-)
-
-const FLBPaper = ({ children, ...props }) => {
-  const isDesktop = useIsDesktop()
-  const p = isDesktop ? 1 : 0
-
-  if (!isDesktop) {
-    return (
-      <Box p={p} {...props}>
-        {children}
-      </Box>
-    )
-  }
-
-  return (
-    <Box p={p}>
-      <Paper style={{ overflow: "hidden" }} elevation={0}>
-        <Box {...props}>{children}</Box>
-      </Paper>
-    </Box>
-  )
-}
-
 const SimpleInDepthBenefits = () => {
   const classes = useStyles()
 
   const Benefit = ({ children, image, title, swap }) => {
-    const { imageSharp } = useImage(image)
-
-    const ImageBlock = ({ ratio }) => (
-      <FLBPaper>
-        <Parallax
-          bgImage={imageSharp.fluid.src}
-          bgImageSrcSet={imageSharp.fluid.srcSet}
-          strength={120}
-        >
-          <Ratio ratio={ratio}></Ratio>
-        </Parallax>
-      </FLBPaper>
-    )
+    const imageBlock = <ImageBlock image={image} ratio={1 / 1} />
 
     const textBlock = (
       <Container className={classes.text}>
-        <H>{title}</H>
+        <H2>{title}</H2>
         {children}
       </Container>
     )
@@ -206,16 +143,14 @@ const SimpleInDepthBenefits = () => {
 
     return (
       <Section>
-        {/* <FLBPaper> */}
         <Grid className={classes.feature} container>
           <Grid item xs={12} sm={6}>
-            {swap2 ? textBlock : <ImageBlock ratio={1 / 1} />}
+            {swap2 ? textBlock : imageBlock}
           </Grid>
           <Grid item xs={12} sm={6}>
-            {!swap2 ? textBlock : <ImageBlock ratio={1 / 1} />}
+            {!swap2 ? textBlock : imageBlock}
           </Grid>
         </Grid>
-        {/* </FLBPaper> */}
       </Section>
     )
   }
@@ -358,11 +293,6 @@ const BuyButton = () => {
 
   return (
     <Box ml={2} mr={2} mt={3}>
-      {/* <Paper
-          variant="outlined"
-          elevation={0}
-          className={classes.buyButtonWrapper}
-        > */}
       <Button
         href="/checkout"
         size="large"
@@ -372,7 +302,6 @@ const BuyButton = () => {
       >
         Купить
       </Button>
-      {/* </Box> */}
     </Box>
   )
 }
@@ -410,9 +339,7 @@ const WorkWithRejectionsLink = ({ to, text }) => {
   if (to == "/контакты") {
     return (
       <ContactsButton>
-        <Box className={classes.lnk}>
-          {text}
-        </Box>
+        <Box className={classes.lnk}>{text}</Box>
       </ContactsButton>
     )
   }
@@ -449,18 +376,6 @@ const WorkWithRejectionsList = ({ rejections }) => {
       )}
     </Grid>
   )
-
-  // return (
-  //   <Box mt={3}>
-  //     <Section>
-  //       <List>
-  //         <Rejection text="Оплата после получения." to="/" />
-  //         <Rejection text="Гарантирую возврат средств." to="/" />
-  //         <Rejection text="Отвечу на ваши вопросы." to="/" />
-  //       </List>
-  //     </Section>
-  //   </Box>
-  // )
 }
 
 const PriceBlock = () => {
@@ -468,11 +383,7 @@ const PriceBlock = () => {
 
   return (
     <Box ml={2} mt={4}>
-      <Typography variant="body1">
-        3880 руб · 60 г · 60 чашек
-        {/* <FreeBreakfastOutlinedIcon color="primary" /> */}
-        {/* <FontAwesomeIcon icon={faMugHot} /> */}
-      </Typography>
+      <Typography variant="body1">3880 руб · 60 г · 60 чашек</Typography>
     </Box>
   )
 }
@@ -504,8 +415,6 @@ const OfferSection = () => {
           </Typography>
         </Typography> */}
       </Box>
-
-      {/* <Promotion /> */}
 
       <Hidden smUp>
         <OfferHeader />
@@ -576,12 +485,7 @@ const ReviewsSection2 = () => {
           />
           <CardContent>
             <Box mb={1}>
-              <Rating
-                name="size-medium"
-                // className={classes.secondaryColor}
-                defaultValue={5}
-                readOnly
-              />
+              <Rating name="size-medium" defaultValue={5} readOnly />
             </Box>
             <Typography variant="body1">{text}</Typography>
           </CardContent>

@@ -53,12 +53,12 @@ module.exports = {
     },
     {
       resolve: `gatsby-plugin-mdx`,
-      // options: {
-      //   defaultLayouts: {
-      //     posts: require.resolve("./src/layouts/PostLayout.js"),
-      //     default: require.resolve("./src/layouts/PageLayout.js"),
-      //   },
-      // },
+      options: {
+        defaultLayouts: {
+          // posts: require.resolve("./src/layouts/PostLayout.js"),
+          default: require.resolve("./src/layouts/PageLayout.js"),
+        },
+      },
     },
     `gatsby-transformer-yaml`,
     {

@@ -1,7 +1,9 @@
 import React, { Component } from "react"
+import { navigate } from "@reach/router"
 import Img from "gatsby-image"
 import { useStaticQuery, graphql } from "gatsby"
 
+import InputMask from "react-input-mask"
 import * as R from "ramda"
 
 import PageLayout from "../layouts/PageLayout"
@@ -38,7 +40,27 @@ import {
   TableRow,
   TableCell,
   TableBody,
+  CircularProgress,
 } from "@material-ui/core"
+
+import { makeStyles } from "@material-ui/core/styles"
+
+const useStyles = makeStyles(theme => ({
+  buttonProgress: {
+    color: theme.palette.secondary.main,
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    marginTop: -12,
+    marginLeft: -12,
+  },
+  anchor: {
+    display: "block",
+    position: "relative",
+    top: -90,
+    visibility: "hidden",
+  },
+}))
 
 const MARGIN = 2
 
@@ -58,31 +80,50 @@ const ProductImage = ({ product }) => {
   return <SmallImageBlock image={product.images[0]} />
 }
 
-const TF = ({ ...props }) => {
+const TF = ({ children, name, ...props }) => {
+  const classes = useStyles()
+
   return (
     <Box mb={MARGIN}>
-      <TextField variant="outlined" {...props} fullWidth />
+      <Box id={name} component="div" className={classes.anchor} />
+      <TextField variant="outlined" name={name} {...props} fullWidth>
+        {children}
+      </TextField>
     </Box>
   )
 }
 
-const Contacts = ({ state, onChange }) => {
+const Contacts = ({ state, onChange, onBlur }) => {
   return (
     <OutlinedSection>
       <TF
         name="name"
+        error={state.name_error}
+        helperText={state.name_error && "Укажите ваше имя"}
         value={state.name}
         label="Имя"
         onChange={onChange}
+        onBlur={onBlur}
         required
       />
-      <TF
-        name="phone"
+      <InputMask
+        mask="+7 (999) 999-99-99"
         value={state.phone}
-        label="Телефон"
         onChange={onChange}
-        required
-      />
+        onBlur={onBlur}
+      >
+        <TF
+          name="phone"
+          error={state.phone_error}
+          helperText={state.phone_error && "Неверный телефон"}
+          type="tel"
+          value={state.phone}
+          label="Телефон"
+          onChange={onChange}
+          onBlur={onBlur}
+          required
+        />
+      </InputMask>
     </OutlinedSection>
   )
 }
@@ -90,7 +131,7 @@ const Contacts = ({ state, onChange }) => {
 const shippingFromCity = (product, city) =>
   R.find(R.pathEq(["destination"], city || ""), product.shipping)
 
-const Shipping = ({ product, state, onChange }) => {
+const Shipping = ({ product, state, onChange, onBlur }) => {
   const shipping = shippingFromCity(product, state.shipping_city)
 
   return (
@@ -121,9 +162,12 @@ const Shipping = ({ product, state, onChange }) => {
       </Box>
       <TF
         name="shipping_address"
+        error={state.shipping_address_error}
+        helperText={state.shipping_address_error && "Укажите ваш адрес"}
         value={state.address}
         label="Адрес"
         onChange={onChange}
+        onBlur={onBlur}
         required
       />
       {shipping && <P>{shipping.description}</P>}
@@ -226,6 +270,32 @@ const Misc = ({ state, onChange }) => (
   </Box>
 )
 
+const BuyButton = ({ state, handleCheckout }) => {
+  const classes = useStyles()
+
+  return (
+    <Container>
+      <Box width="100%">
+        <Box display="flex" justifyContent="flex-end">
+          <Button
+            type="submit"
+            size="large"
+            variant="contained"
+            color="secondary"
+            disabled={state.purchasing}
+            onClick={handleCheckout}
+          >
+            Купить
+            {state.purchasing && (
+              <CircularProgress size={24} className={classes.buttonProgress} />
+            )}
+          </Button>
+        </Box>
+      </Box>
+    </Container>
+  )
+}
+
 export default ({ location }) => {
   const data = useStaticQuery(graphql`
     query {
@@ -247,6 +317,8 @@ export default ({ location }) => {
     }
   `)
 
+  const timer = React.useRef()
+
   const product = data.product
   const title = `${product.name} ${product.weight} г`
 
@@ -257,6 +329,7 @@ export default ({ location }) => {
     shipping_address: "",
     promocode: "",
     comment: "",
+    purchasing: false,
   })
 
   const handleInputChange = event => {
@@ -266,7 +339,62 @@ export default ({ location }) => {
 
     const value2 = name === "promocode" ? value.toUpperCase() : value
 
-    setState({ ...state, [name]: value2 })
+    setState(prevState => {
+      return { ...prevState, [name]: value2, [name + "_error"]: false }
+    })
+  }
+
+  const validate = (name, value) => {
+    var isValid = true
+
+    switch (name) {
+      case "phone":
+        isValid = value.match(/\+\d \(\d\d\d\) \d\d\d-\d\d-\d\d/)
+        break
+
+      case "name":
+      case "shipping_address":
+        isValid = value.length > 0
+        break
+    }
+
+    setState(prevState => {
+      return { ...prevState, [name + "_error"]: !isValid }
+    })
+
+    return isValid
+  }
+
+  const findErrorInForm = () => {
+    const items = R.map(([k, v]) => [k, validate(k, v)], R.toPairs(state))
+    const result = R.find(([k, v]) => !v, items)
+    return result && result[0]
+  }
+
+  const handleValidation = event => {
+    const target = event.target
+    const value = target.type === "checkbox" ? target.checked : target.value
+    const name = target.name
+
+    validate(name, value)
+  }
+
+  const handleCheckout = () => {
+    const errorItem = findErrorInForm()
+    if (errorItem) {
+      navigate("#" + errorItem)
+      return
+    }
+
+    setState(prevState => {
+      return { ...prevState, purchasing: true }
+    })
+
+    timer.current = setTimeout(() => {
+      setState(prevState => {
+        return { ...prevState, purchasing: false }
+      })
+    }, 2000)
   }
 
   const shipping = shippingFromCity(product, state.shipping_city)
@@ -288,36 +416,26 @@ export default ({ location }) => {
     },
   ]
 
-  const handleSubmit = () => {}
-
   return (
     <PageLayout
       location={location}
       pageContext={{ frontmatter: { title: "Оформление заказа" } }}
     >
       <ProductImage product={product} />
-      <Contacts state={state} onChange={handleInputChange} />
+      <Contacts
+        state={state}
+        onChange={handleInputChange}
+        onBlur={handleValidation}
+      />
       <Shipping
         state={state}
         product={data.product}
         onChange={handleInputChange}
+        onBlur={handleValidation}
       />
       <Order order={order} />
       <Misc state={state} onChange={handleInputChange} />
-      <Container>
-        <Box width="100%">
-          <Box display="flex" justifyContent="flex-end">
-            <Button
-              href="/checkout"
-              size="large"
-              variant="contained"
-              color="secondary"
-            >
-              Купить
-            </Button>
-          </Box>
-        </Box>
-      </Container>
+      <BuyButton state={state} handleCheckout={handleCheckout} />
     </PageLayout>
   )
 }

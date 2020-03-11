@@ -39,6 +39,7 @@
     "react-dom": "^16.12.0",
     "react-helmet": "^5.2.1",
     "react-image-magnifiers": "^1.2.3",
+    "react-input-mask": "^3.0.0-alpha.2",
     "react-lazy-hero": "^2.0.0",
     "react-parallax": "^3.0.3",
     "react-ratio": "^0.1.5",

@@ -48,7 +48,10 @@ import ContactsButton from "../components/ContactsButton"
 import LogoText from "../../content/images/logo_text.svg"
 import Theme, { lowContrastText } from "../components/Theme"
 import { ImageContextProvider } from "../components/ImageContext"
-import { IsDesktopContextProvider, useIsDesktop } from "../components/IsDesktopContext"
+import {
+  IsDesktopContextProvider,
+  useIsDesktop,
+} from "../components/IsDesktopContext"
 import { MdxContextProvider } from "../components/MdxContext"
 import { useImage } from "../components/ImageContext"
 
@@ -168,12 +171,12 @@ const NavMenuButton = ({ anchor, navigation, ...props }) => {
   )
 }
 
-const Header = ({ navigation, toggleContacts }) => {
+const Header = ({ navigation, toggleContacts, fixedHeader }) => {
   const classes = useStyles()
   const isDesktop = useIsDesktop()
 
   return (
-    <HideOnScroll>
+    <HideOnScroll disabled={fixedHeader}>
       <AppBar>
         <Toolbar>
           {isDesktop ? (
@@ -292,10 +295,13 @@ function ShowOnScroll(props) {
   )
 }
 
-function HideOnScroll(props) {
+function HideOnScroll({ disabled, ...props }) {
+  const trigger = useScrollTrigger()
   const { children, window } = props
 
-  const trigger = useScrollTrigger()
+  if (disabled) {
+    return <>{ children }</>
+  }
 
   return (
     <Slide direction="down" in={!trigger}>
@@ -327,7 +333,7 @@ const BottomAppBar = ({ navigation }) => {
   )
 }
 
-const MainLayout = ({ children, location }) => {
+const MainLayout = ({ children, location, fixedHeader }) => {
   const data = useStaticQuery(graphql`
     query {
       navigation: allNavigationYaml {
@@ -352,7 +358,7 @@ const MainLayout = ({ children, location }) => {
           <IsDesktopContextProvider>
             <Seo />
             <CssBaseline />
-            <Header navigation={data.navigation} />
+            <Header navigation={data.navigation} fixedHeader={fixedHeader} />
             <Main>{children}</Main>
             <BottomAppBar navigation={data.navigation} />
             <Footer navigation={data.navigation} />

@@ -195,17 +195,19 @@ const SmallImageBlock = ({ image, noTitle }) => {
 
       <Hidden xsDown>
         <Box width="50%" textAlign="center">
-          <Paper style={{ overflow: "hidden" }} elevation={0}>
-            <Parallax
-              bgImage={imageSharp.fluid.src}
-              bgImageSrcSet={imageSharp.fluid.srcSet}
-              bgImageAlt={imageData.alt}
-              strength={60}
-            >
-              <Ratio ratio={1 / 1}></Ratio>
-            </Parallax>
-          </Paper>
-          {!noTitle && <P mt={1}>{imageData.alt}</P>}
+          <Container>
+            <Paper style={{ overflow: "hidden" }} elevation={0}>
+              <Parallax
+                bgImage={imageSharp.fluid.src}
+                bgImageSrcSet={imageSharp.fluid.srcSet}
+                bgImageAlt={imageData.alt}
+                strength={60}
+              >
+                <Ratio ratio={1 / 1}></Ratio>
+              </Parallax>
+            </Paper>
+            {!noTitle && <P mt={1}>{imageData.alt}</P>}
+          </Container>
         </Box>
       </Hidden>
     </Box>

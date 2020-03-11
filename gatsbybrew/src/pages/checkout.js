@@ -3,6 +3,7 @@ import Img from "gatsby-image"
 import { useStaticQuery, graphql } from "gatsby"
 
 import * as R from "ramda"
+
 import PageLayout from "../layouts/PageLayout"
 
 import {
@@ -268,6 +269,8 @@ export default ({ location }) => {
     setState({ ...state, [name]: value2 })
   }
 
+  const shipping = shippingFromCity(product, state.shipping_city)
+
   const order = [
     {
       price: product.price * 0.9,
@@ -280,10 +283,12 @@ export default ({ location }) => {
       description: "Набор для заварки",
     },
     {
-      price: 0.0,
+      price: shipping.cost,
       description: "Доставка",
     },
   ]
+
+  const handleSubmit = () => {}
 
   return (
     <PageLayout
@@ -316,3 +321,5 @@ export default ({ location }) => {
     </PageLayout>
   )
 }
+
+// GATSBY_REST_API

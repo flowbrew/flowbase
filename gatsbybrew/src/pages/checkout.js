@@ -357,38 +357,6 @@ export default ({ location }) => {
     purchasing: false,
   })
 
-  const handleCheckout = async () => {
-    const errorItem = findErrorInForm()
-
-    if (errorItem) {
-      onInvalidForm(errorItem)
-      return
-    }
-
-    setState(prevState => {
-      return { ...prevState, purchasing: true }
-    })
-
-    try {
-      const response = await fetch(process.env.GATSBY_REST_API, {
-        method: "POST",
-        mode: "cors",
-        cache: "no-cache",
-        body: JSON.stringify({
-          data: "lol",
-        }),
-      })
-      const json = await response.json()
-      onPurchase(json.result)
-    } catch (e) {
-      onPurchaseError(e)
-    } finally {
-      setState(prevState => {
-        return { ...prevState, purchasing: false }
-      })
-    }
-  }
-
   const findErrorInForm = () => {
     const items = R.map(([k, v]) => [k, validate(k, v)], R.toPairs(state))
     const result = R.find(([k, v]) => !v, items)
@@ -441,6 +409,44 @@ export default ({ location }) => {
       description: "Доставка",
     },
   ]
+
+  const handleCheckout = async () => {
+    const errorItem = findErrorInForm()
+
+    if (errorItem) {
+      onInvalidForm(errorItem)
+      return
+    }
+
+    setState(prevState => {
+      return { ...prevState, purchasing: true }
+    })
+
+    try {
+      const response = await fetch(process.env.GATSBY_REST_API, {
+        method: "POST",
+        cache: "no-cache",
+        body: JSON.stringify({
+          name: state.name,
+          phone: state.phone,
+          shipping_city: state.shipping_city,
+          shipping_address: state.shipping_address,
+          promocode: state.promocode,
+          comment: state.comment,
+          order: order,
+          total_order_price: totalOrderPrice(order),
+        }),
+      })
+      const json = await response.json()
+      onPurchase(json.result)
+    } catch (e) {
+      onPurchaseError(e)
+    } finally {
+      setState(prevState => {
+        return { ...prevState, purchasing: false }
+      })
+    }
+  }
 
   return (
     <PageLayout

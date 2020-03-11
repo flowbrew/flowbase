@@ -7,27 +7,74 @@ sys.path.append(base_path + "/lib")
 #
 
 import json
-from toolz import compose, curry, pipe
-from toolz.curried import map
+import boto3
+from botocore.exceptions import ClientError
 
 
-# import boto3
-# from botocore.exceptions import ClientError
+def email(addr, subject, body):
+    SENDER = "Checkout Bot <checkout@flowbrew.ru>"
+    RECIPIENT = addr
+    AWS_REGION = "us-east-1"
+    CHARSET = "UTF-8"
+
+    client = boto3.client('ses', region_name=AWS_REGION)
+
+    try:
+        response = client.send_email(
+            Destination={
+                'ToAddresses': [
+                    RECIPIENT,
+                ],
+            },
+            Message={
+                'Body': {
+                    'Text': {
+                        'Charset': CHARSET,
+                        'Data': body,
+                    },
+                },
+                'Subject': {
+                    'Charset': CHARSET,
+                    'Data': subject,
+                },
+            },
+            Source=SENDER,
+        )
+    # Display an error if something goes wrong.
+    except ClientError as e:
+        print(e.response['Error']['Message'])
+        return False
+    else:
+        print("Email sent! Message ID:"),
+        print(response['MessageId'])
+        return True
 
 
 def lambda_handler(event, context):
-    
-    # params = json.loads(event.get("body", dict()))
+    params = json.loads(event.get("body", dict()))
 
-    res = pipe(
-        'hello world',
-        map(lambda x: x + x),
-        lambda x: ''.join(x)
+    subject = 'Новый заказ от ' + params.get('name', '???')
+    params_str = '\n'.join(f'{k} = {v}' for k, v in params.items())
+    body = 'Получен новый заказ!\n\n' + params_str
+
+    addr = (
+        "bot@flowbrew.ru"
+        if params.get('name', 'test').strip() == 'test' else
+        "ak@flowbrew.ru"
     )
+
+    if not email(addr, subject, body):
+        return {
+            'statusCode': 500,
+            'body': json.dumps({'result': 'error'}),
+            'headers': {
+                'Access-Control-Allow-Origin': '*',
+            }
+        }
 
     return {
         'statusCode': 200,
-        'body': json.dumps({'result': res}),
+        'body': json.dumps({'result': 'ok'}),
         'headers': {
             'Access-Control-Allow-Origin': '*',
         }

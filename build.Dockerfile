@@ -9,7 +9,7 @@ ARG BRANCH
 
 # 
 
-FROM hashicorp/terraform:light AS terraform-base
+FROM hashicorp/terraform:latest AS terraform-base
 RUN apk add --no-cache gettext
 ARG AWS_ACCESS_KEY_ID
 ENV AWS_ACCESS_KEY_ID $AWS_ACCESS_KEY_ID

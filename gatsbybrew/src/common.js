@@ -124,19 +124,24 @@ const A = ({ children, href }) => {
   const internal = /^\/(?!\/)/.test(href)
 
   if (internal) {
-    return <StyledLink to={href}>{children}</StyledLink>
+    return (
+      <Typography variant="body1" component="span">
+        <StyledLink to={href}>{children}</StyledLink>
+      </Typography>
+    )
   } else {
     return (
+      <Typography variant="body1" component="span">
       <a className={classes.lnk} href={href}>
         {children}
       </a>
+      </Typography>
     )
   }
 }
 
 const IMG = ({ children, src }) => {
   return <ImageBlock image={src}>{children}</ImageBlock>
-  //   return <>lol</>
 }
 
 const Blockquote = ({ children }) => (

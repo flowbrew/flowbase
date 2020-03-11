@@ -296,6 +296,34 @@ const BuyButton = ({ state, handleCheckout }) => {
   )
 }
 
+const validate_ = (name, value) => {
+  switch (name) {
+    case "phone":
+      return value.match(/\+\d \(\d\d\d\) \d\d\d-\d\d-\d\d/)
+
+    case "name":
+    case "shipping_address":
+      return value.length > 0
+
+    default:
+      return true
+  }
+}
+
+const onInvalidForm = errorItem => {
+  navigate("#" + errorItem)
+}
+
+const onPurchase = result => {
+  console.info(result)
+  navigate("/спасибо")
+}
+
+const onPurchaseError = e => {
+  console.error(e)
+  navigate("/ошибка")
+}
+
 export default ({ location }) => {
   const data = useStaticQuery(graphql`
     query {
@@ -316,9 +344,6 @@ export default ({ location }) => {
       }
     }
   `)
-
-  const timer = React.useRef()
-
   const product = data.product
   const title = `${product.name} ${product.weight} г`
 
@@ -332,6 +357,62 @@ export default ({ location }) => {
     purchasing: false,
   })
 
+  const handleCheckout = async () => {
+    const errorItem = findErrorInForm()
+
+    if (errorItem) {
+      onInvalidForm(errorItem)
+      return
+    }
+
+    setState(prevState => {
+      return { ...prevState, purchasing: true }
+    })
+
+    try {
+      const response = await fetch(process.env.GATSBY_REST_API, {
+        method: "POST",
+        mode: "cors",
+        cache: "no-cache",
+        body: JSON.stringify({
+          data: "lol",
+        }),
+      })
+      const json = await response.json()
+      onPurchase(json.result)
+    } catch (e) {
+      onPurchaseError(e)
+    } finally {
+      setState(prevState => {
+        return { ...prevState, purchasing: false }
+      })
+    }
+  }
+
+  const findErrorInForm = () => {
+    const items = R.map(([k, v]) => [k, validate(k, v)], R.toPairs(state))
+    const result = R.find(([k, v]) => !v, items)
+    return result && result[0]
+  }
+
+  const validate = (name, value) => {
+    const isValid = validate_(name, value)
+
+    setState(prevState => {
+      return { ...prevState, [name + "_error"]: !isValid }
+    })
+
+    return isValid
+  }
+
+  const handleValidation = event => {
+    const target = event.target
+    const value = target.type === "checkbox" ? target.checked : target.value
+    const name = target.name
+
+    validate(name, value)
+  }
+
   const handleInputChange = event => {
     const target = event.target
     const value = target.type === "checkbox" ? target.checked : target.value
@@ -343,61 +424,6 @@ export default ({ location }) => {
       return { ...prevState, [name]: value2, [name + "_error"]: false }
     })
   }
-
-  const validate = (name, value) => {
-    var isValid = true
-
-    switch (name) {
-      case "phone":
-        isValid = value.match(/\+\d \(\d\d\d\) \d\d\d-\d\d-\d\d/)
-        break
-
-      case "name":
-      case "shipping_address":
-        isValid = value.length > 0
-        break
-    }
-
-    setState(prevState => {
-      return { ...prevState, [name + "_error"]: !isValid }
-    })
-
-    return isValid
-  }
-
-  const findErrorInForm = () => {
-    const items = R.map(([k, v]) => [k, validate(k, v)], R.toPairs(state))
-    const result = R.find(([k, v]) => !v, items)
-    return result && result[0]
-  }
-
-  const handleValidation = event => {
-    const target = event.target
-    const value = target.type === "checkbox" ? target.checked : target.value
-    const name = target.name
-
-    validate(name, value)
-  }
-
-  const handleCheckout = () => {
-    const errorItem = findErrorInForm()
-    if (errorItem) {
-      navigate("#" + errorItem)
-      return
-    }
-
-    setState(prevState => {
-      return { ...prevState, purchasing: true }
-    })
-
-    timer.current = setTimeout(() => {
-      setState(prevState => {
-        return { ...prevState, purchasing: false }
-      })
-    }, 2000)
-  }
-
-  const shipping = shippingFromCity(product, state.shipping_city)
 
   const order = [
     {
@@ -411,7 +437,7 @@ export default ({ location }) => {
       description: "Набор для заварки",
     },
     {
-      price: shipping.cost,
+      price: shippingFromCity(product, state.shipping_city).cost,
       description: "Доставка",
     },
   ]
@@ -439,5 +465,3 @@ export default ({ location }) => {
     </PageLayout>
   )
 }
-
-// GATSBY_REST_API

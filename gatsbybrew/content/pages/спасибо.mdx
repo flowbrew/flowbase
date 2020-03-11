@@ -1,13 +1,13 @@
 ---
-title: Спасибо за ваш заказ
+title: Благодарю за ваш заказ
 ---
 
-Мы отправим его как можно скорее. Вы получите обновления статуса заказа по почте. Благодарим за ваш выбор.
+import { ImageBlock, A } from "../../src/common"
+import ContactsButton from "../../src/components/ContactsButton"
+import Box from "@material-ui/core/Box"
 
-[На главную страницу]({{ '/' | relative_url }})
+Я отправлю его как можно скорее. При возникновении любых вопросов вы можете <ContactsButton><A>обратиться ко мне за помощью</A></ContactsButton>.
 
-{% include image.html
-    class="i1x1"
-    image="thankyou.jpg"
-    alt="Перо, сургучная печать и надпись 'спасибо'"
-    %}
+<Box mt={5}>
+  <ImageBlock image="thankyou" />
+</Box>

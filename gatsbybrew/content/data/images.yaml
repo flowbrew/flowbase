@@ -37,7 +37,7 @@
 - name: logo_text
   image: logo_text.svg
   alt: Логотип Flow Brew
-  
+
 - name: kozin_aleksey
   image: kozin_aleksey.jpg
   alt: Козин Алексей
@@ -57,3 +57,7 @@
 - name: marat
   image: marat.jpg
   alt: Марат
+
+- name: thankyou
+  image: thankyou32.jpg
+  alt: Благодарю вас за покупку

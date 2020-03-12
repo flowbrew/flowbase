@@ -219,13 +219,15 @@ const OfferImages = () => {
     setState({ selectedImage: imageName })
   }
 
-  const PreviewImage = ({ image }) => {
+  const PreviewImage = ({ image, id }) => {
     const { imageSharp } = useImage(image)
     return (
       <Grid item xs={3}>
         <Box onClick={() => click(image)}>
           <FLBPaper>
-            <Img fluid={{ ...imageSharp.fluid, aspectRatio: 1 }} />
+            <div id={id}>
+              <Img fluid={{ ...imageSharp.fluid, aspectRatio: 1 }} />
+            </div>
           </FLBPaper>
         </Box>
       </Grid>
@@ -236,19 +238,27 @@ const OfferImages = () => {
     <Grid container>
       <Grid item xs={12}>
         <FLBPaper>
-          <Parallax
-            bgImage={imageSharp.fluid.src}
-            bgImageSrcSet={imageSharp.fluid.srcSet}
-            strength={50}
-          >
-            <Ratio ratio={1 / 1}></Ratio>
-          </Parallax>
+          <div id="selected_image">
+            <Parallax
+              bgImage={imageSharp.fluid.src}
+              bgImageSrcSet={imageSharp.fluid.srcSet}
+              strength={50}
+            >
+              <Ratio ratio={1 / 1}></Ratio>
+            </Parallax>
+          </div>
         </FLBPaper>
       </Grid>
-      <PreviewImage image="flowbrew" />
-      <PreviewImage image="matcha_tea_in_hand" />
-      <PreviewImage image="gift_matcha_tea_box_from_top_ex" />
-      <PreviewImage image="matcha_tea_dry_in_bowl_flowbrew" />
+      <PreviewImage id="preview_image_1" image="flowbrew" />
+      <PreviewImage id="preview_image_2" image="matcha_tea_in_hand" />
+      <PreviewImage
+        id="preview_image_3"
+        image="gift_matcha_tea_box_from_top_ex"
+      />
+      <PreviewImage
+        id="preview_image_4"
+        image="matcha_tea_dry_in_bowl_flowbrew"
+      />
     </Grid>
   )
 }
@@ -287,21 +297,23 @@ const Promotion = () => (
   </Typography>
 )
 
-const BuyButton = () => {
+const BuyButton = ({ id }) => {
   const classes = useStyles()
   const desktop = useIsDesktop()
 
   return (
     <Box ml={2} mr={2} mt={3}>
-      <Button
-        href="/checkout"
-        size="large"
-        variant="contained"
-        color="secondary"
-        fullWidth={!desktop}
-      >
-        Купить
-      </Button>
+      <div id={id}>
+        <Button
+          href="/checkout"
+          size="large"
+          variant="contained"
+          color="secondary"
+          fullWidth={!desktop}
+        >
+          Купить
+        </Button>
+      </div>
     </Box>
   )
 }
@@ -421,7 +433,7 @@ const OfferSection = () => {
         <OfferImages />
         <PriceBlock />
         <OfferBenefits />
-        <BuyButton />
+        <BuyButton id="buybutton_1"/>
         <Box p={1}>
           <Paper elevation={0}>
             <WorkWithRejections rejections={rejections} />
@@ -440,7 +452,7 @@ const OfferSection = () => {
                 <OfferHeader />
                 <PriceBlock />
                 <OfferBenefits />
-                <BuyButton />
+                <BuyButton id="buybutton_1" />
               </Grid>
             </Grid>
           </FLBPaper>
@@ -672,7 +684,7 @@ const BuyButtonSection = () => (
   <Box mb={15}>
     <Section>
       <Hidden smUp>
-        <BuyButton />
+        <BuyButton id="buybutton_2"/>
       </Hidden>
     </Section>
   </Box>

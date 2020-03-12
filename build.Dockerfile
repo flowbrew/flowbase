@@ -6,6 +6,8 @@ ARG AWS_ACCESS_KEY_ID
 ARG AWS_SECRET_ACCESS_KEY
 ARG CLOUDFLARE_API_TOKEN
 ARG BRANCH
+ARG YANDEX_BOT_EMAIL
+ARG YANDEX_BOT_TOKEN
 
 # 
 
@@ -104,6 +106,11 @@ RUN     envsubst < main.tfx | tee main.tf && \
 # E2E TESTS
 
 FROM cypress/included:4.0.2 AS e2e-tester
+ARG YANDEX_BOT_EMAIL
+ENV CYPRESS_YANDEX_BOT_EMAIL $YANDEX_BOT_EMAIL
+ARG YANDEX_BOT_TOKEN
+ENV CYPRESS_YANDEX_BOT_TOKEN $YANDEX_BOT_TOKEN
+
 WORKDIR /flowbase/cypressbrew
 COPY cypressbrew/package*.json .
 RUN npm install
@@ -111,4 +118,4 @@ RUN npm install
 COPY cypressbrew/ .
 COPY --from=frontend-deployer \
         /flowbase/terrabrew/roots/frontend/website_url website_url
-RUN CYPRESS_WEBSITE_URL=$(cat website_url) cypress run
+RUN CYPRESS_WEBSITE_URL=http://$(cat website_url)/ cypress run

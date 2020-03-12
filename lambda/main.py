@@ -59,7 +59,7 @@ def lambda_handler(event, context):
 
     addr = (
         "bot@flowbrew.ru"
-        if params.get('name', 'test').strip() == 'test' else
+        if 'TEST PURCHASE' in params.get('comment', '') else
         "ak@flowbrew.ru"
     )
 

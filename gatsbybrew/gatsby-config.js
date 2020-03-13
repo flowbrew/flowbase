@@ -6,6 +6,7 @@ module.exports = {
     siteUrl: "https://flowbrew.ru/",
   },
   plugins: [
+    `gatsby-plugin-styled-components`,
     `gatsby-plugin-sharp`,
     `gatsby-transformer-sharp`,
     `gatsby-plugin-material-ui`,

@@ -7,6 +7,11 @@ import InputMask from "react-input-mask"
 import * as R from "ramda"
 
 import PageLayout from "../layouts/PageLayout"
+import {
+  useCoupon,
+  setActivePromocode,
+  expireCoupon,
+} from "../components/Coupon"
 
 import {
   mapi,
@@ -164,7 +169,7 @@ const Shipping = ({ product, state, onChange, onBlur }) => {
         name="shipping_address"
         error={state.shipping_address_error}
         helperText={state.shipping_address_error && "Укажите ваш адрес"}
-        value={state.address}
+        value={state.shipping_address}
         label="Адрес"
         onChange={onChange}
         onBlur={onBlur}
@@ -314,45 +319,26 @@ const onInvalidForm = errorItem => {
   navigate("#" + errorItem)
 }
 
-const onPurchase = result => {
+const onPurchase = (product, result) => {
   console.info(result)
+  expireCoupon(product)
   navigate("/спасибо")
 }
 
-const onPurchaseError = e => {
+const onPurchaseError = (product, e) => {
   console.error(e)
   navigate("/ошибка")
 }
 
-export default ({ location }) => {
-  const data = useStaticQuery(graphql`
-    query {
-      product: productsYaml(pid: { eq: "flowbrew60" }) {
-        name
-        pid
-        price
-        quantity
-        images
-        benefits
-        in_depth_benefits
-        shipping {
-          destination
-          cost
-          description
-        }
-        weight
-      }
-    }
-  `)
-  const product = data.product
-  const title = `${product.name} ${product.weight} г`
+const CheckoutForm = ({ data }) => {
+  const product = useCoupon(data.product)
 
   const [state, setState] = React.useState({
     name: "",
     phone: "",
     shipping_city: product.shipping[0].destination,
     shipping_address: "",
-    promocode: "",
+    promocode: product.promocode || "",
     comment: "",
     purchasing: false,
   })
@@ -387,25 +373,28 @@ export default ({ location }) => {
     const name = target.name
 
     const value2 = name === "promocode" ? value.toUpperCase() : value
+    if (name == "promocode") {
+      setActivePromocode(product, value2)
+    }
 
     setState(prevState => {
       return { ...prevState, [name]: value2, [name + "_error"]: false }
     })
   }
 
+  const shipping = shippingFromCity(product, state.shipping_city)
+
   const order = [
     {
-      price: product.price * 0.9,
-      description: title,
-      old_price: product.price,
-      old_price_description: "Скидка 10%",
+      ...product,
+      description: product.name,
     },
     {
       price: 0.0,
       description: "Набор для заварки",
     },
     {
-      price: shippingFromCity(product, state.shipping_city).cost,
+      price: shipping.cost,
       description: "Доставка",
     },
   ]
@@ -429,18 +418,19 @@ export default ({ location }) => {
         body: JSON.stringify({
           name: state.name,
           phone: state.phone,
+          total_order_price: totalOrderPrice(order),
           shipping_city: state.shipping_city,
           shipping_address: state.shipping_address,
+          shipping: shipping,
           promocode: state.promocode,
           comment: state.comment,
           order: order,
-          total_order_price: totalOrderPrice(order),
         }),
       })
       const json = await response.json()
-      onPurchase(json.result)
+      onPurchase(product, json.result)
     } catch (e) {
-      onPurchaseError(e)
+      onPurchaseError(product, e)
     } finally {
       setState(prevState => {
         return { ...prevState, purchasing: false }
@@ -449,10 +439,7 @@ export default ({ location }) => {
   }
 
   return (
-    <PageLayout
-      location={location}
-      pageContext={{ frontmatter: { title: "Оформление заказа" } }}
-    >
+    <>
       <ProductImage product={product} />
       <Contacts
         state={state}
@@ -468,6 +455,37 @@ export default ({ location }) => {
       <Order order={order} />
       <Misc state={state} onChange={handleInputChange} />
       <BuyButton state={state} handleCheckout={handleCheckout} />
+    </>
+  )
+}
+
+export default ({ location }) => {
+  const data = useStaticQuery(graphql`
+    query {
+      product: productsYaml(pid: { eq: "flowbrew60" }) {
+        name
+        pid
+        price
+        quantity
+        images
+        benefits
+        in_depth_benefits
+        shipping {
+          destination
+          cost
+          description
+        }
+        weight
+      }
+    }
+  `)
+
+  return (
+    <PageLayout
+      location={location}
+      pageContext={{ frontmatter: { title: "Оформление заказа" } }}
+    >
+      <CheckoutForm data={data} />
     </PageLayout>
   )
 }

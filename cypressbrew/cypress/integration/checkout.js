@@ -24,7 +24,7 @@ describe("Checkout", () => {
 
     getscroll('button[type="submit"]').click();
 
-    cy.get('input[name="phone"]', { timeout: 3000 }).should("be.visible")
+    cy.get('input[name="phone"]', { timeout: 10000 }).should("be.visible")
     cy.contains('Неверный телефон')
   });
 

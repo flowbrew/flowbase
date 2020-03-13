@@ -3,6 +3,7 @@ import Img from "gatsby-image"
 import Ratio from "react-ratio"
 import * as R from "ramda"
 import { Parallax } from "react-parallax"
+import queryString from "query-string"
 
 import { makeStyles, styled } from "@material-ui/core/styles"
 import useMediaQuery from "@material-ui/core/useMediaQuery"
@@ -233,6 +234,9 @@ const CrossedBox = styled(SpanBox)({
   textDecoration: "line-through",
 })
 
+const parseLocation = location =>
+  location.search ? queryString.parse(location.search) : {}
+
 export {
   SpanBox,
   CrossedBox,
@@ -256,4 +260,5 @@ export {
   FLBPaper,
   ImageBlock,
   SmallImageBlock,
+  parseLocation,
 }

@@ -19,7 +19,7 @@ fi
 
 if DOCKER_BUILDKIT=1 docker build \
     ${BUILDPARAMS} \
-    --shm-size 1024M \
+    --shm-size 2048M \
     --build-arg BUILDKIT_INLINE_CACHE=1 \
     --build-arg BRANCH=$BRANCH \
     --build-arg AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID \

@@ -54,6 +54,7 @@ import {
 } from "../components/IsDesktopContext"
 import { MdxContextProvider } from "../components/MdxContext"
 import { useImage } from "../components/ImageContext"
+import { usePromotion } from "../components/Coupon"
 
 const Seo = () => <Helmet></Helmet>
 
@@ -350,6 +351,8 @@ const MainLayout = ({ children, location, fixedHeader }) => {
       }
     }
   `)
+
+  usePromotion(data.product, location)
 
   return (
     <Theme>

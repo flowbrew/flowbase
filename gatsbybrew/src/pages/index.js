@@ -69,8 +69,11 @@ import {
   LI,
   FLBPaper,
   ImageBlock,
+  CrossedBox,
+  RedBox,
 } from "../common"
 import Hero from "../components/Hero"
+import { useCoupon } from "../components/Coupon"
 import LogoText from "../../content/images/logo_text.svg"
 import ContactsButton from "../components/ContactsButton"
 
@@ -390,17 +393,38 @@ const WorkWithRejectionsList = ({ rejections }) => {
   )
 }
 
-const PriceBlock = () => {
-  const classes = useStyles()
+const PriceDiscountDisplay = ({ price, old_price, old_price_description }) => {
+  const title = " · 60 г · 60 чашек"
+  if (old_price) {
+    return (
+      <Typography variant="body1" component="span">
+        <CrossedBox>{old_price}</CrossedBox> <RedBox>{price} руб</RedBox>
+        {title}
+        {old_price_description && (
+          <RedBox>
+            <P>{old_price_description}</P>
+          </RedBox>
+        )}
+      </Typography>
+    )
+  }
+  return (
+    <Typography variant="body1">
+      {price} руб{title}
+    </Typography>
+  )
+}
 
+const PriceBlock = ({ product }) => {
   return (
     <Box ml={2} mt={4}>
-      <Typography variant="body1">3880 руб · 60 г · 60 чашек</Typography>
+      <PriceDiscountDisplay {...product} />
     </Box>
   )
 }
 
-const OfferSection = () => {
+const OfferSection = ({ data }) => {
+  const product = useCoupon(data.product)
   const isDesktop = useIsDesktop()
 
   const rejections = [
@@ -431,9 +455,9 @@ const OfferSection = () => {
       <Hidden smUp>
         <OfferHeader />
         <OfferImages />
-        <PriceBlock />
+        <PriceBlock product={product} />
         <OfferBenefits />
-        <BuyButton id="buybutton_1"/>
+        <BuyButton id="buybutton_1" />
         <Box p={1}>
           <Paper elevation={0}>
             <WorkWithRejections rejections={rejections} />
@@ -450,7 +474,7 @@ const OfferSection = () => {
               </Grid>
               <Grid item xs={12} sm={6}>
                 <OfferHeader />
-                <PriceBlock />
+                <PriceBlock product={product} />
                 <OfferBenefits />
                 <BuyButton id="buybutton_1" />
               </Grid>
@@ -684,7 +708,7 @@ const BuyButtonSection = () => (
   <Box mb={15}>
     <Section>
       <Hidden smUp>
-        <BuyButton id="buybutton_2"/>
+        <BuyButton id="buybutton_2" />
       </Hidden>
     </Section>
   </Box>
@@ -757,6 +781,7 @@ export default ({ location }) => {
         quantity
         images
         benefits
+        weight
         in_depth_benefits
       }
     }
@@ -770,7 +795,7 @@ export default ({ location }) => {
         </Container>
       </Box>
       <SimpleInDepthBenefits />
-      <OfferSection />
+      <OfferSection data={data} />
       <BottomSection />
       <BuyButtonSection />
     </MainLayout>

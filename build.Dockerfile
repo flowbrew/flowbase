@@ -105,7 +105,7 @@ RUN     envsubst < main.tfx | tee main.tf && \
 
 # E2E TESTS
 
-FROM cypress/included:4.0.2 AS e2e-tester
+FROM cypress/browsers:node10.16.0-chrome77 AS e2e-tester
 ARG YANDEX_BOT_EMAIL
 ENV CYPRESS_YANDEX_BOT_EMAIL $YANDEX_BOT_EMAIL
 ARG YANDEX_BOT_TOKEN
@@ -118,4 +118,4 @@ RUN npm install
 COPY cypressbrew/ .
 COPY --from=frontend-deployer \
         /flowbase/terrabrew/roots/frontend/website_url website_url
-RUN CYPRESS_WEBSITE_URL=http://$(cat website_url)/ cypress run
+RUN CYPRESS_WEBSITE_URL=http://$(cat website_url)/ npx cypress run --headless -b chrome

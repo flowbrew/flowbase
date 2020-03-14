@@ -5,7 +5,7 @@ const chance = new Chance();
 
 describe("Promocode", () => {
   it("Can be entered via url params", () => {
-    cy.visit(Cypress.env("WEBSITE_URL") + "checkout?code=GIFT10");
+    cy.visit(Cypress.env("WEBSITE_URL") + "checkout/?code=GIFT10");
     cy.contains("Оформление заказа", { timeout: 10000 });
     cy.get('input[name="promocode"]').should("have.value", "GIFT10");
     cy.contains("Скидка").should("exist");
@@ -26,7 +26,7 @@ describe("Promocode", () => {
   });
 
   it("Persistent between pages", () => {
-    cy.visit(Cypress.env("WEBSITE_URL") + encodeURI("контакты?code=GIFT10"));
+    cy.visit(Cypress.env("WEBSITE_URL") + encodeURI("контакты/?code=GIFT10"));
     cy.contains("Контакты", { timeout: 10000 });
 
     cy.visit(Cypress.env("WEBSITE_URL") + "checkout");

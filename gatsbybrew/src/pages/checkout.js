@@ -1,4 +1,4 @@
-import React, { Component } from "react"
+import React, { Component, useEffect } from "react"
 import { navigate } from "@reach/router"
 import Img from "gatsby-image"
 import { useStaticQuery, graphql } from "gatsby"
@@ -8,7 +8,7 @@ import * as R from "ramda"
 
 import PageLayout from "../layouts/PageLayout"
 import {
-  useCoupon,
+  applyCoupon,
   setActivePromocode,
   expireCoupon,
 } from "../components/Coupon"
@@ -331,17 +331,34 @@ const onPurchaseError = (product, e) => {
 }
 
 const CheckoutForm = ({ data }) => {
-  const product = useCoupon(data.product)
-
   const [state, setState] = React.useState({
     name: "",
     phone: "",
-    shipping_city: product.shipping[0].destination,
+    shipping_city: data.product.shipping[0].destination,
     shipping_address: "",
-    promocode: product.promocode || "",
     comment: "",
+    promocode: "",
     purchasing: false,
+    product: data.product || {},
   })
+
+  useEffect(() => {
+    const product = applyCoupon(data.product)
+    setState(prevState => {
+      return {
+        ...prevState,
+        promocode: product.promocode || "",
+      }
+    })
+  }, [])
+
+  useEffect(() => {
+    setActivePromocode(state.product, state.promocode)
+    const product = applyCoupon(data.product)
+    setState(prevState => {
+      return { ...prevState, product: product }
+    })
+  }, [state.promocode])
 
   const findErrorInForm = () => {
     const items = R.map(([k, v]) => [k, validate(k, v)], R.toPairs(state))
@@ -373,21 +390,18 @@ const CheckoutForm = ({ data }) => {
     const name = target.name
 
     const value2 = name === "promocode" ? value.toUpperCase() : value
-    if (name == "promocode") {
-      setActivePromocode(product, value2)
-    }
 
     setState(prevState => {
       return { ...prevState, [name]: value2, [name + "_error"]: false }
     })
   }
 
-  const shipping = shippingFromCity(product, state.shipping_city)
+  const shipping = shippingFromCity(state.product, state.shipping_city)
 
   const order = [
     {
-      ...product,
-      description: product.name,
+      ...state.product,
+      description: state.product.name,
     },
     {
       price: 0.0,
@@ -422,15 +436,15 @@ const CheckoutForm = ({ data }) => {
           shipping_city: state.shipping_city,
           shipping_address: state.shipping_address,
           shipping: shipping,
-          promocode: state.promocode,
+          promocode: state.product.promocode,
           comment: state.comment,
           order: order,
         }),
       })
       const json = await response.json()
-      onPurchase(product, json.result)
+      onPurchase(state.product, json.result)
     } catch (e) {
-      onPurchaseError(product, e)
+      onPurchaseError(state.product, e)
     } finally {
       setState(prevState => {
         return { ...prevState, purchasing: false }
@@ -439,8 +453,8 @@ const CheckoutForm = ({ data }) => {
   }
 
   return (
-    <>
-      <ProductImage product={product} />
+    <Box>
+      <ProductImage product={state.product} />
       <Contacts
         state={state}
         onChange={handleInputChange}
@@ -448,14 +462,14 @@ const CheckoutForm = ({ data }) => {
       />
       <Shipping
         state={state}
-        product={data.product}
+        product={state.product}
         onChange={handleInputChange}
         onBlur={handleValidation}
       />
       <Order order={order} />
       <Misc state={state} onChange={handleInputChange} />
       <BuyButton state={state} handleCheckout={handleCheckout} />
-    </>
+    </Box>
   )
 }
 

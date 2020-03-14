@@ -1,4 +1,4 @@
-import React from "react"
+import React, {useEffect} from "react"
 import Img from "gatsby-image"
 import { useStaticQuery, graphql } from "gatsby"
 import { MDXRenderer } from "gatsby-plugin-mdx"
@@ -73,7 +73,7 @@ import {
   RedBox,
 } from "../common"
 import Hero from "../components/Hero"
-import { useCoupon } from "../components/Coupon"
+import { applyCoupon } from "../components/Coupon"
 import LogoText from "../../content/images/logo_text.svg"
 import ContactsButton from "../components/ContactsButton"
 
@@ -424,7 +424,17 @@ const PriceBlock = ({ product }) => {
 }
 
 const OfferSection = ({ data }) => {
-  const product = useCoupon(data.product)
+  const [state, setState] = React.useState({
+    product: data.product || {},
+  })
+
+  useEffect(()=>{
+    const product = applyCoupon(data.product)
+    setState(prevState => {
+      return { ...prevState, product: product }
+    })
+  }, [])
+  
   const isDesktop = useIsDesktop()
 
   const rejections = [
@@ -455,7 +465,7 @@ const OfferSection = ({ data }) => {
       <Hidden smUp>
         <OfferHeader />
         <OfferImages />
-        <PriceBlock product={product} />
+        <PriceBlock product={state.product} />
         <OfferBenefits />
         <BuyButton id="buybutton_1" />
         <Box p={1}>
@@ -474,7 +484,7 @@ const OfferSection = ({ data }) => {
               </Grid>
               <Grid item xs={12} sm={6}>
                 <OfferHeader />
-                <PriceBlock product={product} />
+                <PriceBlock product={state.product} />
                 <OfferBenefits />
                 <BuyButton id="buybutton_1" />
               </Grid>

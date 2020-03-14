@@ -7,6 +7,7 @@ import { parseLocation } from "../common"
 
 const DEFAULT_COOKIE_PARAMS = {
   maxAge: 365 * 24 * 60 * 60,
+  path: "/",
 }
 
 const intTo_ = (d_, a, b, c) => {
@@ -66,6 +67,10 @@ const expireCoupon = (product, promocode) => {
 }
 
 const fetchCouponByPromocode = (product, promocode) => {
+  if (!promocode) {
+    return null
+  }
+
   const cookies = new Cookies()
   const coupon = cookies.get(couponCookieName(product, promocode))
 
@@ -107,6 +112,9 @@ const fetchCouponByPromocode = (product, promocode) => {
 const activePromocodeCookieName = product => `promocode_of_${product.pid}`
 
 const fetchActivePromocode = product => {
+  if (!product) {
+    return null
+  }
   const cookies = new Cookies()
   return cookies.get(activePromocodeCookieName(product))
 }
@@ -148,14 +156,14 @@ const fetchCoupon = product => {
   )
 }
 
-const useCoupon = product => {
+const applyCoupon = product => {
   const coupon = fetchCoupon(product)
 
   if (!coupon) {
     return product
   }
 
-  if (coupon.expiration < new Date()) {
+  if (coupon.expiration && coupon.expiration < new Date()) {
     return product
   }
 
@@ -165,7 +173,6 @@ const useCoupon = product => {
     old_price: product.price,
     old_price_description: coupon.description,
     promocode: coupon.promocode,
-    coupon_applied: true,
   }
 }
 
@@ -174,10 +181,11 @@ const visitHistory = location => {
   const cookieName = `visit_history`
 
   const history = cookies.get(cookieName) || {}
+  const key = location.pathname.replace(/(\w)\/$/, "$1")
 
   const newHistory = {
     ...history,
-    [location.pathname]: (history[location.pathname] || 0) + 1,
+    [key]: (history[key] || 0) + 1,
   }
 
   cookies.set(cookieName, newHistory, DEFAULT_COOKIE_PARAMS)
@@ -188,7 +196,7 @@ const visitHistory = location => {
 const usePromotion = (product, location) => {
   var history = visitHistory(location)
 
-  const hasActiveCoupon = useCoupon(product).coupon_applied
+  const hasActiveCoupon = applyCoupon(product).promocode
   const everPurchased = (history[encodeURI("/спасибо")] || 0) > 0
 
   if (!hasActiveCoupon && !everPurchased) {
@@ -205,7 +213,7 @@ const usePromotion = (product, location) => {
 }
 
 export {
-  useCoupon,
+  applyCoupon,
   setActivePromocode,
   fetchActivePromocode,
   expireCoupon,

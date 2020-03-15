@@ -133,9 +133,9 @@ const A = ({ children, href }) => {
   } else {
     return (
       <Typography variant="body1" component="span">
-      <a className={classes.lnk} href={href}>
-        {children}
-      </a>
+        <a className={classes.lnk} href={href}>
+          {children}
+        </a>
       </Typography>
     )
   }
@@ -164,7 +164,11 @@ const Em = ({ children }) => (
 )
 
 const ImageBlock = ({ image, ratio }) => {
-  const { imageData, imageSharp } = useImage(image)
+  const data = useImage(image)
+  if (!data) {
+    return null
+  }
+  const { imageData, imageSharp } = data
 
   return (
     <FLBPaper>

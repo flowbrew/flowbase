@@ -6,6 +6,9 @@ import Parallax from "react-rellax"
 const ImageContext = React.createContext({})
 
 const solveImage = ({ imagesData, imagesSharp }, imageName) => {
+  if (!imageName) {
+    return null
+  }
   const findImageData = y => R.find(x => x.name === y, imagesData.nodes)
   const findImageSharp = y =>
     R.find(x => x.fluid.originalName === y, imagesSharp.nodes)

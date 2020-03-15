@@ -23,6 +23,9 @@ describe("Promocode", () => {
     input().clear();
     input().type("FLB10");
     cy.contains("Скидка").should("exist");
+
+    input().type("{backspace}");
+    cy.contains("Скидка").should("not.exist");
   });
 
   it("Persistent between pages", () => {

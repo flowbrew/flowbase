@@ -61,3 +61,27 @@
 - name: thankyou
   image: thankyou32.jpg
   alt: Благодарю вас за покупку
+
+- name: 100times
+  image: 100_times_egcg_ex3.png
+  alt: 3 продавца – одна и та же ложь
+
+- name: caffeine_theanine
+  image: caffeine_theanine.png
+  alt: Кофеин + Л-Теанин = чай матча
+
+- name: caffeine_theanine
+  image: caffeine_theanine.png
+  alt: Кофеин + Л-Теанин = чай матча
+
+- name: gift_guide_variable_c_2x
+  image: gn-gift_guide_variable_c_2x.jpg
+  alt: Старбакс
+
+- name: matcha_vs_gum_and_mints
+  image: matcha_vs_gum_and_mints.png
+  alt: Чай матча наравне с зубной пастой
+
+- name: smiling_cat
+  image: smiling-cat.jpg
+  alt: Ваше лицо после чашки чая матча

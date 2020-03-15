@@ -70,10 +70,6 @@
   image: caffeine_theanine.png
   alt: Кофеин + Л-Теанин = чай матча
 
-- name: caffeine_theanine
-  image: caffeine_theanine.png
-  alt: Кофеин + Л-Теанин = чай матча
-
 - name: gift_guide_variable_c_2x
   image: gn-gift_guide_variable_c_2x.jpg
   alt: Старбакс

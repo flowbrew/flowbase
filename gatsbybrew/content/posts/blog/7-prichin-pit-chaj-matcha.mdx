@@ -1,10 +1,20 @@
 ---
 title: 7 причин почему вы подсядете на полезный чай матча
 author: Алексей Козин
-date: "2015-05-01T22:12:03.284Z"
+date: 2015-05-01T22:12:03.284Z
 image: matcha_tea_in_test_tube
 description: Никакой антинаучной фигни. Я прочитал 25 научных статей о пользе чая матча на 2019 год и отобрал для вас только вкусные факты.
 ---
+
+import { 
+    CounterLnk, 
+    ImageBlock, 
+    FLBPaper, 
+    Rage, 
+    Calm 
+} from "../../../src/common"
+import CoffeeDiagram from "../../images/coffee_diagram.svg"
+import { Container, Box, Typography } from "@material-ui/core"
 
 <!-- TODO: emotions -->
 <!-- TODO: images -->
@@ -34,18 +44,22 @@ description: Никакой антинаучной фигни. Я прочита
 
 Дела копятся, а энергии не добавляется. Вы чувствуете, что ничего не успеваете.
 
-Виноват кофе. Ежедневное употребление кофеина истощает организм и вызывает нарушение сна {% include link.html href="https://www.ncbi.nlm.nih.gov/pubmed/17950009" %}, а дальше замкнутый круг:
+Виноват кофе. Ежедневное употребление кофеина истощает организм и вызывает нарушение сна <CounterLnk href="https://www.ncbi.nlm.nih.gov/pubmed/17950009"/>, а дальше замкнутый круг:
 
-{% include image.html
-    class="i3x2"
-    image="/blog/coffee_diagram.svg"
-    alt="Замкнутый кофейный круг"
-    caption="Замкнутый кофейный круг"
-    %}
+<Box>
+  <FLBPaper>
+    <CoffeeDiagram style={{ width: "100%", background: "white" }} />
+  </FLBPaper>
+  <Box textAlign="center" mt={1}>
+    <Typography variant="subtitle1" paragraph={true}>
+      Замкнутый кофейный круг
+    </Typography>
+  </Box>
+</Box>
 
 <!-- решение -->
 
-Л-Теанин из чая матча убирает неприятные побочки кофеина {% include link.html href="https://academic.oup.com/nutritionreviews/article-abstract/66/2/82/1863235" %} и нормализует сон {% include link.html href="https://www.tandfonline.com/doi/abs/10.1080/07315724.2014.926153" %}. С чаем матча вы получите энергию кофеина без нарушения сна, раздражительности и тревоги.
+Л-Теанин из чая матча убирает неприятные побочки кофеина <CounterLnk href="https://academic.oup.com/nutritionreviews/article-abstract/66/2/82/1863235" /> и нормализует сон <CounterLnk href="https://www.tandfonline.com/doi/abs/10.1080/07315724.2014.926153" />. С чаем матча вы получите энергию кофеина без нарушения сна, раздражительности и тревоги.
 
 ---
 
@@ -55,22 +69,17 @@ description: Никакой антинаучной фигни. Я прочита
 
 <!-- проблема -->
 
-Вам и мне работа доставляет массу {% include emotion.html type="rage" text="тревоги" %} и {% include emotion.html type="rage" text="стресса" %}. Дедлайны, ответственность, клиенты и начальство убивают наше счастье каждый день.
+Вам и мне работа доставляет массу <Rage>тревоги</Rage> и <Rage>стресса</Rage>. Дедлайны, ответственность, клиенты и начальство убивают наше счастье каждый день.
 
 <!-- решение -->
 
-Л-Теанин до 2-х раз уменьшает физический и психологический стресс {% include link.html href="https://www.sciencedirect.com/science/article/pii/S0301051106001451" %} и приносит чувство {% include emotion.html type="calm" text="релаксации" %} {% include link.html href="https://www.ncbi.nlm.nih.gov/pubmed/18296328" %}.
+Л-Теанин до 2-х раз уменьшает физический и психологический стресс <CounterLnk href="https://www.sciencedirect.com/science/article/pii/S0301051106001451" /> и приносит чувство <Calm>релаксации</Calm> <CounterLnk href="https://www.ncbi.nlm.nih.gov/pubmed/18296328" />.
 
-Дело в том, что Л-Теанин увеличивает концентрацию гормонов счастья серотонина и дофамина в мозге {% include link.html href="https://link.springer.com/article/10.1023/A:1022490806093" %}.
+Дело в том, что Л-Теанин увеличивает концентрацию гормонов счастья серотонина и дофамина в мозге <CounterLnk href="https://link.springer.com/article/10.1023/A:1022490806093" />.
 
 Вы замурчите от удовольствия уже через 2 минуты после чашки чая матча.
 
-{% include image.html
-    class="i3x2"
-    image="/blog/smiling-cat.jpg"
-    alt="Довольная кошка, которую гладят"
-    caption="Ваше лицо после чашки чая матча"
-    %}
+<ImageBlock image="smiling_cat" />
 
 ---
 
@@ -78,13 +87,13 @@ description: Никакой антинаучной фигни. Я прочита
 
 <!-- проблема -->
 
-80% видимых возрастных изменений кожи связано с вредным воздействием солнца {% include link.html href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3790843/" %}. Солнечное ультрафиолетовое излучение вызывает морщины и рак кожи.
+80% видимых возрастных изменений кожи связано с вредным воздействием солнца <CounterLnk href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3790843/" />. Солнечное ультрафиолетовое излучение вызывает морщины и рак кожи.
 
 <!-- решение -->
 
-Чай матча увеличивает устойчивость кожи к ультрафиолету в 1.8 раза благодаря EGCG {% include link.html href="http://holistic-bio.com/science/pdf/22.%20Skin%20Pharm%20Physio%202009.pdf" %}. Это разница между небольшим покраснением и серьёзным ожогом.
+Чай матча увеличивает устойчивость кожи к ультрафиолету в 1.8 раза благодаря EGCG <CounterLnk href="http://holistic-bio.com/science/pdf/22.%20Skin%20Pharm%20Physio%202009.pdf" />. Это разница между небольшим покраснением и серьёзным ожогом.
 
-Таким образом чай матча защитит вас от морщин и преждевременного старения {% include link.html href="https://www.ncbi.nlm.nih.gov/pubmed/29316635" %}.
+Таким образом чай матча защитит вас от морщин и преждевременного старения <CounterLnk href="https://www.ncbi.nlm.nih.gov/pubmed/29316635" />.
 
 ---
 
@@ -100,15 +109,15 @@ description: Никакой антинаучной фигни. Я прочита
 
 <!-- проблема -->
 
-До 21 000 000 россиян ежегодно тратит неделю времени на головную боль и температуру {% include link.html href="http://www.euro.who.int/ru/health-topics/communicable-diseases/influenza/data-and-statistics" %}.
+До 21 000 000 россиян ежегодно тратит неделю времени на головную боль и температуру <CounterLnk href="http://www.euro.who.int/ru/health-topics/communicable-diseases/influenza/data-and-statistics" />.
 
 <!-- решение -->
 
-Исследования показали, что чай матча увеличивают вашу устойчивость к гриппу в 3 раза. Шанс заболеть в сезон уменьшается с 13% до 4% {% include link.html href="https://bmccomplementalternmed.biomedcentral.com/articles/10.1186/1472-6882-11-15" %}.
+Исследования показали, что чай матча увеличивают вашу устойчивость к гриппу в 3 раза. Шанс заболеть в сезон уменьшается с 13% до 4% <CounterLnk href="https://bmccomplementalternmed.biomedcentral.com/articles/10.1186/1472-6882-11-15" />.
 
 > EGCG зеленого чая связываются с молекулой гемагглютинина вируса гриппа, тем самым подавляют его способность проникать в клетки. Л-Теанин также повышает иммунитет через улучшение функции γδ T-клеток при гриппозной инфекции.
 
-Чай матча укрепит ваш иммунитет {% include link.html href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3594666/" %}.
+Чай матча укрепит ваш иммунитет <CounterLnk href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3594666/" />.
 
 ---
 
@@ -116,22 +125,17 @@ description: Никакой антинаучной фигни. Я прочита
 
 <!-- проблема -->
 
-Не бывает сладкого поцелую без свежего дыхания. 90% неприятного запаха изо рта связано с бактериями {% include link.html href="https://www.tandfonline.com/doi/abs/10.1080/10426507.2012.736894" %}.
+Не бывает сладкого поцелую без свежего дыхания. 90% неприятного запаха изо рта связано с бактериями <CounterLnk href="https://www.tandfonline.com/doi/abs/10.1080/10426507.2012.736894" />.
 
 <!-- решение -->
 
-Чай матча убивает бактерии и тем самым защищает вас от неприятного запаха. Согласно исследованиям чай матча побеждает жвачку и мятные драже в битве за ваши поцелуи {% include link.html href="https://www.ncbi.nlm.nih.gov/pubmed/18388413" %}.
+Чай матча убивает бактерии и тем самым защищает вас от неприятного запаха. Согласно исследованиям чай матча побеждает жвачку и мятные драже в битве за ваши поцелуи <CounterLnk href="https://www.ncbi.nlm.nih.gov/pubmed/18388413" />.
 
-{% include image.html
-    class="i3x2"
-    image="/blog/matcha_vs_gum_and_mints.png"
-    alt="График сравнения эффективности зубной пасты, чая матча, жвачки и мятных драже для борьбы с неприятным запахом изо рта"
-    caption="Чай матча наравне с зубной пастой"
-    %}
+<ImageBlock image="matcha_vs_gum_and_mints" />
 
 Кофе портит ваши поцелуи.
 
-Ваша слюна обладает антибактериальными свойствами и защищает вас от неприятного запаха {% include link.html href="https://www.ncbi.nlm.nih.gov/pubmed/9860091" %}.
+Ваша слюна обладает антибактериальными свойствами и защищает вас от неприятного запаха <CounterLnk href="https://www.ncbi.nlm.nih.gov/pubmed/9860091" />.
 
 Кофе вызывает сухость во рту и препятствует выработке слюны. Из-за этого бактерии размножаются быстрее.
 
@@ -143,13 +147,13 @@ description: Никакой антинаучной фигни. Я прочита
 
 <!-- проблема -->
 
-Вы и я, скорее всего, умрем от ишемической болезни сердца или от инсульта. Об этом говорит статистика ВОЗ {% include link.html href="https://www.who.int/ru/news-room/fact-sheets/detail/the-top-10-causes-of-death" %}.
+Вы и я, скорее всего, умрем от ишемической болезни сердца или от инсульта. Об этом говорит статистика ВОЗ <CounterLnk href="https://www.who.int/ru/news-room/fact-sheets/detail/the-top-10-causes-of-death" />.
 
 <!-- решение -->
 
-Чай матча защищает от этих болезней {% include link.html href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2748751/" %}.
+Чай матча защищает от этих болезней <CounterLnk href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2748751/" />.
 
-Учёные 11 лет следили за 40530 японцев и выяснили, что люди, пьющие много зелёного чая, умирали на 23% реже {% include link.html href="https://jamanetwork.com/journals/jama/article-abstract/203337" %}.
+Учёные 11 лет следили за 40530 японцев и выяснили, что люди, пьющие много зелёного чая, умирали на 23% реже <CounterLnk href="https://jamanetwork.com/journals/jama/article-abstract/203337" />.
 
 Таким образом чай матча продлит вашу жизнь.
 
@@ -173,24 +177,21 @@ description: Никакой антинаучной фигни. Я прочита
 
 ---
 
-<!-- ## Вы станете самым крутым котиком
+<ImageBlock image="gift_matcha_tea_box_from_top_ex" />
 
-Если запостите ссылку на статью в социальной сети или мессенджере. Вы поможете сайту и навсегда останетесь в моем сердце.
-
-Спасибо! -->
-
-<!-- {% include image.html class="i1x1" image="gift_matcha_tea_box_from_top_ex.jpg" alt="Церемониальный чай матча, венчик и чаша от Flow Brew" caption="Так выглядит наш чайный набор" %}
+<!-- 
+{% include image.html class="i1x1" image="gift_matcha_tea_box_from_top_ex.jpg" alt="Церемониальный чай матча, венчик и чаша от Flow Brew" caption="Так выглядит наш чайный набор" %} -->
 
 ## Где купить чай матча
 
-Закажите японский церемониальный чай матча [в нашем магазине](/).
+Закажите японский церемониальный чай матча [в моем магазине](/).
 
 - вы получите бесплатный набор для заварки чая с первой покупкой
 - вам бесплатно доставят чай за 1 день по Спб и 2-4 дня по Москве
 
-Чай подарит вашему утру насыщенный обволакивающий вкус, ягодный аромат и кремого-ореховое послевкусие. -->
+Чай подарит вашему утру насыщенный обволакивающий вкус, ягодный аромат и кремого-ореховое послевкусие.
 
-<!-- <script async data-uid="0333747c58" src="https://flowbrew.ck.page/0333747c58/index.js"></script> -->
+---
 
 ## Заключение
 
@@ -200,27 +201,3 @@ description: Никакой антинаучной фигни. Я прочита
 
 Эти знания делают вас экспертом по пользе чая матча.
 
-{% include social.html %}
-
-## Читайте далее
-
-[Миф о чае матча (об этом не знаю даже продавцы чая)]({{ '/blog/mif-o-chae-matcha' | relative_url }})
-
----
-
-{% include signature.html %}
-
----
-
-{% include image.html class="i1x1" image="gift_matcha_tea_box_from_top_ex.jpg" alt="Церемониальный чай матча, венчик и чаша от Flow Brew" caption="Так выглядит наш чайный набор" %}
-
-## Где купить чай матча
-
-Закажите японский церемониальный чай матча [в нашем магазине]({{ '/' | relative_url }}).
-
-- вы получите бесплатный набор для заварки чая с первой покупкой
-- вам бесплатно доставят чай за 1 день по Спб и 2-4 дня по Москве
-
-Чай подарит вашему утру насыщенный обволакивающий вкус, ягодный аромат и кремого-ореховое послевкусие.
-
----

@@ -22,40 +22,20 @@ import {
   Blockquote,
   Strong,
   Em,
+  MDXComponents,
 } from "../common"
-
-const TypographyWrapper = (Component, mt) => ({ children, ...props }) => (
-  <Container>
-    <Component children={children} mt={mt} {...props} />
-  </Container>
-)
-
-const components = {
-  h1: TypographyWrapper(H, 8),
-  h2: TypographyWrapper(H2, 8),
-  h3: TypographyWrapper(H3, 8),
-  h4: TypographyWrapper(H4, 8),
-  p: TypographyWrapper(P),
-  ul: TypographyWrapper(UL),
-  li: LI,
-  thematicBreak: TypographyWrapper(ThematicBreak),
-  hr: TypographyWrapper(HR),
-  a: A,
-  img: IMG,
-  blockquote: TypographyWrapper(Blockquote),
-  strong: Strong,
-  em: Em,
-}
 
 const PageLayout = ({ children, pageContext, ...props }) => {
   return (
     <MainLayout {...props}>
-      <MDXProvider components={components}>
+      <MDXProvider components={MDXComponents}>
         <Box pt={4} pb={8}>
           <Section>
             {pageContext && (
               <Box mb={4}>
-                <components.h1>{pageContext.frontmatter.title}</components.h1>
+                <MDXComponents.h1>
+                  {pageContext.frontmatter.title}
+                </MDXComponents.h1>
               </Box>
             )}
             {children}

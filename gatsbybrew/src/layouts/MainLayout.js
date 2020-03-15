@@ -77,6 +77,8 @@ const useStyles = makeStyles(theme => ({
   },
   main: {
     minHeight: "100vh",
+    overflowX: "hidden",
+    counterReset: "links",
   },
   footer: {
     textAlign: "center",

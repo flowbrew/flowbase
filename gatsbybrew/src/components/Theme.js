@@ -8,7 +8,7 @@ import purple from "@material-ui/core/colors/purple"
 import green from "@material-ui/core/colors/green"
 import { fade } from "@material-ui/core/styles/colorManipulator"
 
-const theme = R.compose(
+export const theme = R.compose(
   responsiveFontSizes,
   createMuiTheme
 )({

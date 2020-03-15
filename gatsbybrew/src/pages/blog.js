@@ -80,7 +80,7 @@ const PostCard = ({
 
   return (
     <Grid item xs={12} sm={6}>
-      <Link to={path} style={{textDecoration: "none"}}>
+      <Link to={path} style={{ textDecoration: "none" }}>
         <Card>
           <CardActionArea>
             <CardHeader
@@ -114,15 +114,22 @@ const PostCard = ({
 }
 
 const BlogSection = ({ pages }) => {
+  const f = (x, i) => <PostCard key={i} {...x} />
+  const posts = R.compose(
+    mapi(f),
+    R.filter(
+      ({
+        context: {
+          frontmatter: { hidden },
+        },
+      }) => !hidden
+    )
+  )
+
   return (
     <Section>
       <Grid container spacing={3}>
-        {mapi(
-          (x, i) => (
-            <PostCard key={i} {...x} />
-          ),
-          pages
-        )}
+        {posts(pages)}
       </Grid>
     </Section>
   )
@@ -141,6 +148,7 @@ export default ({ location }) => {
               title
               image
               description
+              hidden
             }
           }
         }

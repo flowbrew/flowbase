@@ -225,7 +225,7 @@ const Header = ({ navigation, toggleContacts, fixedHeader }) => {
           )}
 
           <NavMenuButton
-            anchor={isDesktop ? "left" : "bottom"}
+            anchor={isDesktop ? "right" : "bottom"}
             navigation={navigation}
             edge="end"
             color="inherit"

@@ -112,7 +112,7 @@ export default ({ children, isHeaderButton, ...props }) => {
         isDesktop={isDesktop}
         open={state.contacts.open}
         toggleContacts={toggleContacts}
-        anchor={isDesktop ? "left" : mobileAnchor}
+        anchor={isDesktop ? "right" : mobileAnchor}
       />
     </Box>
   )

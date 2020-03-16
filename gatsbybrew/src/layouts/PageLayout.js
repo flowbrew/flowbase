@@ -30,7 +30,7 @@ const PageLayout = ({ children, pageContext, ...props }) => {
     <MainLayout {...props}>
       <MDXProvider components={MDXComponents}>
         <Box pt={4} pb={8}>
-          <Section>
+          <Section small>
             {pageContext && (
               <Box mb={4}>
                 <MDXComponents.h1>

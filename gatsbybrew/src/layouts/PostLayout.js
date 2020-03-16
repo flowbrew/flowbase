@@ -75,7 +75,7 @@ const PostHeader = ({ frontmatter }) => {
           {frontmatter.description}
         </Typography>
       </Container>
-      <ImageBlock image={frontmatter.image} />
+      <ImageBlock image={frontmatter.image} ratio={3 / 2} />
     </>
   )
 }
@@ -96,7 +96,7 @@ const PostLayout = ({ children, pageContext, ...props }) => {
       <PostContextProvider pageContext={{...pageContext, ...props}}>
         <MDXProvider components={MDXComponents}>
           <Box pt={4} pb={8}>
-            <Section>
+            <Section small>
               <PostHeader frontmatter={pageContext.frontmatter} />
               {children}
               <SocialButtons />

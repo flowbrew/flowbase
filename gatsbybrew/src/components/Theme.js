@@ -12,6 +12,15 @@ export const theme = R.compose(
   responsiveFontSizes,
   createMuiTheme
 )({
+  breakpoints: {
+    values: {
+      xs: 0,
+      sm: 760,
+      md: 960,
+      lg: 1280,
+      xl: 1920,
+    },
+  },
   palette: {
     primary: {
       main: "#000000",

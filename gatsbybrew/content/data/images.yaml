@@ -1,22 +1,22 @@
 - name: matcha_tea_dry_in_bowl_flowbrew
   image: matcha_tea_dry_in_bowl_flowbrew.jpg
-  alt: Сухой порошок чая матча Flow Brew в чаше
+  alt: Сухой порошок чая матча Флоу Брю в чаше
 
 - name: gift_matcha_tea_box_from_top_ex
   image: gift_matcha_tea_box_from_top_ex.jpg
-  alt: Чай матча, венчик и чаша в подарочной коробке Flow Brew
+  alt: Чай матча, венчик и чаша в подарочной коробке Флоу Брю
 
 - name: matcha_tea_in_hand
   image: matcha_tea_in_hand.jpg
-  alt: Чай матча Flow Brew в чаше в руке
+  alt: Чай матча Флоу Брю в чаше в руке
 
 - name: flowbrew
   image: flowbrew.jpeg
-  alt: Чай матча Flow Brew
+  alt: Чай матча Флоу Брю
 
 - name: matcha_tea_in_bowl
   image: matcha_tea_in_bowl.jpg
-  alt: Заваренный чай матча Flow Brew в чаше
+  alt: Заваренный чай матча Флоу Брю в чаше
 
 - name: matcha_tea_in_test_tube
   image: matcha_tea_in_test_tube.jpg
@@ -24,7 +24,7 @@
 
 - name: gift_matcha_tea_box_from_front
   image: gift_matcha_tea_box_from_front.jpg
-  alt: Венчик часен и чаша чаван для чая матча от Flow Brew
+  alt: Подарочный набор Флоу Брю
 
 - name: whisk
   image: whisk.jpg
@@ -36,11 +36,11 @@
 
 - name: logo_text
   image: logo_text.svg
-  alt: Логотип Flow Brew
+  alt: Логотип Флоу Брю
 
 - name: kozin_aleksey
   image: kozin_aleksey.jpg
-  alt: Козин Алексей
+  alt: Алексей Козин
 
 - name: signature
   image: signature.jpg

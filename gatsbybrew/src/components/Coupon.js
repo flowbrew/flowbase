@@ -40,7 +40,8 @@ function addDays(date, days) {
   return result
 }
 
-const couponCookieName = (product, promocode) => `${product.pid}_${promocode}`
+const couponCookieName = (product, promocode) =>
+  `flb_${product.pid}_${promocode}`
 
 const saveCoupon = (product, promocode, coupon) => {
   const cookies = new Cookies()
@@ -109,7 +110,7 @@ const fetchCouponByPromocode = (product, promocode) => {
   return newCoupon
 }
 
-const activePromocodeCookieName = product => `promocode_of_${product.pid}`
+const activePromocodeCookieName = product => `flb_promocode_of_${product.pid}`
 
 const fetchActivePromocode = product => {
   if (!product) {

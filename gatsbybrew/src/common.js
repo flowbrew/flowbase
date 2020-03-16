@@ -1,8 +1,10 @@
 import React from "react"
 import Img from "gatsby-image"
+import BackgroundImage from "gatsby-background-image"
 import Ratio from "react-ratio"
 import * as R from "ramda"
-import { Parallax } from "react-parallax"
+// import { Parallax } from "react-parallax"
+import Parallax from "react-rellax"
 import queryString from "query-string"
 import { motion } from "framer-motion"
 
@@ -20,6 +22,8 @@ import Hidden from "@material-ui/core/Hidden"
 import { theme } from "./components/Theme"
 
 import CheckCircleIcon from "@material-ui/icons/CheckCircle"
+
+const PARALLAX_OFFSET = 3.5
 
 const useStyles = makeStyles(theme => ({
   lnk: {
@@ -41,6 +45,17 @@ const useStyles = makeStyles(theme => ({
       content: "counter(links)",
     },
   },
+  parallax: {
+    "&::before": {
+      width: `${100 + PARALLAX_OFFSET * 2}% !important`,
+      height: `${100 + PARALLAX_OFFSET * 2}% !important`,
+      top: `${-PARALLAX_OFFSET}% !important`,
+      left: `${-PARALLAX_OFFSET}% !important`,
+    },
+  },
+  subtitle: {
+    color: theme.palette.primary.light,
+  },
 }))
 
 const mapi = R.addIndex(R.map)
@@ -51,7 +66,7 @@ const FLBPaper = ({ children, ...props }) => {
 
   if (!isDesktop) {
     return (
-      <Box p={p} {...props}>
+      <Box p={p} style={{ overflow: "hidden" }} {...props}>
         {children}
       </Box>
     )
@@ -66,8 +81,13 @@ const FLBPaper = ({ children, ...props }) => {
   )
 }
 
-const Section = ({ children, ...props }) => (
-  <Container mb={4} disableGutters={true} maxWidth="md" {...props}>
+const Section = ({ children, small = false, ...props }) => (
+  <Container
+    mb={4}
+    disableGutters={true}
+    maxWidth={small ? "sm" : "md"}
+    {...props}
+  >
     {children}
   </Container>
 )
@@ -195,7 +215,9 @@ const Em = ({ children }) => (
   </Box>
 )
 
-const ImageBlock = ({ image, ratio }) => {
+const ImageBlock = ({ image, ratio = 1, parallax = true, caption = true }) => {
+  const classes = useStyles()
+  const [rect, setRect] = React.useState({})
   const data = useImage(image)
 
   if (!data) {
@@ -204,23 +226,46 @@ const ImageBlock = ({ image, ratio }) => {
 
   const { imageData, imageSharp } = data
 
+  const refCallback = elem => {
+    if (!elem) {
+      return
+    }
+    const newRect = elem.getBoundingClientRect()
+    if (JSON.stringify(newRect) != JSON.stringify(rect)) {
+      setRect(newRect)
+    }
+  }
+
+  const speed = rect.width && rect.width < 400 ? -0.25 : -0.8
+
+  const img = parallax ? (
+    <div ref={refCallback}>
+      <Parallax percentage={0.5} speed={speed}>
+        <BackgroundImage fluid={imageSharp.fluid} className={classes.parallax}>
+          <Ratio ratio={ratio} />
+        </BackgroundImage>
+      </Parallax>
+    </div>
+  ) : (
+    <BackgroundImage fluid={imageSharp.fluid}>
+      <Ratio ratio={ratio} />
+    </BackgroundImage>
+  )
+
   return (
-    <Box mt={2}>
-      <FLBPaper>
-        <Parallax
-          bgImage={imageSharp.fluid.src}
-          bgImageSrcSet={imageSharp.fluid.srcSet}
-          bgImageAlt={imageData.alt}
-          strength={120}
-        >
-          <Ratio ratio={ratio || 3 / 2}></Ratio>
-        </Parallax>
-      </FLBPaper>
-      <Box textAlign="center" mt={1}>
-        <Typography variant="subtitle1" paragraph={true}>
-          {imageData.alt}
-        </Typography>
-      </Box>
+    <Box>
+      <FLBPaper id={imageData.name}>{img}</FLBPaper>
+      {caption && (
+        <Box textAlign="center" mt={1}>
+          <Typography
+            className={classes.subtitle}
+            variant="subtitle1"
+            paragraph={true}
+          >
+            {imageData.alt}
+          </Typography>
+        </Box>
+      )}
     </Box>
   )
 }
@@ -232,14 +277,7 @@ const SmallImageBlock = ({ image, noTitle }) => {
     <Box mb={2}>
       <Hidden smUp>
         <Box textAlign="center">
-          <Parallax
-            bgImage={imageSharp.fluid.src}
-            bgImageSrcSet={imageSharp.fluid.srcSet}
-            bgImageAlt={imageData.alt}
-            strength={60}
-          >
-            <Ratio ratio={1 / 1}></Ratio>
-          </Parallax>
+          <Img fluid={{ ...imageSharp.fluid, aspectRatio: 1 }} />
           {!noTitle && <P mt={1}>{imageData.alt}</P>}
         </Box>
       </Hidden>
@@ -248,14 +286,7 @@ const SmallImageBlock = ({ image, noTitle }) => {
         <Box width="50%" textAlign="center">
           <Container>
             <Paper style={{ overflow: "hidden" }} elevation={0}>
-              <Parallax
-                bgImage={imageSharp.fluid.src}
-                bgImageSrcSet={imageSharp.fluid.srcSet}
-                bgImageAlt={imageData.alt}
-                strength={60}
-              >
-                <Ratio ratio={1 / 1}></Ratio>
-              </Parallax>
+              <Img fluid={{ ...imageSharp.fluid, aspectRatio: 1 }} />
             </Paper>
             {!noTitle && <P mt={1}>{imageData.alt}</P>}
           </Container>
@@ -333,9 +364,9 @@ const Rage = ({ children }) => {
   const n = 10
   return (
     <motion.div
-      style={{ 
-        display: "inline-block", 
-        color: theme.palette.error.main 
+      style={{
+        display: "inline-block",
+        color: theme.palette.error.main,
       }}
       animate={{
         x: [0, ...R.map(x => f(), R.range(0, n)), 0],
@@ -355,9 +386,9 @@ const Rage = ({ children }) => {
 const Calm = ({ children }) => {
   return (
     <motion.div
-      style={{ 
-        display: "inline-block", 
-        color: theme.palette.secondary.main 
+      style={{
+        display: "inline-block",
+        color: theme.palette.secondary.main,
       }}
       animate={{
         y: -theme.spacing(1),

@@ -363,7 +363,7 @@ const MainLayout = ({ children, location, fixedHeader }) => {
           <IsDesktopContextProvider>
             <Seo />
             <CssBaseline />
-            <Header navigation={data.navigation} fixedHeader={fixedHeader} />
+            <Header navigation={data.navigation} fixedHeader={true} />
             <Main>{children}</Main>
             <BottomAppBar navigation={data.navigation} />
             <Footer navigation={data.navigation} />

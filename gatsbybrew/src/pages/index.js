@@ -1,4 +1,4 @@
-import React, {useEffect} from "react"
+import React, { useEffect } from "react"
 import Img from "gatsby-image"
 import { useStaticQuery, graphql } from "gatsby"
 import { MDXRenderer } from "gatsby-plugin-mdx"
@@ -7,9 +7,12 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faMugHot } from "@fortawesome/free-solid-svg-icons"
 import Link from "@material-ui/core/Link"
 import uniqueId from "lodash/uniqueId"
-import { Parallax } from "react-parallax"
+// import { Parallax } from "react-parallax"
 import Ratio from "react-ratio"
 import { isFunction } from "lodash"
+
+import BackgroundImage from "gatsby-background-image"
+import Parallax from "react-rellax"
 
 import { makeStyles, useTheme } from "@material-ui/core/styles"
 import Typography from "@material-ui/core/Typography"
@@ -145,6 +148,7 @@ const SimpleInDepthBenefits = () => {
     const swap2 = !(useIsDesktop() && !swap)
 
     return (
+      <Box mb={4}>
       <Section>
         <Grid className={classes.feature} container>
           <Grid item xs={12} sm={6}>
@@ -155,13 +159,14 @@ const SimpleInDepthBenefits = () => {
           </Grid>
         </Grid>
       </Section>
+      </Box>
     )
   }
 
   return (
     <>
       <Benefit title="Здравствуйте" image="kozin_aleksey">
-        <P>Меня зовут Алексей Козин. Я директор Flow Brew.</P>
+        <P>Меня зовут Алексей Козин. Я директор Флоу Брю.</P>
       </Benefit>
       <Benefit
         title="Японское Качество"
@@ -192,8 +197,8 @@ const OfferHeader = () => {
 
   return (
     <Box ml={1} mb={isDesktop ? 0 : 2} mt={isDesktop ? 3 : 0}>
-      <Typography variant="h2" component="h2" className={classes.fancy}>
-        Flow Brew
+      <Typography variant="h2" component="h2"  paragraph={true}>
+        Флоу Брю
       </Typography>
       <Grid container>
         <Grid>
@@ -213,7 +218,7 @@ const OfferHeader = () => {
 
 const OfferImages = () => {
   const [state, setState] = React.useState({
-    selectedImage: null,
+    selectedImage: "flowbrew",
   })
 
   const { imageData, imageSharp } = useImage(state.selectedImage || "flowbrew")
@@ -240,17 +245,10 @@ const OfferImages = () => {
   return (
     <Grid container>
       <Grid item xs={12}>
-        <FLBPaper>
           <div id="selected_image">
-            <Parallax
-              bgImage={imageSharp.fluid.src}
-              bgImageSrcSet={imageSharp.fluid.srcSet}
-              strength={50}
-            >
-              <Ratio ratio={1 / 1}></Ratio>
-            </Parallax>
+            <ImageBlock image={state.selectedImage} caption={false} />
+            {/* <Img fluid={{ ...imageSharp.fluid, aspectRatio: 1 }} /> */}
           </div>
-        </FLBPaper>
       </Grid>
       <PreviewImage id="preview_image_1" image="flowbrew" />
       <PreviewImage id="preview_image_2" image="matcha_tea_in_hand" />
@@ -428,13 +426,13 @@ const OfferSection = ({ data }) => {
     product: data.product || {},
   })
 
-  useEffect(()=>{
+  useEffect(() => {
     const product = applyCoupon(data.product)
     setState(prevState => {
       return { ...prevState, product: product }
     })
   }, [])
-  
+
   const isDesktop = useIsDesktop()
 
   const rejections = [

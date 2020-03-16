@@ -1,7 +1,7 @@
 import React from "react"
 import { useStaticQuery, graphql } from "gatsby"
 import * as R from "ramda"
-import Parallax from "react-rellax"
+// import Parallax from "react-rellax"
 
 const ImageContext = React.createContext({})
 

@@ -93,6 +93,10 @@ RUN pytest --runslow \
         ./tests/test_gramma.py \
         ./tests/test_website_build.py
 
+FROM 18fgsa/html-proofer:latest AS html-proofer
+COPY --from=build-tester /flowbase/pybrew/public/ ./public/
+RUN htmlproofer ./public/
+
 # DEPLOYING FRONTEND
 
 FROM terraform-base AS frontend-deployer
@@ -101,7 +105,7 @@ COPY terrabrew/roots/frontend ./roots/frontend
 
 WORKDIR /flowbase/terrabrew/roots/frontend
 COPY /gatsbybrew/routing_rules.json ./public/
-COPY --from=build-tester /flowbase/pybrew/public/ ./public
+COPY --from=html-proofer ./public/ ./public
 RUN     envsubst < main.tfx | tee main.tf && \
         terraform init && terraform apply -auto-approve && \
         terraform output website_dns_endpoint > website_url

@@ -29,8 +29,7 @@ def all_texts_io(path):
 
     h = html2text.HTML2Text()
     h.ignore_links = True
-    h.images_to_alt = True
-    # h.ignore_tables = True
+    h.ignore_images = True
     h.body_width = 0
 
     def _get_text_io(path):

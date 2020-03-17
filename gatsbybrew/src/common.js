@@ -126,7 +126,7 @@ const H4 = ({ children, ...props }) => (
 
 const P = ({ children, ...props }) => (
   <Box {...props}>
-    <Typography variant="body1" component="div" paragraph={true}>
+    <Typography variant="body1" component="p" paragraph={true}>
       {children}
     </Typography>
   </Box>
@@ -146,11 +146,7 @@ const LI = ({ children, ...props }) => (
   </Box>
 )
 
-const ThematicBreak = ({ children }) => (
-  <Typography variant="body1" paragraph={true}>
-    {children}
-  </Typography>
-)
+const ThematicBreak = ({ children }) => null
 
 const HR = () => (
   <Box textAlign="center" mt={8}>
@@ -363,7 +359,7 @@ const Rage = ({ children }) => {
   const f = () => getRandomInt(-theme.spacing(0.25), theme.spacing(0.25))
   const n = 10
   return (
-    <motion.div
+    <motion.span
       style={{
         display: "inline-block",
         color: theme.palette.error.main,
@@ -379,13 +375,13 @@ const Rage = ({ children }) => {
       }}
     >
       {children}
-    </motion.div>
+    </motion.span>
   )
 }
 
 const Calm = ({ children }) => {
   return (
-    <motion.div
+    <motion.span
       style={{
         display: "inline-block",
         color: theme.palette.secondary.main,
@@ -400,7 +396,7 @@ const Calm = ({ children }) => {
       }}
     >
       {children}
-    </motion.div>
+    </motion.span>
   )
 }
 

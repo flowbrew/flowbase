@@ -149,16 +149,16 @@ const SimpleInDepthBenefits = () => {
 
     return (
       <Box mb={4}>
-      <Section>
-        <Grid className={classes.feature} container>
-          <Grid item xs={12} sm={6}>
-            {swap2 ? textBlock : imageBlock}
+        <Section>
+          <Grid className={classes.feature} container>
+            <Grid item xs={12} sm={6}>
+              {swap2 ? textBlock : imageBlock}
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              {!swap2 ? textBlock : imageBlock}
+            </Grid>
           </Grid>
-          <Grid item xs={12} sm={6}>
-            {!swap2 ? textBlock : imageBlock}
-          </Grid>
-        </Grid>
-      </Section>
+        </Section>
       </Box>
     )
   }
@@ -173,10 +173,7 @@ const SimpleInDepthBenefits = () => {
         image="matcha_tea_in_test_tube"
         swap={true}
       >
-        <P>Я попробовал 20 сортов японского чая матча и отобрал лучший.</P>
-        <P>
-          Я уделил внимание как и вкусу чая, так и его тонизирующему эффекту.
-        </P>
+        <P>Я попробовал 20 сортов японского чая матча и выбрал ярчайший, ароматный и тонизирующий чай.</P>
       </Benefit>
       <Benefit
         title="Венчик и Чаша в Подарок"
@@ -197,7 +194,7 @@ const OfferHeader = () => {
 
   return (
     <Box ml={1} mb={isDesktop ? 0 : 2} mt={isDesktop ? 3 : 0}>
-      <Typography variant="h2" component="h2"  paragraph={true}>
+      <Typography variant="h2" component="h2" paragraph={true}>
         Флоу Брю
       </Typography>
       <Grid container>
@@ -245,10 +242,10 @@ const OfferImages = () => {
   return (
     <Grid container>
       <Grid item xs={12}>
-          <div id="selected_image">
-            <ImageBlock image={state.selectedImage} caption={false} />
-            {/* <Img fluid={{ ...imageSharp.fluid, aspectRatio: 1 }} /> */}
-          </div>
+        <div id="selected_image">
+          <ImageBlock image={state.selectedImage} caption={false} />
+          {/* <Img fluid={{ ...imageSharp.fluid, aspectRatio: 1 }} /> */}
+        </div>
       </Grid>
       <PreviewImage id="preview_image_1" image="flowbrew" />
       <PreviewImage id="preview_image_2" image="matcha_tea_in_hand" />
@@ -513,6 +510,12 @@ const PaperSection = ({ title, children, ...props }) => (
 const ReviewsSection2 = () => {
   const classes = useStyles()
 
+  const gramma_check_fix_separates_name_and_body = (
+    <Box component="p" m={0}>
+      {" "}
+    </Box>
+  )
+
   const Review = ({ author, text, image }) => {
     const avatar = useImage(image)
     return (
@@ -527,11 +530,14 @@ const ReviewsSection2 = () => {
             }
             title={author}
           />
+          {gramma_check_fix_separates_name_and_body}
           <CardContent>
             <Box mb={1}>
               <Rating name="size-medium" defaultValue={5} readOnly />
             </Box>
-            <Typography variant="body1">{text}</Typography>
+            <Typography variant="body1" component="p">
+              {text}
+            </Typography>
           </CardContent>
         </Card>
       </Box>

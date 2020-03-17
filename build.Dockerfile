@@ -37,7 +37,8 @@ WORKDIR /flowbase/pybrew
 COPY pybrew/requirements.txt .
 RUN pip install -r requirements.txt
 COPY pybrew/ .
-RUN pip install .
+USER root
+RUN pip install -e .
 
 # BUILDING BACKEND
 
@@ -88,6 +89,8 @@ WORKDIR /flowbase/pybrew
 COPY --from=frontend-builder /flowbase/gatsbybrew/public/ ./public/
 RUN pytest --runslow \
         --WEBSITE_BUILD_PATH=./public/ \
+        ./tests/test_glvrd.py \
+        ./tests/test_gramma.py \
         ./tests/test_website_build.py
 
 # DEPLOYING FRONTEND

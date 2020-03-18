@@ -346,7 +346,7 @@ function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min
 }
 
-const Rage = ({ children }) => {
+const Rage = ({ children, ...props }) => {
   const f = () => getRandomInt(-theme.spacing(0.25), theme.spacing(0.25))
   const n = 10
   return (
@@ -364,11 +364,24 @@ const Rage = ({ children }) => {
         duration: 0.5,
         ease: "linear",
       }}
+      {...props}
     >
       {children}
     </motion.span>
   )
 }
+
+const Enegry = ({ children, ...props }) => (
+  <Rage
+    style={{
+      display: "inline-block",
+      color: theme.palette.secondary.main,
+    }}
+    {...props}
+  >
+    {children}
+  </Rage>
+)
 
 const Calm = ({ children }) => {
   return (
@@ -422,4 +435,5 @@ export {
   Rage,
   Calm,
   useEffectOnlyOnce,
+  Enegry,
 }

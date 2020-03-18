@@ -50,10 +50,13 @@ import {
   CrossedBox,
   RedBox,
   useEffectOnlyOnce,
+  Calm,
+  Enegry,
 } from "../common"
 import Hero from "../components/Hero"
 import { applyCoupon } from "../components/Coupon"
 import ContactsButton from "../components/ContactsButton"
+import GiftCounter from "../components/GiftCounter"
 
 const useStyles = makeStyles(theme => ({
   lnk: {
@@ -107,11 +110,13 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-const SimpleInDepthBenefits = () => {
+const SimpleInDepthBenefits = ({ data }) => {
   const classes = useStyles()
 
   const Benefit = ({ children, image, title, swap }) => {
-    const imageBlock = <ImageBlock image={image} ratio={1 / 1} />
+    const imageBlock = (
+      <ImageBlock image={image} ratio={1 / 1} caption={false} />
+    )
 
     const textBlock = (
       <Container className={classes.text}>
@@ -141,7 +146,7 @@ const SimpleInDepthBenefits = () => {
   return (
     <>
       <Benefit title="Здравствуйте" image="kozin_aleksey">
-        <P>Меня зовут Алексей Козин. Я директор Флоу Брю.</P>
+        <P>Меня зовут Алексей Козин. Я директор Флоу Брю. И я <Calm>обожаю</Calm> чай матча.</P>
       </Benefit>
       <Benefit
         title="Японское Качество"
@@ -149,15 +154,15 @@ const SimpleInDepthBenefits = () => {
         swap={true}
       >
         <P>
-          Я попробовал 20 сортов японского чая матча и выбрал ярчайший,
-          ароматный и тонизирующий чай.
+          Я попробовал 20 сортов японского чая матча и выбрал для вас яркий,
+          ароматный и <Enegry>тонизирующий</Enegry> чай.
         </P>
       </Benefit>
       <Benefit
         title="Венчик и Чаша в Подарок"
         image="gift_matcha_tea_box_from_front"
       >
-        <P>Я дарю бесплатный набор для заварки новым клиентам.</P>
+        <GiftCounter product={data.product} />
       </Benefit>
       <Benefit title="Программа Замены Венчика" image="whisk" swap={true}>
         <P>Я бесплатно заменю вам венчик в случае его износа.</P>
@@ -182,7 +187,9 @@ const OfferHeader = () => {
         <Grid>
           <Box ml={1}>
             <Typography variant="body1">
-              <a className={classes.lnk} href="#reviews">3 отзыва</a>
+              <a className={classes.lnk} href="#reviews">
+                3 отзыва
+              </a>
             </Typography>
           </Box>
         </Grid>
@@ -429,7 +436,15 @@ const OfferSection = ({ data }) => {
         <PriceBlock product={state.product} />
         <OfferBenefits />
         <BuyButton id="buybutton_1" />
-        <Box p={1}>
+        <Container>
+          <GiftCounter
+            product={data.product}
+            fontStyle="italic"
+            mt={4}
+            mb={0}
+          />
+        </Container>
+        <Box p={1} mb={4}>
           <Paper elevation={0}>
             <WorkWithRejections rejections={rejections} />
           </Paper>
@@ -448,6 +463,14 @@ const OfferSection = ({ data }) => {
                 <PriceBlock product={state.product} />
                 <OfferBenefits />
                 <BuyButton id="buybutton_1" />
+                <Container>
+                  <GiftCounter
+                    product={data.product}
+                    fontStyle="italic"
+                    mt={4}
+                    mb={0}
+                  />
+                </Container>
               </Grid>
             </Grid>
           </FLBPaper>
@@ -694,7 +717,6 @@ export default ({ location, ...props }) => {
         name
         pid
         price
-        quantity
         images
         benefits
         weight
@@ -717,7 +739,7 @@ export default ({ location, ...props }) => {
           <Hero />
         </Container>
       </Box>
-      <SimpleInDepthBenefits />
+      <SimpleInDepthBenefits data={data} />
       <OfferSection data={data} />
       <BottomSection />
       <BuyButtonSection />

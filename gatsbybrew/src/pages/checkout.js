@@ -414,7 +414,8 @@ const CheckoutForm = ({ data }) => {
     })
 
     try {
-      const response = await fetch(process.env.GATSBY_REST_API, {
+      const response = await fetch(
+        process.env.GATSBY_REST_API + '/checkout', {
         method: "POST",
         cache: "no-cache",
         body: JSON.stringify({
@@ -468,7 +469,6 @@ export default ({ location }) => {
         name
         pid
         price
-        quantity
         images
         benefits
         in_depth_benefits

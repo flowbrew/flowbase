@@ -130,4 +130,6 @@ RUN npm install
 COPY cypressbrew/ .
 COPY --from=frontend-deployer \
         /flowbase/terrabrew/roots/frontend/website_url website_url
+COPY --from=backend-deployer \
+        /flowbase/terrabrew/roots/backend/rest_api_url rest_api_url
 RUN CYPRESS_WEBSITE_URL=http://$(cat website_url)/ npx cypress run --headless -b chrome

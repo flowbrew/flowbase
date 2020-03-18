@@ -1,71 +1,46 @@
-import React, { useEffect } from "react"
+import React from "react"
 import Img from "gatsby-image"
-import { useStaticQuery, graphql } from "gatsby"
-import { MDXRenderer } from "gatsby-plugin-mdx"
-import { SideBySideMagnifier } from "react-image-magnifiers"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faMugHot } from "@fortawesome/free-solid-svg-icons"
-import Link from "@material-ui/core/Link"
-import uniqueId from "lodash/uniqueId"
-// import { Parallax } from "react-parallax"
-import Ratio from "react-ratio"
-import { isFunction } from "lodash"
-
-import BackgroundImage from "gatsby-background-image"
-import Parallax from "react-rellax"
-
-import { makeStyles, useTheme } from "@material-ui/core/styles"
-import Typography from "@material-ui/core/Typography"
-import Container from "@material-ui/core/Container"
-import Box from "@material-ui/core/Box"
-import Grid from "@material-ui/core/Grid"
-import Paper from "@material-ui/core/Paper"
-import Hidden from "@material-ui/core/Hidden"
-import Card from "@material-ui/core/Card"
-import CardHeader from "@material-ui/core/CardHeader"
-import CardContent from "@material-ui/core/CardContent"
-import Avatar from "@material-ui/core/Avatar"
-import Button from "@material-ui/core/Button"
+import { useStaticQuery, graphql, navigate } from "gatsby"
+import { makeStyles } from "@material-ui/core/styles"
+import {
+  GridList,
+  ListItemText,
+  ListItemIcon,
+  ListItem,
+  List,
+  ExpansionPanelSummary,
+  ExpansionPanelDetails,
+  ExpansionPanel,
+  Button,
+  Avatar,
+  CardContent,
+  CardHeader,
+  Card,
+  Hidden,
+  Paper,
+  Grid,
+  Box,
+  Container,
+  Typography,
+  GridListTile,
+  Tabs,
+  Tab,
+} from "@material-ui/core"
 import Rating from "@material-ui/lab/Rating"
-import ExpansionPanel from "@material-ui/core/ExpansionPanel"
-import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails"
-import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary"
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore"
-import LocalCafeRounded from "@material-ui/icons/LocalCafeRounded"
-import Icon from "@material-ui/core/Icon"
-import FolderIcon from "@material-ui/icons/Folder"
-import LocalShippingRounded from "@material-ui/icons/LocalShippingRounded"
-import LocalShippingOutlinedIcon from "@material-ui/icons/LocalShippingOutlined"
-import FavoriteRounded from "@material-ui/icons/FavoriteRounded"
-import FavoriteBorderOutlinedIcon from "@material-ui/icons/FavoriteBorderOutlined"
-import EcoRounded from "@material-ui/icons/EcoRounded"
-import EcoOutlinedIcon from "@material-ui/icons/EcoOutlined"
-import CheckCircleIcon from "@material-ui/icons/CheckCircle"
-import CheckCircleOutlineOutlinedIcon from "@material-ui/icons/CheckCircleOutlineOutlined"
-import FreeBreakfastOutlinedIcon from "@material-ui/icons/FreeBreakfastOutlined"
-import List from "@material-ui/core/List"
-import ListItem from "@material-ui/core/ListItem"
-import ListItemIcon from "@material-ui/core/ListItemIcon"
-import ListItemText from "@material-ui/core/ListItemText"
-import CheckIcon from "@material-ui/icons/Check"
-import useMediaQuery from "@material-ui/core/useMediaQuery"
-import GridList from "@material-ui/core/GridList"
-import GridListTile from "@material-ui/core/GridListTile"
-import GridListTileBar from "@material-ui/core/GridListTileBar"
-import IconButton from "@material-ui/core/IconButton"
-import StarBorderIcon from "@material-ui/icons/StarBorder"
-import Tabs from "@material-ui/core/Tabs"
-import Tab from "@material-ui/core/Tab"
-
+import {
+  CheckCircleOutlineOutlined,
+  FavoriteBorderOutlined,
+  EcoOutlined,
+  LocalShippingOutlined,
+  ExpandMore,
+} from "@material-ui/icons"
 import MainLayout from "../layouts/MainLayout"
 import { useImage } from "../components/ImageContext"
 import { useIsDesktop } from "../components/IsDesktopContext"
-import { useMdx } from "../components/MdxContext"
 import StyledLink from "../components/StyledLink"
 import {
   mapi,
   Section,
-  H,
   H2,
   P,
   UL,
@@ -74,10 +49,10 @@ import {
   ImageBlock,
   CrossedBox,
   RedBox,
+  useEffectOnlyOnce,
 } from "../common"
 import Hero from "../components/Hero"
 import { applyCoupon } from "../components/Coupon"
-import LogoText from "../../content/images/logo_text.svg"
 import ContactsButton from "../components/ContactsButton"
 
 const useStyles = makeStyles(theme => ({
@@ -207,7 +182,7 @@ const OfferHeader = () => {
         <Grid>
           <Box ml={1}>
             <Typography variant="body1">
-              <StyledLink to="#reviews">3 отзыва</StyledLink>
+              <a className={classes.lnk} href="#reviews">3 отзыва</a>
             </Typography>
           </Box>
         </Grid>
@@ -220,8 +195,6 @@ const OfferImages = () => {
   const [state, setState] = React.useState({
     selectedImage: "flowbrew",
   })
-
-  const { imageData, imageSharp } = useImage(state.selectedImage || "flowbrew")
 
   const click = imageName => {
     setState({ selectedImage: imageName })
@@ -247,7 +220,6 @@ const OfferImages = () => {
       <Grid item xs={12}>
         <div id="selected_image">
           <ImageBlock image={state.selectedImage} caption={false} />
-          {/* <Img fluid={{ ...imageSharp.fluid, aspectRatio: 1 }} /> */}
         </div>
       </Grid>
       <PreviewImage id="preview_image_1" image="flowbrew" />
@@ -276,15 +248,15 @@ const OfferBenefits = () => {
     <Box ml={0}>
       <List>
         <Benefit
-          icon={<FavoriteBorderOutlinedIcon color="primary" />}
+          icon={<FavoriteBorderOutlined color="primary" />}
           text="Обволакивающий вкус и кремово-ореховое послевкусие. Ягодный аромат."
         />
         <Benefit
-          icon={<EcoOutlinedIcon color="primary" />}
+          icon={<EcoOutlined color="primary" />}
           text="Изготовлен в Японии, Киото."
         />
         <Benefit
-          icon={<LocalShippingOutlinedIcon color="primary" />}
+          icon={<LocalShippingOutlined color="primary" />}
           text="Бесплатная доставка по Москве и Спб."
         />
       </List>
@@ -292,25 +264,18 @@ const OfferBenefits = () => {
   )
 }
 
-const Promotion = () => (
-  <Typography variant="h5" align="center">
-    Бесплатный набор для заварки новым клиентам.
-  </Typography>
-)
-
 const BuyButton = ({ id }) => {
-  const classes = useStyles()
   const desktop = useIsDesktop()
 
   return (
     <Box ml={2} mr={2} mt={3}>
       <div id={id}>
         <Button
-          href="/checkout"
           size="large"
           variant="contained"
           color="secondary"
           fullWidth={!desktop}
+          onClick={() => navigate("/checkout")}
         >
           Купить
         </Button>
@@ -323,7 +288,7 @@ const WorkWithRejections = ({ rejections }) => {
   const Rejection = ({ text, to }) => (
     <ListItem>
       <ListItemIcon>
-        <CheckCircleOutlineOutlinedIcon color="secondary" />
+        <CheckCircleOutlineOutlined color="secondary" />
       </ListItemIcon>
       <ListItemText>
         <WorkWithRejectionsLink to={to} text={text} />
@@ -349,7 +314,7 @@ const WorkWithRejections = ({ rejections }) => {
 
 const WorkWithRejectionsLink = ({ to, text }) => {
   const classes = useStyles()
-  if (to == "/контакты") {
+  if (to === "/контакты") {
     return (
       <ContactsButton>
         <Box className={classes.lnk}>{text}</Box>
@@ -367,7 +332,7 @@ const WorkWithRejectionsList = ({ rejections }) => {
           <Box align="center">
             <Grid container>
               <Grid item xs={12}>
-                <CheckCircleOutlineOutlinedIcon color="secondary" />
+                <CheckCircleOutlineOutlined color="secondary" />
               </Grid>
               <Grid item xs={12}>
                 <WorkWithRejectionsLink to={to} text={text} />
@@ -426,14 +391,12 @@ const OfferSection = ({ data }) => {
     product: data.product || {},
   })
 
-  useEffect(() => {
+  useEffectOnlyOnce(() => {
     const product = applyCoupon(data.product)
     setState(prevState => {
       return { ...prevState, product: product }
     })
-  }, [])
-
-  const isDesktop = useIsDesktop()
+  })
 
   const rejections = [
     {
@@ -452,13 +415,13 @@ const OfferSection = ({ data }) => {
 
   return (
     <Section>
-      <Box mt={10} mb={10} fontStyle="italic">
-        {/* <Typography>
+      {/* <Box mt={10} mb={10} fontStyle="italic">
+        <Typography>
           <Typography variant="h4" component="h4" paragraph={true}>
             "...чай матча зарядит вас энергией и настроением..."
           </Typography>
-        </Typography> */}
-      </Box>
+        </Typography>
+      </Box> */}
 
       <Hidden smUp>
         <OfferHeader />
@@ -498,17 +461,6 @@ const OfferSection = ({ data }) => {
     </Section>
   )
 }
-
-const PaperSection = ({ title, children, ...props }) => (
-  <Section {...props}>
-    <Grid container>
-      <Grid item xs={12} sm={12}>
-        <H>{title}</H>
-        {children}
-      </Grid>
-    </Grid>
-  </Section>
-)
 
 const ReviewsSection2 = () => {
   const classes = useStyles()
@@ -587,7 +539,6 @@ const ReviewsSection2 = () => {
 }
 
 const FAQSection = () => {
-  const classes = useStyles()
   const [expanded, setExpanded] = React.useState(false)
 
   const handleChange = panel => (event, isExpanded) => {
@@ -601,7 +552,7 @@ const FAQSection = () => {
         onChange={handleChange("p1")}
       >
         <ExpansionPanelSummary
-          expandIcon={<ExpandMoreIcon />}
+          expandIcon={<ExpandMore />}
           aria-controls={"p1bh-content"}
           id={"p1bh-header"}
         >
@@ -617,63 +568,12 @@ const FAQSection = () => {
           </Box>
         </ExpansionPanelDetails>
       </ExpansionPanel>
-      {/* <ExpansionPanel
-        expanded={expanded === "p2"}
-        onChange={handleChange("p2")}
-      >
-        <ExpansionPanelSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls={"p2bh-content"}
-          id={"p2bh-header"}
-        >
-          <Typography>Почему чай поставляется в двух упаковках</Typography>
-        </ExpansionPanelSummary>
-        <ExpansionPanelDetails>
-          <Box>
-            <UL>
-              <LI>
-                Такой объем чая в вашем заказе позволяет доставлять его
-                бесплатно. А также позволяет дарить бесплатный набор для заварки
-                новым клиентам.
-              </LI>
-              <LI>
-                Чай матча портится от контакта с воздухом. После открытия
-                упаковки у вас есть 3 недели, чтобы им насладиться. 60 г можно
-                не успеть выпить за такой короткий срок.
-              </LI>
-            </UL>
-          </Box>
-        </ExpansionPanelDetails>
-      </ExpansionPanel> */}
-      {/* <ExpansionPanel
-        expanded={expanded === "p3"}
-        onChange={handleChange("p3")}
-      >
-        <ExpansionPanelSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls={"p3bh-content"}
-          id={"p3bh-header"}
-        >
-          <Typography>Зачем пить чай матча</Typography>
-        </ExpansionPanelSummary>
-        <ExpansionPanelDetails>
-          <Box>
-            <P>
-              Читайте о полезных свойствах чая матча в нашем блоге:
-              <br />
-              <StyledLink color="secondary" href="/blog" underline="always">
-                7 причин почему вы подсядете на полезный чай матча
-              </StyledLink>
-            </P>
-          </Box>
-        </ExpansionPanelDetails>
-      </ExpansionPanel> */}
       <ExpansionPanel
         expanded={expanded === "p4"}
         onChange={handleChange("p4")}
       >
         <ExpansionPanelSummary
-          expandIcon={<ExpandMoreIcon />}
+          expandIcon={<ExpandMore />}
           aria-controls={"p4bh-content"}
           id={"p4bh-header"}
         >
@@ -732,7 +632,6 @@ const BuyButtonSection = () => (
 )
 
 const BottomSection = () => {
-  const classes = useStyles()
   const [value, setValue] = React.useState(0)
 
   const handleChange = (event, newValue) => {
@@ -809,7 +708,7 @@ export default ({ location, ...props }) => {
       location={location}
       pageContext={{
         frontmatter: {
-          title: "Японский чай матча",
+          title: "Чай матча",
         },
       }}
     >

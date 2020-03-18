@@ -2,28 +2,8 @@ import React from "react"
 import PropTypes from "prop-types"
 import MainLayout from "../layouts/MainLayout"
 import { MDXProvider } from "@mdx-js/react"
-import { Container, Box } from "@material-ui/core"
-import Typography from "@material-ui/core/Typography"
-
-import {
-  mapi,
-  Section,
-  H,
-  H2,
-  H3,
-  H4,
-  P,
-  UL,
-  LI,
-  ThematicBreak,
-  HR,
-  A,
-  IMG,
-  Blockquote,
-  Strong,
-  Em,
-  MDXComponents,
-} from "../common"
+import { Box } from "@material-ui/core"
+import { Section, MDXComponents } from "../common"
 
 const PageLayout = ({ children, pageContext, ...props }) => {
   return (

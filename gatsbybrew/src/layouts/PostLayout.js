@@ -11,27 +11,10 @@ import {
 } from "@material-ui/core"
 import { useImage } from "../components/ImageContext"
 import {
-  mapi,
   Section,
-  H,
-  H2,
-  H3,
-  H4,
-  P,
-  UL,
-  LI,
-  ThematicBreak,
-  HR,
-  A,
-  IMG,
-  Blockquote,
-  Strong,
-  Em,
   MDXComponents,
   ImageBlock,
 } from "../common"
-import { motion } from "framer-motion"
-
 import SocialButtons from "../components/SocialButtons"
 import Signature from "../components/Signature"
 

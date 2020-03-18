@@ -4,8 +4,7 @@ AWS_DEFAULT_REGION="eu-west-1"
 
 REPO_BRANCH=$(git rev-parse --abbrev-ref HEAD)
 BRANCH="${BRANCH:-$REPO_BRANCH}"
-SHA=$(git rev-parse --verif HEAD)
-
+SHA="$(git rev-parse HEAD)"
 TAG=${BRANCH}_${1/.Dockerfile/}
 
 BUILDPARAMS=""

@@ -83,5 +83,18 @@ module.exports = {
         },
       },
     },
+    {
+      resolve: `gatsby-plugin-manifest`,
+      options: {
+        name: `Flow Brew: japanese matcha tea`,
+        short_name: `Flow Brew`,
+        start_url: `/`,
+        background_color: `#000000`,
+        theme_color: `#0097a7`,
+        display: `standalone`,
+        icon: `content/images/flow_brew_logo_top.png`,
+      },
+    },
+    `gatsby-plugin-offline`,
   ],
 }

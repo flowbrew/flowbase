@@ -1,9 +1,6 @@
 import React from "react"
-import { useStaticQuery } from "gatsby"
-import { mapi } from "../common"
 import { useTheme } from "@material-ui/core/styles"
 import useMediaQuery from "@material-ui/core/useMediaQuery"
-import * as R from "ramda"
 
 const IsDesktopContext = React.createContext({})
 

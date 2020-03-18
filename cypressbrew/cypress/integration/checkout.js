@@ -39,7 +39,7 @@ describe("Checkout", () => {
     cy.visit(Cypress.env("WEBSITE_URL") + "checkout");
     cy.get("h1").contains("Оформление заказа");
 
-    getscroll('input[name="name"]').type(chance.name());
+    getscroll('input[name="name"]').type(chance.name() + ' ' + key);
     getscroll('input[name="phone"]').type("9219203135");
     getscroll('input[value="Другой город"]').click();
     getscroll('input[name="shipping_address"]').type("Улица Пушкина 420");

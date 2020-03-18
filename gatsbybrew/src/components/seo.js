@@ -38,8 +38,8 @@ function SEO({
 
   const metaIndex =
     index &&
-    (site.siteMetadata.github.branch == "www" ||
-      site.siteMetadata.github.branch == "matcha")
+    (site.siteMetadata.github.branch === "www" ||
+      site.siteMetadata.github.branch === "matcha")
   const metaDescription = description || site.siteMetadata.description
 
   const imgId = image ? image : site.siteMetadata.image

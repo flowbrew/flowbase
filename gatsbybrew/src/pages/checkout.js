@@ -1,33 +1,22 @@
-import React, { Component, useEffect } from "react"
+import React, { useEffect } from "react"
 import { navigate } from "@reach/router"
-import Img from "gatsby-image"
 import { useStaticQuery, graphql } from "gatsby"
-
 import InputMask from "react-input-mask"
 import * as R from "ramda"
-
 import PageLayout from "../layouts/PageLayout"
 import {
   applyCoupon,
   setActivePromocode,
   expireCoupon,
 } from "../components/Coupon"
-
 import {
   mapi,
-  Section,
-  H,
-  H2,
   P,
-  UL,
-  LI,
-  FLBPaper,
-  ImageBlock,
   SmallImageBlock,
   RedBox,
   CrossedBox,
+  useEffectOnlyOnce,
 } from "../common"
-
 import {
   Container,
   Paper,
@@ -47,7 +36,6 @@ import {
   TableBody,
   CircularProgress,
 } from "@material-ui/core"
-
 import { makeStyles } from "@material-ui/core/styles"
 
 const useStyles = makeStyles(theme => ({
@@ -199,7 +187,7 @@ const OrderRow = ({ price, description, old_price, old_price_description }) => {
         )}
       </TableCell>
       <TableCell align="right">
-        {!(old_price && old_price != price) ? (
+        {!(old_price && old_price !== price) ? (
           <>{formatFloat(price)}</>
         ) : (
           <>
@@ -342,7 +330,7 @@ const CheckoutForm = ({ data }) => {
     product: data.product || {},
   })
 
-  useEffect(() => {
+  useEffectOnlyOnce(() => {
     const product = applyCoupon(data.product)
     setState(prevState => {
       return {
@@ -350,15 +338,15 @@ const CheckoutForm = ({ data }) => {
         promocode: product.promocode || "",
       }
     })
-  }, [])
+  })
 
   useEffect(() => {
-    setActivePromocode(state.product, state.promocode)
+    setActivePromocode(data.product, state.promocode)
     const product = applyCoupon(data.product)
     setState(prevState => {
       return { ...prevState, product: product }
     })
-  }, [state.promocode])
+  }, [data.product, state.promocode])
 
   const findErrorInForm = () => {
     const items = R.map(([k, v]) => [k, validate(k, v)], R.toPairs(state))

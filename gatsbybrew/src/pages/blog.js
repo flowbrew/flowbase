@@ -1,55 +1,10 @@
-import React, { Component, useEffect } from "react"
-import { navigate } from "@reach/router"
-import Img from "gatsby-image"
-import { useStaticQuery, graphql } from "gatsby"
-import StyledLink from "../components/StyledLink"
-import { Link } from "gatsby"
-
-import InputMask from "react-input-mask"
+import React from "react"
+import { useStaticQuery, graphql, navigate } from "gatsby"
 import * as R from "ramda"
-
 import PageLayout from "../layouts/PageLayout"
 import { useImage } from "../components/ImageContext"
+import { mapi, Section } from "../common"
 import {
-  applyCoupon,
-  setActivePromocode,
-  expireCoupon,
-} from "../components/Coupon"
-
-import {
-  mapi,
-  Section,
-  H,
-  H2,
-  H3,
-  P,
-  UL,
-  LI,
-  FLBPaper,
-  ImageBlock,
-  SmallImageBlock,
-  RedBox,
-  CrossedBox,
-} from "../common"
-
-import {
-  Container,
-  Paper,
-  Box,
-  TextField,
-  FormControl,
-  FormLabel,
-  RadioGroup,
-  FormControlLabel,
-  Radio,
-  Button,
-  TableContainer,
-  Table,
-  TableHead,
-  TableRow,
-  TableCell,
-  TableBody,
-  CircularProgress,
   Typography,
   Card,
   CardActionArea,
@@ -58,13 +13,7 @@ import {
   Grid,
   CardHeader,
   Avatar,
-  IconButton,
-  MoreVertIcon,
 } from "@material-ui/core"
-
-import { makeStyles } from "@material-ui/core/styles"
-
-const useStyles = makeStyles(theme => ({}))
 
 const PostCard = ({
   path,
@@ -80,9 +29,8 @@ const PostCard = ({
 
   return (
     <Grid item xs={12} sm={6}>
-      <Link to={path} style={{ textDecoration: "none" }}>
         <Card>
-          <CardActionArea>
+          <CardActionArea onClick={() => navigate(path)}>
             <CardHeader
               avatar={
                 <Avatar
@@ -108,7 +56,6 @@ const PostCard = ({
             </CardContent>
           </CardActionArea>
         </Card>
-      </Link>
     </Grid>
   )
 }
@@ -164,7 +111,7 @@ export default ({ location }) => {
       pageContext={{
         frontmatter: {
           title: "Блог",
-          description: "Японский чай матча",
+          description: "Чай матча",
           image: "hero",
         },
       }}

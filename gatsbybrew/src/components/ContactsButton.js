@@ -1,23 +1,23 @@
 import React from "react"
-import { Link } from "gatsby"
-import { styled, makeStyles } from "@material-ui/core/styles"
-
-import ListItem from "@material-ui/core/ListItem"
-import ListItemIcon from "@material-ui/core/ListItemIcon"
-import ListItemText from "@material-ui/core/ListItemText"
-import Drawer from "@material-ui/core/Drawer"
-import Avatar from "@material-ui/core/Avatar"
-import CardHeader from "@material-ui/core/CardHeader"
-import TelegramIcon from "@material-ui/icons/Telegram"
-import WhatsAppIcon from "@material-ui/icons/WhatsApp"
-import PhoneIcon from "@material-ui/icons/Phone"
-import EmailIcon from "@material-ui/icons/Email"
-import SmsIcon from "@material-ui/icons/Sms"
-import GitHubIcon from "@material-ui/icons/GitHub"
-import Box from "@material-ui/core/Box"
-import List from "@material-ui/core/List"
+import {
+  ListItem, 
+  ListItemIcon,
+  ListItemText,
+  Drawer,
+  Avatar,
+  CardHeader,
+  Box,
+  List,
+} from "@material-ui/core"
+import {
+  Telegram,
+  WhatsApp,
+  Phone,
+  Email,
+  Sms,
+  GitHub,
+} from "@material-ui/icons"
 import { useIsDesktop } from "../components/IsDesktopContext"
-
 import { useImage } from "../components/ImageContext"
 
 const ContactsDrawer = ({ open, toggleContacts, isDesktop, anchor }) => {
@@ -54,32 +54,32 @@ const ContactsDrawer = ({ open, toggleContacts, isDesktop, anchor }) => {
         />
         <List>
           <Contact
-            icon={<SmsIcon />}
+            icon={<Sms />}
             title={isDesktop ? "SMS +7-921-920-3135" : "SMS"}
             to="sms:+7-921-920-3135"
           />
           <Contact
-            icon={<TelegramIcon />}
+            icon={<Telegram />}
             title="Telegram"
             to="https://tele.gg/NToss"
           />
           <Contact
-            icon={<WhatsAppIcon />}
+            icon={<WhatsApp />}
             title="WhatsApp"
             to="https://wa.me/79219203135"
           />
           <Contact
-            icon={<EmailIcon />}
+            icon={<Email />}
             title="Email"
             to="mailto: ak@flowbrew.ru"
           />
           <Contact
-            icon={<PhoneIcon />}
+            icon={<Phone />}
             title={isDesktop ? "Phone +7-921-920-3135" : "Phone"}
             to="tel:+7-921-920-3135"
           />
           <Contact
-            icon={<GitHubIcon />}
+            icon={<GitHub />}
             title="GitHub"
             to="https://github.com/flowbrew/flowbase/issues/new?title=%D0%92%D0%BE%D0%BF%D1%80%D0%BE%D1%81"
           />

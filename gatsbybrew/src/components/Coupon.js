@@ -1,5 +1,3 @@
-import React from "react"
-import * as R from "ramda"
 import Cookies from "universal-cookie"
 import { parseLocation } from "../common"
 
@@ -13,18 +11,14 @@ const DEFAULT_COOKIE_PARAMS = {
 const intTo_ = (d_, a, b, c) => {
   var word = ""
   var d = d_ % 10
-  if (d == 0 || d >= 5 || (d_ >= 11 && d_ <= 14)) {
+  if (d === 0 || d >= 5 || (d_ >= 11 && d_ <= 14)) {
     word = a
-  } else if (d == 1) {
+  } else if (d === 1) {
     word = b
   } else {
     word = c
   }
   return d_.toFixed(0) + " " + word
-}
-
-const intToDaysStr = d => {
-  return intTo_(d, "дней", "день", "дня")
 }
 
 const intToHoursStr = d => {
@@ -91,10 +85,14 @@ const fetchCouponByPromocode = (product, promocode) => {
           case "GIFT10":
           case "WELCOME10":
             return { discount: 0.1, expiration: addDays(new Date(), 2) }
-
           case "FLOW15":
             return { discount: 0.15 }
+          default:
+            break
         }
+        break
+      default:
+        break
     }
     return null
   }
@@ -201,7 +199,7 @@ const usePromotion = (product, location) => {
   const everPurchased = (history[encodeURI("/спасибо")] || 0) > 0
 
   if (!hasActiveCoupon && !everPurchased) {
-    if (history["/"] == 2 || history["/checkout"] == 1) {
+    if (history["/"] === 2 || history["/checkout"] === 1) {
       setActivePromocode(product, "WELCOME10")
     }
   }

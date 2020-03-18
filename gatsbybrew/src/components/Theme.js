@@ -1,11 +1,10 @@
 import React from "react"
-
 import * as R from "ramda"
-
-import { createMuiTheme, responsiveFontSizes } from "@material-ui/core/styles"
-import { ThemeProvider } from "@material-ui/core/styles"
-import purple from "@material-ui/core/colors/purple"
-import green from "@material-ui/core/colors/green"
+import { 
+  createMuiTheme, 
+  responsiveFontSizes,
+  ThemeProvider
+} from "@material-ui/core/styles"
 import { fade } from "@material-ui/core/styles/colorManipulator"
 
 export const theme = R.compose(

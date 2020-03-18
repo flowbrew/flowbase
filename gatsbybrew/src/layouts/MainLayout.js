@@ -1,48 +1,34 @@
 import React from "react"
 import { useStaticQuery, graphql, Link } from "gatsby"
 import PropTypes from "prop-types"
-
-import Helmet from "react-helmet"
 import * as R from "ramda"
-
-import AppBar from "@material-ui/core/AppBar"
-import Box from "@material-ui/core/Box"
-import Container from "@material-ui/core/Container"
-import CssBaseline from "@material-ui/core/CssBaseline"
-import Divider from "@material-ui/core/Divider"
-import Grid from "@material-ui/core/Grid"
-import IconButton from "@material-ui/core/IconButton"
+import {
+  AppBar,
+  Box,
+  Container,
+  CssBaseline,
+  Divider,
+  Grid,
+  IconButton,
+  Toolbar,
+  Typography,
+  Drawer,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  List,
+  Fab,
+  Slide,
+  useScrollTrigger,
+} from "@material-ui/core"
 import { styled, makeStyles } from "@material-ui/core/styles"
-import Toolbar from "@material-ui/core/Toolbar"
-import Typography from "@material-ui/core/Typography"
-import MenuIcon from "@material-ui/icons/Menu"
-import Drawer from "@material-ui/core/Drawer"
-import ListItem from "@material-ui/core/ListItem"
-import ListItemIcon from "@material-ui/core/ListItemIcon"
-import ListItemText from "@material-ui/core/ListItemText"
-import List from "@material-ui/core/List"
-import ShoppingCart from "@material-ui/icons/ShoppingCart"
-import Fab from "@material-ui/core/Fab"
-import AddIcon from "@material-ui/icons/Add"
-import SearchIcon from "@material-ui/icons/Search"
-import MoreIcon from "@material-ui/icons/MoreVert"
-import LiveHelpIcon from "@material-ui/icons/LiveHelp"
-import MenuBookIcon from "@material-ui/icons/MenuBook"
-import GitHubIcon from "@material-ui/icons/GitHub"
-import FavoriteIcon from "@material-ui/icons/Favorite"
-import RemoveIcon from "@material-ui/icons/Remove"
-import Slide from "@material-ui/core/Slide"
-import useScrollTrigger from "@material-ui/core/useScrollTrigger"
-import ListSubheader from "@material-ui/core/ListSubheader"
-import Avatar from "@material-ui/core/Avatar"
-import CardHeader from "@material-ui/core/CardHeader"
-
-import TelegramIcon from "@material-ui/icons/Telegram"
-import WhatsAppIcon from "@material-ui/icons/WhatsApp"
-import PhoneIcon from "@material-ui/icons/Phone"
-import EmailIcon from "@material-ui/icons/Email"
-import SmsIcon from "@material-ui/icons/Sms"
-
+import {
+  Menu,
+  LiveHelp,
+  MenuBook,
+  GitHub,
+  Favorite,
+} from "@material-ui/icons"
 import StyledLink from "../components/StyledLink"
 import ContactsButton from "../components/ContactsButton"
 import LogoText from "../../content/images/logo_text.svg"
@@ -53,7 +39,6 @@ import {
   useIsDesktop,
 } from "../components/IsDesktopContext"
 import { MdxContextProvider } from "../components/MdxContext"
-import { useImage } from "../components/ImageContext"
 import { usePromotion } from "../components/Coupon"
 import SEO from "../components/SEO"
 
@@ -114,8 +99,6 @@ const useStyles = makeStyles(theme => ({
 /* TODO: add link to home */
 
 const NavMenuButton = ({ anchor, navigation, ...props }) => {
-  const classes = useStyles()
-
   const [state, setState] = React.useState({
     drawer: false,
   })
@@ -127,9 +110,9 @@ const NavMenuButton = ({ anchor, navigation, ...props }) => {
   const listIcon = x => {
     switch (x) {
       case "blog":
-        return <MenuBookIcon />
+        return <MenuBook />
       case "shop":
-        return <FavoriteIcon />
+        return <Favorite />
       default:
         return <></>
     }
@@ -159,7 +142,7 @@ const NavMenuButton = ({ anchor, navigation, ...props }) => {
         onClick={toggleDrawer}
         {...props}
       >
-        <MenuIcon />
+        <Menu />
       </IconButton>
       <Drawer
         anchor={anchor}
@@ -184,19 +167,19 @@ const Header = ({ navigation, toggleContacts, fixedHeader }) => {
           {isDesktop ? (
             <>
               <IconButton color="inherit" className={classes.hidden}>
-                <MenuIcon />
+                <Menu />
               </IconButton>
               <IconButton color="inherit" className={classes.hidden}>
-                <MenuIcon />
+                <Menu />
               </IconButton>
               <IconButton color="inherit" className={classes.hidden}>
-                <MenuIcon />
+                <Menu />
               </IconButton>
             </>
           ) : (
             <ContactsButton isHeaderButton={true}>
               <IconButton color="inherit" edge="start" aria-label="contacts">
-                <LiveHelpIcon />
+                <LiveHelp />
               </IconButton>
             </ContactsButton>
           )}
@@ -212,12 +195,12 @@ const Header = ({ navigation, toggleContacts, fixedHeader }) => {
                 style={{ color: "unset" }}
               >
                 <IconButton color="inherit" edge="end" aria-label="github">
-                  <GitHubIcon />
+                  <GitHub />
                 </IconButton>
               </a>
               <ContactsButton>
                 <IconButton color="inherit" edge="end" aria-label="contacts">
-                  <LiveHelpIcon />
+                  <LiveHelp />
                 </IconButton>
               </ContactsButton>
             </>
@@ -286,7 +269,7 @@ const Footer = ({ navigation }) => {
 }
 
 function ShowOnScroll(props) {
-  const { children, window } = props
+  const { children } = props
 
   const trigger = useScrollTrigger({ disableHysteresis: true })
 
@@ -299,7 +282,7 @@ function ShowOnScroll(props) {
 
 function HideOnScroll({ disabled, ...props }) {
   const trigger = useScrollTrigger()
-  const { children, window } = props
+  const { children } = props
 
   if (disabled) {
     return <>{children}</>
@@ -312,9 +295,8 @@ function HideOnScroll({ disabled, ...props }) {
   )
 }
 
-const BottomAppBar = ({ navigation }) => {
+const BottomAppBar = () => {
   const classes = useStyles()
-  const isDesktop = useIsDesktop()
 
   return (
     <ShowOnScroll>
@@ -326,7 +308,7 @@ const BottomAppBar = ({ navigation }) => {
               aria-label="add"
               className={classes.fabButton}
             >
-              <LiveHelpIcon />
+              <LiveHelp />
             </Fab>
           </ContactsButton>
         </Toolbar>
@@ -338,7 +320,7 @@ const BottomAppBar = ({ navigation }) => {
 const MainLayout = ({
   children,
   location,
-  pageContext,
+  pageContext = { frontmatter: {} },
   fixedHeader,
   isBlogPost = false,
   ...props
@@ -377,7 +359,7 @@ const MainLayout = ({
             <CssBaseline />
             <Header navigation={data.navigation} fixedHeader={true} />
             <Main>{children}</Main>
-            <BottomAppBar navigation={data.navigation} />
+            <BottomAppBar />
             <Footer navigation={data.navigation} />
           </IsDesktopContextProvider>
         </MdxContextProvider>

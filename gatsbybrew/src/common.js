@@ -1,26 +1,17 @@
-import React from "react"
+import React, { useEffect } from "react"
 import Img from "gatsby-image"
 import BackgroundImage from "gatsby-background-image"
 import Ratio from "react-ratio"
 import * as R from "ramda"
-// import { Parallax } from "react-parallax"
 import Parallax from "react-rellax"
 import queryString from "query-string"
 import { motion } from "framer-motion"
-
 import { makeStyles, styled } from "@material-ui/core/styles"
-import useMediaQuery from "@material-ui/core/useMediaQuery"
-import Container from "@material-ui/core/Container"
-import Typography from "@material-ui/core/Typography"
-import StyledLink from "./components/StyledLink"
+import { Container, Typography, Box, Paper, Hidden } from "@material-ui/core"
 import { useIsDesktop } from "./components/IsDesktopContext"
-import Box from "@material-ui/core/Box"
-import Paper from "@material-ui/core/Paper"
 import { useImage } from "./components/ImageContext"
-import Grid from "@material-ui/core/Grid"
-import Hidden from "@material-ui/core/Hidden"
 import { theme } from "./components/Theme"
-
+import StyledLink from "./components/StyledLink"
 import CheckCircleIcon from "@material-ui/icons/CheckCircle"
 
 const PARALLAX_OFFSET = 3.5
@@ -227,7 +218,7 @@ const ImageBlock = ({ image, ratio = 1, parallax = true, caption = true }) => {
       return
     }
     const newRect = elem.getBoundingClientRect()
-    if (JSON.stringify(newRect) != JSON.stringify(rect)) {
+    if (JSON.stringify(newRect) !== JSON.stringify(rect)) {
       setRect(newRect)
     }
   }
@@ -400,6 +391,8 @@ const Calm = ({ children }) => {
   )
 }
 
+const useEffectOnlyOnce = func => useEffect(func, [])
+
 export {
   SpanBox,
   CrossedBox,
@@ -428,4 +421,5 @@ export {
   CounterLnk,
   Rage,
   Calm,
+  useEffectOnlyOnce,
 }

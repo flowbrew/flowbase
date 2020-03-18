@@ -1,9 +1,16 @@
 module.exports = {
   siteMetadata: {
     title: "Flow Brew",
-    author: "Aleksey Kozin",
-    description: "Японский зелёный чай матча.",
-    siteUrl: "https://flowbrew.ru/",
+    description:
+      "Обволакивающий вкус, кремово-ореховое послевкусие и ягодный аромат. Бесплатная доставка по Спб и Москве. Flow Brew",
+    url: "https://flowbrew.ru/",
+    image: "flow_brew_banner",
+    github: {
+      repo: "https://github.com/flowbrew/flowbase",
+      branch: process.env.GATSBY_BRANCH || "",
+      sha: process.env.GATSBY_SHA || "",
+    },
+    twitter: "@flow_brew",
   },
   plugins: [
     `gatsby-plugin-styled-components`,

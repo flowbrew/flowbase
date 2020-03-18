@@ -4,6 +4,7 @@ AWS_DEFAULT_REGION="eu-west-1"
 
 REPO_BRANCH=$(git rev-parse --abbrev-ref HEAD)
 BRANCH="${BRANCH:-$REPO_BRANCH}"
+SHA=$(git rev-parse --verif HEAD)
 
 TAG=${BRANCH}_${1/.Dockerfile/}
 
@@ -22,6 +23,7 @@ if DOCKER_BUILDKIT=1 docker build \
     --shm-size 2048M \
     --build-arg BUILDKIT_INLINE_CACHE=1 \
     --build-arg BRANCH=$BRANCH \
+    --build-arg SHA=$SHA \
     --build-arg AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID \
     --build-arg AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY \
     --build-arg CLOUDFLARE_API_TOKEN=$CLOUDFLARE_API_TOKEN \

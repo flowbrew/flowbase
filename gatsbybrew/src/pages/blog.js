@@ -161,7 +161,13 @@ export default ({ location }) => {
   return (
     <PageLayout
       location={location}
-      pageContext={{ frontmatter: { title: "Блог" } }}
+      pageContext={{
+        frontmatter: {
+          title: "Блог",
+          description: "Японский чай матча",
+          image: "hero",
+        },
+      }}
     >
       <BlogSection pages={pages} />
     </PageLayout>

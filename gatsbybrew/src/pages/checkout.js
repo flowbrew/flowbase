@@ -497,7 +497,12 @@ export default ({ location }) => {
   return (
     <PageLayout
       location={location}
-      pageContext={{ frontmatter: { title: "Оформление заказа" } }}
+      pageContext={{
+        frontmatter: {
+          title: "Оформление заказа",
+          image: "flowbrew",
+        },
+      }}
     >
       <CheckoutForm data={data} />
     </PageLayout>

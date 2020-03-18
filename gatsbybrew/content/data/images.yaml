@@ -81,3 +81,23 @@
 - name: smiling_cat
   image: smiling-cat.jpg
   alt: Ваше лицо после чашки чая матча
+
+- name: not_found
+  image: 404.jpg
+  alt: Страница не найдена
+
+- name: flow_brew_banner
+  image: flow_brew_banner.png
+  alt: С первой покупкой чая матча венчик + чаша бесплатно flowbrew.ru
+
+- name: flow_brew_cover
+  image: flow_brew_cover.png
+  alt: Flow Brew Энергия и Спокойствие
+
+- name: flow_brew_logo_top
+  image: flow_brew_logo_top.png
+  alt: Логотип Flow Brew
+
+- name: hero
+  image: ravi-pinisetti-ySQXoZLAsmc-unsplash.jpg
+  alt: японская чайная плантация

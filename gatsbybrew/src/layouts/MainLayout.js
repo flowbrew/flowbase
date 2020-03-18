@@ -55,8 +55,7 @@ import {
 import { MdxContextProvider } from "../components/MdxContext"
 import { useImage } from "../components/ImageContext"
 import { usePromotion } from "../components/Coupon"
-
-const Seo = () => <Helmet></Helmet>
+import SEO from "../components/SEO"
 
 const HEADER_CONTENT_HEIGHT = 4
 
@@ -303,7 +302,7 @@ function HideOnScroll({ disabled, ...props }) {
   const { children, window } = props
 
   if (disabled) {
-    return <>{ children }</>
+    return <>{children}</>
   }
 
   return (
@@ -336,7 +335,14 @@ const BottomAppBar = ({ navigation }) => {
   )
 }
 
-const MainLayout = ({ children, location, fixedHeader }) => {
+const MainLayout = ({
+  children,
+  location,
+  pageContext,
+  fixedHeader,
+  isBlogPost = false,
+  ...props
+}) => {
   const data = useStaticQuery(graphql`
     query {
       navigation: allNavigationYaml {
@@ -361,7 +367,13 @@ const MainLayout = ({ children, location, fixedHeader }) => {
       <ImageContextProvider>
         <MdxContextProvider>
           <IsDesktopContextProvider>
-            <Seo />
+            <SEO
+              {...pageContext.frontmatter}
+              pathname={location.pathname}
+              href={location.href}
+              origin={location.origin}
+              isBlogPost={isBlogPost}
+            />
             <CssBaseline />
             <Header navigation={data.navigation} fixedHeader={true} />
             <Main>{children}</Main>

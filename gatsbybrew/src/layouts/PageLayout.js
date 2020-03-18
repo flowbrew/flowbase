@@ -27,7 +27,7 @@ import {
 
 const PageLayout = ({ children, pageContext, ...props }) => {
   return (
-    <MainLayout {...props}>
+    <MainLayout pageContext={pageContext} {...props}>
       <MDXProvider components={MDXComponents}>
         <Box pt={4} pb={8}>
           <Section small>

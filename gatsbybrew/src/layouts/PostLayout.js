@@ -80,19 +80,9 @@ const PostHeader = ({ frontmatter }) => {
   )
 }
 
-const MyComponent = () => (
-  <motion.div
-    animate={{
-      scale: [1, 2, 2, 1, 1],
-      rotate: [0, 0, 270, 270, 0],
-      borderRadius: ["20%", "20%", "50%", "50%", "20%"],
-    }}
-  />
-)
-
 const PostLayout = ({ children, pageContext, ...props }) => {
   return (
-    <MainLayout {...props}>
+    <MainLayout pageContext={pageContext} isBlogPost={true} {...props}>
       <PostContextProvider pageContext={{...pageContext, ...props}}>
         <MDXProvider components={MDXComponents}>
           <Box pt={4} pb={8}>

@@ -6,6 +6,7 @@ ARG AWS_ACCESS_KEY_ID
 ARG AWS_SECRET_ACCESS_KEY
 ARG CLOUDFLARE_API_TOKEN
 ARG BRANCH
+ARG SHA
 ARG YANDEX_BOT_EMAIL
 ARG YANDEX_BOT_TOKEN
 
@@ -66,6 +67,10 @@ RUN     envsubst < main.tfx | tee main.tf && \
 # BUILDING FRONTEND
 
 FROM node:13.8.0-alpine3.10 AS frontend-builder
+ARG BRANCH
+ENV GATSBY_BRANCH $BRANCH 
+ARG SHA
+ENV GATSBY_SHA $SHA 
 RUN apk add --no-cache \
         libwebp-tools \
         libjpeg-turbo-utils \

@@ -173,7 +173,10 @@ const SimpleInDepthBenefits = () => {
         image="matcha_tea_in_test_tube"
         swap={true}
       >
-        <P>Я попробовал 20 сортов японского чая матча и выбрал ярчайший, ароматный и тонизирующий чай.</P>
+        <P>
+          Я попробовал 20 сортов японского чая матча и выбрал ярчайший,
+          ароматный и тонизирующий чай.
+        </P>
       </Benefit>
       <Benefit
         title="Венчик и Чаша в Подарок"
@@ -785,7 +788,7 @@ const BottomSection = () => {
   )
 }
 
-export default ({ location }) => {
+export default ({ location, ...props }) => {
   const data = useStaticQuery(graphql`
     query {
       product: productsYaml(pid: { eq: "flowbrew60" }) {
@@ -802,7 +805,14 @@ export default ({ location }) => {
   `)
 
   return (
-    <MainLayout location={location}>
+    <MainLayout
+      location={location}
+      pageContext={{
+        frontmatter: {
+          title: "Японский чай матча",
+        },
+      }}
+    >
       <Box mb={4}>
         <Container disableGutters={true} maxWidth={false}>
           <Hero />

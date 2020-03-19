@@ -73,5 +73,6 @@ output "website_endpoint" {
 }
 
 output "website_dns_endpoint" {
-  value = local.full_domain
+  # value = local.full_domain
+  value = module.distribution.website_endpoint
 }

@@ -1,0 +1,50 @@
+- pid: flowbrew60
+  name: Чай матча Flow Brew 60 г
+  description: benefits/вкус
+
+  currency: RUB
+  price: 3880
+  weight: 60
+
+  shipping:
+    - destination: "Москва"
+      cost: 0
+      description: Я доставлю заказ курьером в Москву за 2-4 рабочих дня (не смогу доставить в выходные и праздники).
+  
+    - destination: "Санкт-Петербург"
+      cost: 0
+      description: Я доставлю заказ курьером за 1 день.
+
+    - destination: "Другой город"
+      cost: 100
+      description: Я доставлю заказ Почтой России за 1-2 недели. Для заказа укажите свое имя и фамилию.
+
+  in-depth-benefits:
+    - benefits/японское_качество
+    - benefits/венчик_и_чаша_в_подарок
+    - benefits/программа_замены_венчика
+
+  benefits:
+    - benefits/бесплатная_доставка
+    - benefits/изготовлен_в_японии
+    - benefits/вкус
+
+  special-offer: Бесплатный набор для заварки новым клиентам.
+
+  images:
+    - flowbrew
+    - matcha_tea_dry_in_bowl_flowbrew
+    - gift_matcha_tea_box_from_top_ex
+    - matcha_tea_in_hand
+    - matcha_tea_in_bowl
+
+  reviews:
+    - reviews/марат
+    - reviews/марина
+    - reviews/мария
+
+  qa:
+    - questions/можно_ли_заваривать_без_венчика
+    - questions/2_упаковки
+    - questions/зачем_пить
+    - questions/как_заваривать

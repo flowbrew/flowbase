@@ -6,10 +6,13 @@ ARG AWS_ACCESS_KEY_ID
 ARG AWS_SECRET_ACCESS_KEY
 ARG CLOUDFLARE_API_TOKEN
 ARG BRANCH
+ARG SHA
+ARG YANDEX_BOT_EMAIL
+ARG YANDEX_BOT_TOKEN
 
 # 
 
-FROM hashicorp/terraform:light AS terraform-base
+FROM hashicorp/terraform:latest AS terraform-base
 RUN apk add --no-cache gettext
 ARG AWS_ACCESS_KEY_ID
 ENV AWS_ACCESS_KEY_ID $AWS_ACCESS_KEY_ID
@@ -35,7 +38,8 @@ WORKDIR /flowbase/pybrew
 COPY pybrew/requirements.txt .
 RUN pip install -r requirements.txt
 COPY pybrew/ .
-RUN pip install .
+USER root
+RUN pip install -e .
 
 # BUILDING BACKEND
 
@@ -63,6 +67,10 @@ RUN     envsubst < main.tfx | tee main.tf && \
 # BUILDING FRONTEND
 
 FROM node:13.8.0-alpine3.10 AS frontend-builder
+ARG BRANCH
+ENV GATSBY_BRANCH $BRANCH 
+ARG SHA
+ENV GATSBY_SHA $SHA 
 RUN apk add --no-cache \
         libwebp-tools \
         libjpeg-turbo-utils \
@@ -86,7 +94,13 @@ WORKDIR /flowbase/pybrew
 COPY --from=frontend-builder /flowbase/gatsbybrew/public/ ./public/
 RUN pytest --runslow \
         --WEBSITE_BUILD_PATH=./public/ \
+        ./tests/test_glvrd.py \
+        ./tests/test_gramma.py \
         ./tests/test_website_build.py
+
+FROM 18fgsa/html-proofer:latest AS html-proofer
+COPY --from=build-tester /flowbase/pybrew/public/ ./public/
+RUN htmlproofer ./public/
 
 # DEPLOYING FRONTEND
 
@@ -96,14 +110,19 @@ COPY terrabrew/roots/frontend ./roots/frontend
 
 WORKDIR /flowbase/terrabrew/roots/frontend
 COPY /gatsbybrew/routing_rules.json ./public/
-COPY --from=build-tester /flowbase/pybrew/public/ ./public
+COPY --from=html-proofer ./public/ ./public
 RUN     envsubst < main.tfx | tee main.tf && \
         terraform init && terraform apply -auto-approve && \
         terraform output website_dns_endpoint > website_url
 
 # E2E TESTS
 
-FROM cypress/included:4.0.2 AS e2e-tester
+FROM cypress/browsers:node10.16.0-chrome77 AS e2e-tester
+ARG YANDEX_BOT_EMAIL
+ENV CYPRESS_YANDEX_BOT_EMAIL $YANDEX_BOT_EMAIL
+ARG YANDEX_BOT_TOKEN
+ENV CYPRESS_YANDEX_BOT_TOKEN $YANDEX_BOT_TOKEN
+
 WORKDIR /flowbase/cypressbrew
 COPY cypressbrew/package*.json .
 RUN npm install
@@ -111,4 +130,6 @@ RUN npm install
 COPY cypressbrew/ .
 COPY --from=frontend-deployer \
         /flowbase/terrabrew/roots/frontend/website_url website_url
-RUN CYPRESS_WEBSITE_URL=$(cat website_url) cypress run
+COPY --from=backend-deployer \
+        /flowbase/terrabrew/roots/backend/rest_api_url rest_api_url
+RUN CYPRESS_WEBSITE_URL=http://$(cat website_url)/ npx cypress run --headless -b chrome

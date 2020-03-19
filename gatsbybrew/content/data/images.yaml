@@ -1,0 +1,103 @@
+- name: matcha_tea_dry_in_bowl_flowbrew
+  image: matcha_tea_dry_in_bowl_flowbrew.jpg
+  alt: Сухой порошок чая матча Флоу Брю в чаше
+
+- name: gift_matcha_tea_box_from_top_ex
+  image: gift_matcha_tea_box_from_top_ex.jpg
+  alt: Чай матча, венчик и чаша в подарочной коробке Флоу Брю
+
+- name: matcha_tea_in_hand
+  image: matcha_tea_in_hand.jpg
+  alt: Чай матча Флоу Брю в чаше в руке
+
+- name: flowbrew
+  image: flowbrew.jpeg
+  alt: Чай матча Флоу Брю
+
+- name: matcha_tea_in_bowl
+  image: matcha_tea_in_bowl.jpg
+  alt: Заваренный чай матча Флоу Брю в чаше
+
+- name: matcha_tea_in_test_tube
+  image: matcha_tea_in_test_tube.jpg
+  alt: 10 сортов чая матча
+
+- name: gift_matcha_tea_box_from_front
+  image: gift_matcha_tea_box_from_front.jpg
+  alt: Подарочный набор Флоу Брю
+
+- name: whisk
+  image: whisk.jpg
+  alt: Венчик часен
+
+- name: japan_tea_plantation
+  image: japan_tea_plantation.jpg
+  alt: Плантация японского чая и гора Фудзияма
+
+- name: logo_text
+  image: logo_text.svg
+  alt: Логотип Флоу Брю
+
+- name: kozin_aleksey
+  image: kozin_aleksey.jpg
+  alt: Алексей Козин
+
+- name: signature
+  image: signature.jpg
+  alt: Подпись Козина Алексея
+
+- name: marina
+  image: marina.jpg
+  alt: Марина
+
+- name: maria
+  image: maria.jpg
+  alt: Мария
+
+- name: marat
+  image: marat.jpg
+  alt: Марат
+
+- name: thankyou
+  image: thankyou32.jpg
+  alt: Благодарю вас за покупку
+
+- name: 100times
+  image: 100_times_egcg_ex3.png
+  alt: 3 продавца – одна и та же ложь
+
+- name: caffeine_theanine
+  image: caffeine_theanine.png
+  alt: Кофеин + Л-Теанин = чай матча
+
+- name: gift_guide_variable_c_2x
+  image: gn-gift_guide_variable_c_2x.jpg
+  alt: Старбакс
+
+- name: matcha_vs_gum_and_mints
+  image: matcha_vs_gum_and_mints.png
+  alt: Чай матча наравне с зубной пастой
+
+- name: smiling_cat
+  image: smiling-cat.jpg
+  alt: Ваше лицо после чашки чая матча
+
+- name: not_found
+  image: 404.jpg
+  alt: Страница не найдена
+
+- name: flow_brew_banner
+  image: flow_brew_banner.png
+  alt: С первой покупкой чая матча венчик + чаша бесплатно flowbrew.ru
+
+- name: flow_brew_cover
+  image: flow_brew_cover.png
+  alt: Flow Brew Энергия и Спокойствие
+
+- name: flow_brew_logo_top
+  image: flow_brew_logo_top.png
+  alt: Логотип Flow Brew
+
+- name: hero
+  image: ravi-pinisetti-ySQXoZLAsmc-unsplash.jpg
+  alt: японская чайная плантация

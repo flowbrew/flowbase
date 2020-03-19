@@ -22,8 +22,8 @@ provider "cloudflare" {
 }
 
 locals {
-  domain             = "matchaharmony.ru"
-  cloudflare_zone_id = "201b8a9c3f715c567326b99e6d7a3080"
+  domain             = "flowbrew.ru"
+  cloudflare_zone_id = "c5144010a74dd0bd5efc106d10b78730"
 }
 
 locals {

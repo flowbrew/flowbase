@@ -3,7 +3,6 @@ module.exports = {
     title: "Flow Brew",
     description:
       "Обволакивающий вкус, кремово-ореховое послевкусие и ягодный аромат. Бесплатная доставка по Спб и Москве. Flow Brew",
-    url: "https://flowbrew.ru/",
     image: "flow_brew_banner",
     github: {
       repo: "https://github.com/flowbrew/flowbase",

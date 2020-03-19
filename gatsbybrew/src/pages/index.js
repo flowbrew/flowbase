@@ -51,7 +51,7 @@ import {
   RedBox,
   useEffectOnlyOnce,
   Calm,
-  Enegry,
+  Rage,
 } from "../common"
 import Hero from "../components/Hero"
 import { applyCoupon } from "../components/Coupon"
@@ -113,9 +113,9 @@ const useStyles = makeStyles(theme => ({
 const SimpleInDepthBenefits = ({ data }) => {
   const classes = useStyles()
 
-  const Benefit = ({ children, image, title, swap }) => {
+  const Benefit = ({ children, image, title, swap, caption=false }) => {
     const imageBlock = (
-      <ImageBlock image={image} ratio={1 / 1} caption={false} />
+      <ImageBlock image={image} ratio={1 / 1} caption={caption} />
     )
 
     const textBlock = (
@@ -146,25 +146,42 @@ const SimpleInDepthBenefits = ({ data }) => {
   return (
     <>
       <Benefit title="Здравствуйте" image="kozin_aleksey">
-        <P>Меня зовут Алексей Козин. Я директор Флоу Брю. И я <Calm>обожаю</Calm> чай матча.</P>
-      </Benefit>
-      <Benefit
-        title="Японское Качество"
-        image="matcha_tea_in_test_tube"
-        swap={true}
-      >
         <P>
-          Я попробовал 20 сортов японского чая матча и выбрал для вас яркий,
-          ароматный и <Enegry>тонизирующий</Enegry> чай.
+          Меня зовут Алексей Козин. Я директор Флоу Брю. И я обожаю чай матча.
         </P>
       </Benefit>
       <Benefit
-        title="Венчик и Чаша в Подарок"
+        title="Ваше японское спокойствие"
+        image="matcha_tea_in_test_tube"
+        swap={true}
+        caption={true}
+      >
+        <P>
+          <Rage>Стресс</Rage> на работе, глобальная катастрофа, тревога за
+          близких – все это вгоняет вас в состояние паники. Вы больше ошибаетесь
+          и меньше спите.
+        </P>
+        <P>
+          Я попробовал 20 сортов японского чая матча и выбрал для вас яркий,
+          тонизирующий и <Calm>успокаивающий</Calm> чай. Он поможет вам
+          справиться с ежедневным давлением стресса.
+        </P>
+        <UL>
+          <LI>Кофеин в чае матча активирует мозг</LI>
+          <LI>Л-Теанина в чае матча снимает стресс</LI>
+        </UL>
+      </Benefit>
+      <Benefit
+        title="Венчик и чаша в подарок"
         image="gift_matcha_tea_box_from_front"
       >
         <GiftCounter product={data.product} />
+        <P>
+          Для заварки чая матча следует использовать венчик часен и чашу чаван.
+          Иначе в чае останутся комочки, которые испортят вкус.
+        </P>
       </Benefit>
-      <Benefit title="Программа Замены Венчика" image="whisk" swap={true}>
+      <Benefit title="Программа замены венчика" image="whisk" swap={true}>
         <P>Я бесплатно заменю вам венчик в случае его износа.</P>
       </Benefit>
     </>

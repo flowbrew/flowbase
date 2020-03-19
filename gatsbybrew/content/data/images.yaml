@@ -20,7 +20,7 @@
 
 - name: matcha_tea_in_test_tube
   image: matcha_tea_in_test_tube.jpg
-  alt: 10 сортов чая матча в пробирках
+  alt: 10 сортов чая матча
 
 - name: gift_matcha_tea_box_from_front
   image: gift_matcha_tea_box_from_front.jpg

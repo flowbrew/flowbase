@@ -340,29 +340,12 @@ const CounterLnk = ({ children, ...props }) => {
   )
 }
 
-function getRandomInt(min, max) {
-  min = Math.ceil(min)
-  max = Math.floor(max)
-  return Math.floor(Math.random() * (max - min + 1)) + min
-}
-
 const Rage = ({ children, ...props }) => {
-  const f = () => getRandomInt(-theme.spacing(0.25), theme.spacing(0.25))
-  const n = 10
   return (
     <motion.span
       style={{
         display: "inline-block",
         color: theme.palette.error.main,
-      }}
-      animate={{
-        x: [0, ...R.map(x => f(), R.range(0, n)), 0],
-        y: [0, ...R.map(x => f(), R.range(0, n)), 0],
-      }}
-      transition={{
-        loop: Infinity,
-        duration: 0.5,
-        ease: "linear",
       }}
       {...props}
     >

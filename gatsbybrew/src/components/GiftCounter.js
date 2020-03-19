@@ -1,6 +1,6 @@
 import React from "react"
 import { Box } from "@material-ui/core"
-import { useEffectOnlyOnce, P, Calm } from "../common"
+import { useEffectOnlyOnce, P } from "../common"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faGift } from "@fortawesome/free-solid-svg-icons"
 
@@ -28,7 +28,7 @@ export default ({ product, children, ...props }) => {
   return (
     <Box {...props}>
       <P>
-        Я дарю <Calm>бесплатный набор для заварки</Calm> новым клиентам.{" "}
+        Я дарю бесплатный набор для заварки новым клиентам.{" "}
         {count > 0 && (
           <>
             Осталось {count} <FontAwesomeIcon icon={faGift} />

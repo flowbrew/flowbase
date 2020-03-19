@@ -53,9 +53,15 @@ const Hero = () => {
             <Typography variant="h2" component="h1" gutterBottom>
               <Box fontWeight="fontWeightBold">Чай Матча</Box>
             </Typography>
-            <Typography variant="h5" component="h2" gutterBottom>
-              <Box fontWeight="fontWeightBold">Ваша энергия и настроение</Box>
-            </Typography>
+              <Typography variant="h5" component="h2" gutterBottom>
+                <Box fontWeight="fontWeightBold">
+                  Времена перемен
+                  <br />
+                  Приносят дары
+                  <br />
+                  Тем, кто мудр и спокоен
+                </Box>
+              </Typography>
           </Box>
           <Box mt={5}>
             <ArrowDownwardIcon fontSize="large" />

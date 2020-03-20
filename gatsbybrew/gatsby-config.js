@@ -12,6 +12,16 @@ module.exports = {
     twitter: "@flow_brew",
   },
   plugins: [
+    {
+      resolve: "gatsby-plugin-google-tagmanager",
+      options: {
+        id: "GTM-WZ5F755",
+        includeInDevelopment: true,
+        defaultDataLayer: { 
+          platform: "gatsby" 
+        },
+      },
+    },
     `gatsby-plugin-styled-components`,
     `gatsby-plugin-sharp`,
     `gatsby-transformer-sharp`,

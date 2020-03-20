@@ -20,6 +20,7 @@
     "gatsby": "^2.19.45",
     "gatsby-background-image": "^0.10.2",
     "gatsby-image": "^2.2.39",
+    "gatsby-plugin-google-tagmanager": "^2.2.0",
     "gatsby-plugin-manifest": "^2.2.48",
     "gatsby-plugin-material-ui": "^2.1.6",
     "gatsby-plugin-mdx": "^1.0.74",

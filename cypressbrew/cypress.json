@@ -1,3 +1,4 @@
 {
-    "video": false
+    "video": false,
+    "blacklistHosts": ["*google-analytics.com", "*googletagmanager.com"]
 }

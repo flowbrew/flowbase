@@ -237,7 +237,9 @@ const ImageBlock = ({ image, ratio = 1, parallax = true, caption = true }) => {
     <Img
       fluid={{ ...imageSharp.fluid, aspectRatio: ratio }}
       alt={imageData.alt}
-    />
+    >
+      <Ratio ratio={ratio} />
+    </Img>
   )
 
   return (

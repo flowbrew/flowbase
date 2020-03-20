@@ -3,6 +3,11 @@ variable "path_to_lambda" {
   type        = string
 }
 
+variable "TWILIO_AUTH_TOKEN" {
+  description = "For SMS sending"
+  type        = string
+}
+
 variable "name" {
   description = "Lambda name"
   type        = string

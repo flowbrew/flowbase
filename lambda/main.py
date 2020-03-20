@@ -9,9 +9,12 @@ sys.path.append(base_path + "/lib")
 import json
 import boto3
 import decimal
+import requests
 from botocore.exceptions import ClientError
 
 dynamodb = boto3.resource('dynamodb')
+
+THANK_YOU = 'Flow Brew. Благодарю за ваш заказ. Скоро он будет отправлен. Телефон для связи +79219203135'
 
 
 def product(pid):
@@ -39,6 +42,29 @@ def decrease_product_quantity(pid, n=1):
         },
         ReturnValues="UPDATED_NEW"
     )
+
+
+def send_sms(to, body):
+    if not to or not body:
+        return
+    params = {
+        "To": (to
+               .replace(' ', '')
+               .replace('-', '')
+               .replace('(', '')
+               .replace(')', '')
+               ),
+        "From": '+12198984263',
+        "Body": body
+    }
+    r = requests.post(
+        'https://api.twilio.com/2010-04-01/Accounts/AC14a7da4f6bf72eace9c3bfa584b398da/Messages.json',
+        data=params,
+        auth=('AC14a7da4f6bf72eace9c3bfa584b398da',
+              os.environ['TWILIO_AUTH_TOKEN'])
+    ).json()
+    print('send_sms', to, body, ':', r)
+    return r
 
 
 def email(addr, subject, body):
@@ -79,6 +105,10 @@ def email(addr, subject, body):
         return True
 
 
+def on_test(params):
+    pass
+
+
 def on_checkout(params):
     is_test_run = 'TEST PURCHASE' in params.get('comment', '')
 
@@ -100,9 +130,10 @@ def on_checkout(params):
     if not is_test_run:
         try:
             pids = set(
-                [x['pid'] for x in params.get('order') if 'pid' in x]
+                [x['pid'] for x in params.get('order', []) if 'pid' in x]
             )
             [decrease_product_quantity(x) for x in pids]
+            send_sms(to=params.get('phone', ''), body=THANK_YOU)
         except Exception as e:
             print('error', e)
             pass
@@ -149,5 +180,7 @@ def lambda_handler(event, context):
         return on_checkout(post_params())
     elif event['httpMethod'] == 'GET' and event['path'] == '/product':
         return on_product(event['queryStringParameters'])
+    elif event['path'] == '/test':
+        return on_test(event['queryStringParameters'])
 
     return on_error()

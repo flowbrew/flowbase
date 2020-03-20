@@ -30,6 +30,7 @@ if DOCKER_BUILDKIT=1 docker build \
     --build-arg YANDEX_BOT_EMAIL=$YANDEX_BOT_EMAIL \
     --build-arg YANDEX_BOT_TOKEN=$YANDEX_BOT_TOKEN \
     --build-arg GOOGLE_PAGESPEED_KEY=$GOOGLE_PAGESPEED_KEY \
+    --build-arg TWILIO_AUTH_TOKEN=$TWILIO_AUTH_TOKEN \
     -f $1 \
     -t "$DOCKERNAME" . 
 then

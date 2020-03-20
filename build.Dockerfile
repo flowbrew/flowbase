@@ -10,6 +10,7 @@ ARG SHA
 ARG YANDEX_BOT_EMAIL
 ARG YANDEX_BOT_TOKEN
 ARG GOOGLE_PAGESPEED_KEY
+ARG TWILIO_AUTH_TOKEN
 
 # 
 
@@ -56,8 +57,9 @@ RUN zip -r ./output/lambda.zip ./*
 # DEPLOYING BACKEND
 
 FROM terraform-base AS backend-deployer
+ARG TWILIO_AUTH_TOKEN
+ENV TWILIO_AUTH_TOKEN $TWILIO_AUTH_TOKEN
 COPY terrabrew/roots/backend ./roots/backend
-
 WORKDIR /flowbase/terrabrew/roots/backend
 COPY --from=backend-builder \
         /flowbase/lambda/output/ ./lambda

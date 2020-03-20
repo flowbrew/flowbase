@@ -17,6 +17,12 @@ resource "aws_lambda_function" "lambda" {
   handler          = "main.lambda_handler"
   timeout          = 60
   role             = aws_iam_role.iam_for_lambda.arn
+
+  environment {
+    variables = {
+      TWILIO_AUTH_TOKEN = var.TWILIO_AUTH_TOKEN
+    }
+  }
 }
 
 resource "aws_iam_policy" "lambda_policy" {

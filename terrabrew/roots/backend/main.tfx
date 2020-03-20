@@ -1,6 +1,6 @@
 # Modify this comment to force Docker to ignore cache and re apply terraform
 # This may be needed if state changed outside of typical workflow
-# Bump: 1
+# Bump: 3
 
 terraform {
   backend "s3" {
@@ -24,6 +24,7 @@ module "lambda" {
   path_to_lambda = "./lambda"
   python_version = "$BACKEND_PYTHON_VERSION"
   name           = "flowbase_lambda_$BRANCH"
+  TWILIO_AUTH_TOKEN = "$TWILIO_AUTH_TOKEN"
 }
 
 resource "aws_dynamodb_table" "products_table" {

@@ -106,7 +106,7 @@ export default ({ children, isHeaderButton, ...props }) => {
   }
 
   return (
-    <Box onClick={toggleContacts} component="span">
+    <Box onClick={toggleContacts} component="span" {...props}>
       {children}
       <ContactsDrawer
         isDesktop={isDesktop}

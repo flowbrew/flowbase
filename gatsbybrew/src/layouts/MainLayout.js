@@ -22,13 +22,7 @@ import {
   useScrollTrigger,
 } from "@material-ui/core"
 import { styled, makeStyles } from "@material-ui/core/styles"
-import {
-  Menu,
-  LiveHelp,
-  MenuBook,
-  GitHub,
-  Favorite,
-} from "@material-ui/icons"
+import { Menu, LiveHelp, MenuBook, GitHub, Favorite } from "@material-ui/icons"
 import StyledLink from "../components/StyledLink"
 import ContactsButton from "../components/ContactsButton"
 import LogoText from "../../content/images/logo_text.svg"
@@ -45,12 +39,10 @@ import SEO from "../components/SEO"
 const HEADER_CONTENT_HEIGHT = 4
 
 const useStyles = makeStyles(theme => ({
-  list: {
-    width: 300,
-  },
   logo: {
     maxHeight: theme.spacing(HEADER_CONTENT_HEIGHT),
     margin: "auto",
+    width: "auto",
     "& path": {
       stroke: theme.palette.primary.contrastText,
       fill: theme.palette.primary.contrastText,
@@ -80,9 +72,6 @@ const useStyles = makeStyles(theme => ({
   appBar: {
     top: "auto",
     bottom: 0,
-  },
-  grow: {
-    flexGrow: 1,
   },
   fabButton: {
     position: "absolute",
@@ -184,9 +173,11 @@ const Header = ({ navigation, toggleContacts, fixedHeader }) => {
             </ContactsButton>
           )}
 
-          <StyledLink to="/" style={{ display: "contents" }}>
-            <LogoText className={classes.logo} />
-          </StyledLink>
+          <Box style={{ flexGrow: 1 }} align="center">
+            <StyledLink to="/" style={{ display: "contents" }}>
+              <LogoText className={classes.logo} />
+            </StyledLink>
+          </Box>
 
           {isDesktop && (
             <>

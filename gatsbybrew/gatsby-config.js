@@ -28,15 +28,6 @@ module.exports = {
     `gatsby-plugin-material-ui`,
     `gatsby-plugin-react-helmet`,
     {
-      resolve: "gatsby-plugin-web-font-loader",
-      options: {
-        custom: {
-          families: ["Annabelle"],
-          urls: ["/fonts/fonts.css"],
-        },
-      },
-    },
-    {
       resolve: `gatsby-source-filesystem`,
       options: {
         path: `${__dirname}/content/images/`,

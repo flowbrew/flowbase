@@ -1,7 +1,7 @@
 from pybrew import *
 
 
-# @try_n_times_decorator(5, 10)
+@try_n_times_decorator(5, 10)
 def glvrd_proofread_io(text, use_cache=True):
     url = 'https://glvrd.ru/api/v0/@proofread/'
     headers = {}

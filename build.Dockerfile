@@ -9,6 +9,7 @@ ARG BRANCH
 ARG SHA
 ARG YANDEX_BOT_EMAIL
 ARG YANDEX_BOT_TOKEN
+ARG GOOGLE_PAGESPEED_KEY
 
 # 
 
@@ -133,3 +134,14 @@ COPY --from=frontend-deployer \
 COPY --from=backend-deployer \
         /flowbase/terrabrew/roots/backend/rest_api_url rest_api_url
 RUN CYPRESS_WEBSITE_URL=http://$(cat website_url)/ npx cypress run --headless -b chrome
+
+# FROM pybrew AS python-e2e-tester
+# ARG GOOGLE_PAGESPEED_KEY
+# ENV GOOGLE_PAGESPEED_KEY $GOOGLE_PAGESPEED_KEY
+# WORKDIR /flowbase/pybrew
+# COPY --from=frontend-deployer \
+#         /flowbase/terrabrew/roots/frontend/website_url website_url
+# RUN pytest --runslow \
+#         --WEBSITE_URL=$(cat website_url) \
+#         ./tests/test_lighthouse.py \
+#         ./tests/test_website_deployment.py

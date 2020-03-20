@@ -9,17 +9,22 @@ from toolz import compose, curry, pipe
 from toolz.functoolz import identity
 from toolz.curried import map
 
-from itertools import chain
+from itertools import chain, product
 
-from functools import reduce as reduce_
+from functools import partial, reduce as reduce_
 
 filter = curry(filter)
+product = curry(product)
 filterempty = filter(identity)
 
 comp = compose
 
 
 def chain_(x): return chain(*x)
+
+
+def secret_io(key):
+    return os.environ[key]
 
 
 @curry

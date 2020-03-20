@@ -29,23 +29,26 @@ describe("Promocode", () => {
   });
 
   it("Persistent between pages", () => {
-    cy.visit(Cypress.env("WEBSITE_URL") + encodeURI("контакты/?code=GIFT10"));
+    const url = Cypress.env("WEBSITE_URL")
+    
+    cy.visit(url + encodeURI("контакты/?code=GIFT10"));
     cy.contains("Контакты", { timeout: 10000 });
 
-    cy.visit(Cypress.env("WEBSITE_URL") + "checkout");
+    cy.visit(url + "checkout");
     cy.contains("Оформление заказа", { timeout: 10000 });
     cy.get('input[name="promocode"]').should("have.value", "GIFT10");
     cy.contains("Скидка").should("exist");
 
-    cy.visit(Cypress.env("WEBSITE_URL"));
+    cy.visit(url);
     cy.contains("Flow Brew", { timeout: 10000 });
     cy.contains("Скидка").should("exist");
   });
 
   it("Can be used only once", () => {
+    const url = Cypress.env("WEBSITE_URL")
     const getscroll = x => cy.get(x).scrollIntoView();
 
-    cy.visit(Cypress.env("WEBSITE_URL") + "checkout");
+    cy.visit(url + "checkout");
 
     const input = () => cy.get('input[name="promocode"]');
     const promocode = "FLB10";
@@ -65,7 +68,7 @@ describe("Promocode", () => {
       encodeURI("/спасибо")
     );
 
-    cy.visit(Cypress.env("WEBSITE_URL") + "checkout");
+    cy.visit(url + "checkout");
     cy.contains("Flow Brew", { timeout: 10000 });
     cy.contains("Скидка").should("not.exist");
     input().should("have.value", "");
@@ -84,19 +87,23 @@ describe("Welcome bonus", () => {
   });
 
   it("Should be NO bonus on not relevant page views", () => {
-    cy.visit(Cypress.env("WEBSITE_URL") + encodeURI("контакты"));
+    const url = Cypress.env("WEBSITE_URL")
+
+    cy.visit(url + encodeURI("контакты"));
     cy.contains("Контакты", { timeout: 10000 });
-    cy.visit(Cypress.env("WEBSITE_URL") + encodeURI("контакты"));
+    cy.visit(url + encodeURI("контакты"));
     cy.contains("Контакты", { timeout: 10000 });
-    cy.visit(Cypress.env("WEBSITE_URL"));
+    cy.visit(url);
     cy.contains("Flow Brew", { timeout: 10000 });
     cy.contains("Скидка").should("not.exist");
   });
 
   it("Should be given on the second landing page view", () => {
-    cy.visit(Cypress.env("WEBSITE_URL"));
+    const url = Cypress.env("WEBSITE_URL")
+
+    cy.visit(url);
     cy.contains("Flow Brew", { timeout: 10000 });
-    cy.visit(Cypress.env("WEBSITE_URL"));
+    cy.visit(url);
     cy.contains("Flow Brew", { timeout: 10000 });
     cy.contains("Скидка").should("exist");
   });

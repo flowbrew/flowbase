@@ -225,7 +225,7 @@ const ImageBlock = ({ image, ratio = 1, parallax = true, caption = true }) => {
 
   const speed = rect.width && rect.width < 400 ? -0.25 : -0.8
 
-  const img = parallax ? (
+  const img = false ? (
     <div ref={refCallback}>
       <Parallax percentage={0.5} speed={speed}>
         <BackgroundImage fluid={imageSharp.fluid} className={classes.parallax}>
@@ -234,9 +234,7 @@ const ImageBlock = ({ image, ratio = 1, parallax = true, caption = true }) => {
       </Parallax>
     </div>
   ) : (
-    <BackgroundImage fluid={imageSharp.fluid}>
-      <Ratio ratio={ratio} />
-    </BackgroundImage>
+    <Img fluid={{...imageSharp.fluid, aspectRatio: ratio}} />
   )
 
   return (

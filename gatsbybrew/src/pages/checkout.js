@@ -270,6 +270,9 @@ const BuyButton = ({ state, handleCheckout }) => {
     <Container>
       <Box width="100%">
         <Box display="flex" justifyContent="flex-end">
+          <Button size="large" color="secondary" onClick={() => navigate("/")}>
+            Назад
+          </Button>
           <Button
             type="submit"
             size="large"
@@ -414,8 +417,7 @@ const CheckoutForm = ({ data }) => {
     })
 
     try {
-      const response = await fetch(
-        process.env.GATSBY_REST_API + '/checkout', {
+      const response = await fetch(process.env.GATSBY_REST_API + "/checkout", {
         method: "POST",
         cache: "no-cache",
         body: JSON.stringify({

@@ -19,13 +19,14 @@ requests_cache.install_cache(
 
 def all_texts_io(path):
     def _check(txt):
-        if 'ОтзывыЧастые' in txt:
-            return False
-        if txt == 'Купить':
-            return False
-        if '/2020' in txt:
-            return False
-        return True
+        return not any(
+            x in txt for x in [
+                'ОтзывыЧастые',
+                'НазадКупить',
+                'Купить',
+                '/2020'
+            ]
+        )
 
     h = html2text.HTML2Text()
     h.ignore_links = True

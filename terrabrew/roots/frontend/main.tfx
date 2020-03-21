@@ -23,7 +23,7 @@ provider "cloudflare" {
 
 locals {
   domain             = "flowbrew.ru"
-  cloudflare_zone_id = "c5144010a74dd0bd5efc106d10b78730"
+  cloudflare_zone_id = "$CLOUDFLARE_ZONE"
 }
 
 locals {

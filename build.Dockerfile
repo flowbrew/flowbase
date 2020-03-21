@@ -5,6 +5,7 @@ ARG BACKEND_AWS_REGION=eu-west-1
 ARG AWS_ACCESS_KEY_ID
 ARG AWS_SECRET_ACCESS_KEY
 ARG CLOUDFLARE_API_TOKEN
+ARG CLOUDFLARE_ZONE
 ARG BRANCH
 ARG SHA
 ARG YANDEX_BOT_EMAIL
@@ -15,7 +16,7 @@ ARG TWILIO_AUTH_TOKEN
 # 
 
 FROM hashicorp/terraform:latest AS terraform-base
-RUN apk add --no-cache gettext
+RUN apk add --no-cache gettext curl
 ARG AWS_ACCESS_KEY_ID
 ENV AWS_ACCESS_KEY_ID $AWS_ACCESS_KEY_ID
 ARG AWS_SECRET_ACCESS_KEY
@@ -28,6 +29,8 @@ ARG BACKEND_AWS_REGION
 ENV BACKEND_AWS_REGION $BACKEND_AWS_REGION
 ARG CLOUDFLARE_API_TOKEN
 ENV CLOUDFLARE_API_TOKEN $CLOUDFLARE_API_TOKEN
+ARG CLOUDFLARE_ZONE
+ENV CLOUDFLARE_ZONE $CLOUDFLARE_ZONE
 ARG BACKEND_PYTHON_VERSION
 ENV BACKEND_PYTHON_VERSION $BACKEND_PYTHON_VERSION
 WORKDIR /flowbase/terrabrew
@@ -117,6 +120,10 @@ COPY --from=html-proofer ./public/ ./public
 RUN     envsubst < main.tfx | tee main.tf && \
         terraform init && terraform apply -auto-approve && \
         terraform output website_dns_endpoint > website_url
+RUN curl -X POST "https://api.cloudflare.com/client/v4/zones/$CLOUDFLARE_ZONE/purge_cache" \
+    -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" \
+    -H "Content-Type: application/json" \
+    --data '{"purge_everything":true}'
 
 # E2E TESTS
 

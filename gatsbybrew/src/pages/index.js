@@ -52,6 +52,7 @@ import {
   useEffectOnlyOnce,
   Calm,
   Rage,
+  formatPrice,
 } from "../common"
 import Hero from "../components/Hero"
 import { applyCoupon } from "../components/Coupon"
@@ -113,7 +114,7 @@ const useStyles = makeStyles(theme => ({
 const SimpleInDepthBenefits = ({ data }) => {
   const classes = useStyles()
 
-  const Benefit = ({ children, image, title, swap, caption=false }) => {
+  const Benefit = ({ children, image, title, swap, caption = false }) => {
     const imageBlock = (
       <ImageBlock image={image} ratio={1 / 1} caption={caption} />
     )
@@ -385,7 +386,8 @@ const PriceDiscountDisplay = ({ price, old_price, old_price_description }) => {
   if (old_price) {
     return (
       <Typography variant="body1" component="span">
-        <CrossedBox>{old_price}</CrossedBox> <RedBox>{price} руб</RedBox>
+        <CrossedBox>{formatPrice(old_price)}</CrossedBox>{" "}
+        <RedBox>{formatPrice(price)} руб</RedBox>
         {title}
         {old_price_description && (
           <RedBox>
@@ -397,7 +399,7 @@ const PriceDiscountDisplay = ({ price, old_price, old_price_description }) => {
   }
   return (
     <Typography variant="body1">
-      {price} руб{title}
+      {formatPrice(price)} руб{title}
     </Typography>
   )
 }

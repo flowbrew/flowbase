@@ -16,6 +16,7 @@ import {
   RedBox,
   CrossedBox,
   useEffectOnlyOnce,
+  formatPrice,
 } from "../common"
 import {
   Container,
@@ -168,10 +169,6 @@ const Shipping = ({ product, state, onChange, onBlur }) => {
   )
 }
 
-function formatFloat(x) {
-  return `${(x || 0.0).toFixed(0)}`
-}
-
 const OrderRow = ({ price, description, old_price, old_price_description }) => {
   return (
     <TableRow>
@@ -188,12 +185,12 @@ const OrderRow = ({ price, description, old_price, old_price_description }) => {
       </TableCell>
       <TableCell align="right">
         {!(old_price && old_price !== price) ? (
-          <>{formatFloat(price)}</>
+          <>{formatPrice(price)}</>
         ) : (
           <>
-            <CrossedBox>{formatFloat(old_price)}</CrossedBox>
+            <CrossedBox>{formatPrice(old_price)}</CrossedBox>
             <br />
-            <RedBox>{formatFloat(price)}</RedBox>
+            <RedBox>{formatPrice(price)}</RedBox>
           </>
         )}
       </TableCell>
@@ -222,7 +219,9 @@ const OrderTable = ({ order }) => {
           )}
           <TableRow>
             <TableCell>Итого</TableCell>
-            <TableCell align="right">{totalOrderPrice(order)}</TableCell>
+            <TableCell align="right">
+              {formatPrice(totalOrderPrice(order))}
+            </TableCell>
           </TableRow>
         </TableBody>
       </Table>

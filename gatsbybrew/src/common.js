@@ -369,6 +369,15 @@ const Enegry = ({ children, ...props }) => (
   </Rage>
 )
 
+const formatPrice = price => {
+  if (!price) {
+    return price
+  }
+  return Math.ceil(price)
+    .toString()
+    .replace(/\B(?=(\d{3})+(?!\d))/g, " ")
+}
+
 const Calm = ({ children }) => {
   return (
     <motion.span
@@ -422,4 +431,5 @@ export {
   Calm,
   useEffectOnlyOnce,
   Enegry,
+  formatPrice,
 }

@@ -202,7 +202,7 @@ const Em = ({ children }) => (
   </Box>
 )
 
-const ImageBlock = ({ image, ratio = 1, parallax = true, caption = true }) => {
+const ImageBlock = ({ image, ratio = 1, parallax = true, caption = true, ...props }) => {
   const classes = useStyles()
   const [rect, setRect] = React.useState({})
   const data = useImage(image)
@@ -243,7 +243,7 @@ const ImageBlock = ({ image, ratio = 1, parallax = true, caption = true }) => {
   )
 
   return (
-    <Box>
+    <Box {...props}>
       <FLBPaper id={imageData.name}>{img}</FLBPaper>
       {caption && (
         <Box textAlign="center" mt={1}>

@@ -28,9 +28,15 @@ const intToHoursStr = d => {
 const timedeltaToHours = timedelta =>
   parseInt(Math.round(timedelta / (60 * 60 * 1000)))
 
-function addDays(date, days) {
+// function addDays(date, days) {
+//   var result = new Date(date)
+//   result.setDate(result.getDate() + days)
+//   return result
+// }
+
+function addHours(date, hours) {
   var result = new Date(date)
-  result.setDate(result.getDate() + days)
+  result.setTime(result.getTime() + hours * 60 * 60 * 1000)
   return result
 }
 
@@ -84,7 +90,7 @@ const fetchCouponByPromocode = (product, promocode) => {
           case "FB10":
           case "GIFT10":
           case "WELCOME10":
-            return { discount: 0.1, expiration: addDays(new Date(), 2) }
+            return { discount: 0.1, expiration: addHours(new Date(), 2) }
           case "FLOW15":
             return { discount: 0.15 }
           default:

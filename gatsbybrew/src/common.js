@@ -30,7 +30,7 @@ const useStyles = makeStyles(theme => ({
   },
   linkCounter: {
     color: theme.palette.secondary.main,
-    textDecoration: "none",
+    textDecoration: "underline",
     "&::before": {
       counterIncrement: "links",
       content: "counter(links)",

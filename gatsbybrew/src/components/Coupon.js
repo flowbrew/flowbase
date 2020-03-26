@@ -93,6 +93,17 @@ const fetchCouponByPromocode = (product, promocode) => {
             return { discount: 0.1, expiration: addHours(new Date(), 2) }
           case "FLOW15":
             return { discount: 0.15 }
+          case "NATALYA_18":
+          case "ANNA_18":
+          case "LARISA_18":
+          case "SVETLANA_18":
+          case "MARINA_18":
+          case "MILANA_18":
+            return {
+              discount: 0.3,
+              expiration: addHours(new Date(), 2),
+              no_whisk: true,
+            }
           default:
             break
         }
@@ -178,6 +189,7 @@ const applyCoupon = product => {
     old_price: product.price,
     old_price_description: coupon.description,
     promocode: coupon.promocode,
+    no_whisk: coupon.no_whisk,
   }
 }
 

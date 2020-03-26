@@ -375,7 +375,7 @@ const formatPrice = price => {
   }
   return Math.ceil(price)
     .toString()
-    .replace(/\B(?=(\d{3})+(?!\d))/g, " ")
+    .replace(/\B(?=(\d{3})+(?!\d))/g, "\xa0")
 }
 
 const Calm = ({ children }) => {

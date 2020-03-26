@@ -236,9 +236,9 @@ const Order = ({ order }) => {
         <OrderTable order={order} />
       </Box>
       <P>Оплата после получения.</P>
-      <P>
+      {R.find(R.propEq('description', 'Набор для заварки'), order) && <P>
         Если это ваш первый заказ, то вы получите бесплатный набор для заварки.
-      </P>
+      </P>}
     </OutlinedSection>
   )
 }
@@ -393,10 +393,14 @@ const CheckoutForm = ({ data }) => {
       ...state.product,
       description: state.product.name,
     },
-    {
-      price: 0.0,
-      description: "Набор для заварки",
-    },
+    ...(!state.product.no_whisk
+      ? [
+          {
+            price: 0.0,
+            description: "Набор для заварки",
+          },
+        ]
+      : []),
     {
       price: shipping.cost,
       description: "Доставка",

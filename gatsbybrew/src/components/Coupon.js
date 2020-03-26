@@ -78,7 +78,7 @@ const fetchCouponByPromocode = (product, promocode) => {
   if (coupon) {
     return {
       ...coupon,
-      expiration: new Date(coupon.expiration),
+      expiration: coupon.expiration ? new Date(coupon.expiration) : null,
     }
   }
 

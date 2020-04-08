@@ -101,3 +101,27 @@
 - name: hero
   image: ravi-pinisetti-ySQXoZLAsmc-unsplash.jpg
   alt: японская чайная плантация
+
+- name: article_cover_2
+  image: 91458142_3000607273332136_999825931145970236_n.jpg
+  alt: Чай матча, венчик часен и подставка кусенаоши
+
+- name: matcha_bowl
+  image: matcha_bowl.jpg
+  alt: Яркий изумрудный цвет чая эффектно дополнит сториз
+
+- name: matcha_macarons
+  image: matcha_macarons_2.jpg
+  alt: Макарони с чаем матча
+
+- name: matcha_protects_from_stress
+  image: matcha_protects_from_stress.png
+  alt: Чай матча защищает вашу кожу
+
+- name: telomere
+  image: telomere.png
+  alt: Схема расположения теломер на хромосоме
+
+- name: theanine_dopamine_chart
+  image: theanine_dopamine_chart.png
+  alt: Чай матча увеличивает концентрацию дофамина в мозге

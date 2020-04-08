@@ -6,6 +6,4 @@ gatsby build
 cd ../pybrew
 pytest --runslow \
     --WEBSITE_BUILD_PATH=../gatsbybrew/public/ \
-    ./tests/test_glvrd.py \
-    ./tests/test_gramma.py \
     ./tests/test_website_build.py

@@ -47,6 +47,10 @@ const useStyles = makeStyles(theme => ({
   subtitle: {
     color: theme.palette.primary.light,
   },
+  block: {
+    backgroundColor: theme.palette.secondary.main,
+    color: theme.palette.secondary.contrastText,
+  },
 }))
 
 const mapi = R.addIndex(R.map)
@@ -202,7 +206,13 @@ const Em = ({ children }) => (
   </Box>
 )
 
-const ImageBlock = ({ image, ratio = 1, parallax = true, caption = true, ...props }) => {
+const ImageBlock = ({
+  image,
+  ratio = 1,
+  parallax = true,
+  caption = true,
+  ...props
+}) => {
   const classes = useStyles()
   const [rect, setRect] = React.useState({})
   const data = useImage(image)
@@ -260,25 +270,54 @@ const ImageBlock = ({ image, ratio = 1, parallax = true, caption = true, ...prop
   )
 }
 
-const SmallImageBlock = ({ image, noTitle }) => {
+const SmallImageBlock = ({
+  image,
+  noTitle,
+  ratio,
+  centered = false,
+  ...props
+}) => {
+  const classes = useStyles()
   const { imageData, imageSharp } = useImage(image)
 
+  const s = centered ? { margin: "auto" } : {}
+
   return (
-    <Box mb={2}>
+    <Box mb={1} {...props}>
       <Hidden smUp>
-        <Box textAlign="center">
-          <Img fluid={{ ...imageSharp.fluid, aspectRatio: 1 }} />
-          {!noTitle && <P mt={1}>{imageData.alt}</P>}
+        <Box textAlign="center" style={s}>
+          <Img fluid={{ ...imageSharp.fluid, aspectRatio: ratio }} />
+          {!noTitle && (
+            <Box mt={2}>
+              <Typography
+                className={classes.subtitle}
+                variant="subtitle1"
+                paragraph={true}
+              >
+                {imageData.alt}
+              </Typography>
+            </Box>
+          )}
         </Box>
       </Hidden>
 
       <Hidden xsDown>
-        <Box width="50%" textAlign="center">
+        <Box width="50%" textAlign="center" style={s}>
           <Container>
             <Paper style={{ overflow: "hidden" }} elevation={0}>
-              <Img fluid={{ ...imageSharp.fluid, aspectRatio: 1 }} />
+              <Img fluid={{ ...imageSharp.fluid, aspectRatio: ratio }} />
             </Paper>
-            {!noTitle && <P mt={1}>{imageData.alt}</P>}
+            {!noTitle && (
+              <Box mt={2}>
+                <Typography
+                  className={classes.subtitle}
+                  variant="subtitle1"
+                  paragraph={true}
+                >
+                  {imageData.alt}
+                </Typography>
+              </Box>
+            )}
           </Container>
         </Box>
       </Hidden>
@@ -308,6 +347,11 @@ const TypographyWrapper = (Component, mt) => ({ children, ...props }) => (
     <Component children={children} mt={mt} {...props} />
   </Container>
 )
+
+// const TypographyDisabled = (Component, mt) => () => (
+//   <Container>
+//   </Container>
+// )
 
 const MDXComponents = {
   h1: TypographyWrapper(H, 8),
@@ -399,6 +443,17 @@ const Calm = ({ children }) => {
   )
 }
 
+const TextBlock = ({ children, ...props }) => {
+  const classes = useStyles()
+  return (
+    <Box mb={2}>
+      <FLBPaper className={classes.block} pt={3} pb={1} {...props}>
+        {children}
+      </FLBPaper>
+    </Box>
+  )
+}
+
 const useEffectOnlyOnce = func => useEffect(func, [])
 
 export {
@@ -432,4 +487,5 @@ export {
   useEffectOnlyOnce,
   Enegry,
   formatPrice,
+  TextBlock,
 }

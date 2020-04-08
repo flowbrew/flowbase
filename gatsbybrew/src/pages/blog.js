@@ -29,33 +29,33 @@ const PostCard = ({
 
   return (
     <Grid item xs={12} sm={6}>
-        <Card>
-          <CardActionArea onClick={() => navigate(path)}>
-            <CardHeader
-              avatar={
-                <Avatar
-                  alt={avatar.imageData.alt}
-                  src={avatar.imageSharp.fluid.src}
-                />
-              }
-              title={author}
-              subheader={dateStr}
-            />
-            <CardMedia
-              image={imageSharp.fluid.src}
-              title={imageData.alt}
-              style={{ paddingTop: "56.25%" }}
-            />
-            <CardContent>
-              <Typography gutterBottom variant="h5" component="h2">
-                {title}
-              </Typography>
-              <Typography variant="body2" color="textSecondary" component="p">
-                {description}
-              </Typography>
-            </CardContent>
-          </CardActionArea>
-        </Card>
+      <Card>
+        <CardActionArea onClick={() => navigate(path)}>
+          <CardHeader
+            avatar={
+              <Avatar
+                alt={avatar.imageData.alt}
+                src={avatar.imageSharp.fluid.src}
+              />
+            }
+            title={author}
+            subheader={dateStr}
+          />
+          <CardMedia
+            image={imageSharp.fluid.src}
+            title={imageData.alt}
+            style={{ paddingTop: "56.25%" }}
+          />
+          <CardContent>
+            <Typography gutterBottom variant="h5" component="h2">
+              {title}
+            </Typography>
+            <Typography variant="body2" color="textSecondary" component="p">
+              {description}
+            </Typography>
+          </CardContent>
+        </CardActionArea>
+      </Card>
     </Grid>
   )
 }
@@ -70,6 +70,11 @@ const BlogSection = ({ pages }) => {
           frontmatter: { hidden },
         },
       }) => !hidden
+    ),
+    R.sort(
+      (a, b) =>
+        new Date(b.context.frontmatter.date) -
+        new Date(a.context.frontmatter.date)
     )
   )
 

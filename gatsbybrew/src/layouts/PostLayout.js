@@ -10,11 +10,7 @@ import {
   Box,
 } from "@material-ui/core"
 import { useImage } from "../components/ImageContext"
-import {
-  Section,
-  MDXComponents,
-  ImageBlock,
-} from "../common"
+import { Section, MDXComponents, ImageBlock } from "../common"
 import SocialButtons from "../components/SocialButtons"
 import Signature from "../components/Signature"
 
@@ -35,7 +31,7 @@ const PostHeader = ({ frontmatter }) => {
   const dateStr = new Date(frontmatter.date).toLocaleDateString("ru-RU")
 
   return (
-    <>
+    <Box mb={6}>
       <Box mb={4}>
         <MDXComponents.h1>{frontmatter.title}</MDXComponents.h1>
       </Box>
@@ -58,17 +54,20 @@ const PostHeader = ({ frontmatter }) => {
           {frontmatter.description}
         </Typography>
       </Container>
-      <ImageBlock image={frontmatter.image} ratio={3 / 2} />
-    </>
+      <ImageBlock
+        image={frontmatter.image}
+        ratio={frontmatter.image_ratio ? frontmatter.image_ratio : 3 / 2}
+      />
+    </Box>
   )
 }
 
 const PostLayout = ({ children, pageContext, ...props }) => {
   return (
-    <MainLayout pageContext={pageContext} isBlogPost={true} {...props}>
-      <PostContextProvider pageContext={{...pageContext, ...props}}>
+    <MainLayout pageContext={pageContext} isBlogPost={true} {...props} noBottom>
+      <PostContextProvider pageContext={{ ...pageContext, ...props }}>
         <MDXProvider components={MDXComponents}>
-          <Box pt={4} pb={8}>
+          <Box pt={4} pb={8} style={{ backgroundColor: "white" }}>
             <Section small>
               <PostHeader frontmatter={pageContext.frontmatter} />
               {children}

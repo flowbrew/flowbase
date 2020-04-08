@@ -29,7 +29,7 @@ def yandex_speller_io(_text):
 
         if err == 'Слова нет в словаре.':
             valid_words = [
-                'NToss', 'улуна', 'замурчите', 'Telegram'
+                'NToss', 'улуна', 'замурчите', 'Telegram', 'Л-Теанин', 'Теанин', 'часеном', 'часен', 'антиоксиданту'
             ]
             if x['word'].lower() in (x.lower() for x in valid_words):
                 return

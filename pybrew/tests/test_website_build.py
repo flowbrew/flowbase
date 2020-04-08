@@ -70,12 +70,18 @@ def test_texts_with_yandex_speller_io(WEBSITE_BUILD_PATH):
 
     def __validate_io(path, text):
         r = yandex_speller_io(text)
-        assert len(r) == 0
+        if len(r) == 0:
+            return True
+        print(r)
+        return False
 
-    [
-        [__validate_io(path, text) for text in texts]
-        for path, texts in all_texts_io(WEBSITE_BUILD_PATH)
-    ]
+    assert all(
+        all(x)
+        for x in [
+            [__validate_io(path, text) for text in texts]
+            for path, texts in all_texts_io(WEBSITE_BUILD_PATH)
+        ]
+    )
 
 
 def test_texts_with_glvrd_io(WEBSITE_BUILD_PATH):

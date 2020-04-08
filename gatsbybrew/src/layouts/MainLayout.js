@@ -314,6 +314,7 @@ const MainLayout = ({
   pageContext = { frontmatter: {} },
   fixedHeader,
   isBlogPost = false,
+  noBottom = false,
   ...props
 }) => {
   const data = useStaticQuery(graphql`
@@ -350,7 +351,7 @@ const MainLayout = ({
             <CssBaseline />
             <Header navigation={data.navigation} fixedHeader={true} />
             <Main>{children}</Main>
-            <BottomAppBar />
+            {!noBottom && <BottomAppBar />}
             <Footer navigation={data.navigation} />
           </IsDesktopContextProvider>
         </MdxContextProvider>

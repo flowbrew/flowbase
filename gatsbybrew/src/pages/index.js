@@ -51,6 +51,7 @@ import {
   RedBox,
   useEffectOnlyOnce,
   formatPrice,
+  Strong,
 } from "../common"
 import Hero from "../components/Hero"
 import { applyCoupon } from "../components/Coupon"
@@ -107,6 +108,10 @@ const useStyles = makeStyles(theme => ({
   tab: {
     padding: 0,
   },
+  warning: {
+    backgroundColor: theme.palette.error.main,
+    color: theme.palette.error.contrastText,
+  },
 }))
 
 const SimpleInDepthBenefits = ({ data }) => {
@@ -156,14 +161,9 @@ const SimpleInDepthBenefits = ({ data }) => {
         caption={true}
       >
         <P>
-          Стресс на работе, глобальная катастрофа, тревога за
-          близких – все это вгоняет вас в состояние паники. Вы больше
-          ошибаетесь и меньше спите.
-        </P>
-        <P>
           Я попробовал 20 сортов японского чая матча и выбрал для вас яркий,
-          тонизирующий и успокаивающий чай. Он поможет вам
-          справиться с ежедневным давлением стресса.
+          тонизирующий и успокаивающий чай. Он поможет вам справиться с
+          ежедневным давлением стресса.
         </P>
         <UL>
           <LI>Кофеин в чае матча активирует мозг</LI>
@@ -428,7 +428,7 @@ const OfferSection = ({ data }) => {
       to: "/оплата",
     },
     {
-      text: "Гарантирую возврат средств",
+      text: "100% гарантия возврата денег",
       to: "/гарантии+и+возврат",
     },
     {
@@ -575,6 +575,28 @@ const ReviewsSection2 = () => {
         ))}
       </GridList>
     </Section>
+  )
+}
+
+const Warning = () => {
+  const classes = useStyles()
+
+  return (
+    <Box className={classes.warning}>
+      <Section>
+        <Container>
+        <Box pt={2} pb={1}>
+          <P>
+            <Strong>Flow Brew предпринимает меры борьбы с коронавирусом</Strong>
+          </P>
+          <UL>
+            <LI>Перед доставкой упаковка обрабатывается санитайзером</LI>
+            <LI>Сотрудники носят маски</LI>
+          </UL>
+        </Box>
+        </Container>
+      </Section>
+    </Box>
   )
 }
 
@@ -755,6 +777,7 @@ export default ({ location, ...props }) => {
         <Container disableGutters={true} maxWidth={false}>
           <Hero />
         </Container>
+        <Warning />
       </Box>
       <SimpleInDepthBenefits data={data} />
       <OfferSection data={data} />

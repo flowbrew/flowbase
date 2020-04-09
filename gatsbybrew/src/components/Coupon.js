@@ -219,7 +219,7 @@ const usePromotion = (product, location) => {
   const everPurchased = (history[encodeURI("/спасибо")] || 0) > 0
 
   if (!hasActiveCoupon && !everPurchased) {
-    if (history["/"] === 2 || history["/checkout"] === 1) {
+    if (history["/"] === 1 || history["/checkout"] === 1) {
       setActivePromocode(product, "WELCOME10")
     }
   }

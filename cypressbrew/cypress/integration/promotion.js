@@ -80,29 +80,9 @@ describe("Promocode", () => {
 });
 
 describe("Welcome bonus", () => {
-  it("Should be NO bonus on the first landing page view", () => {
-    cy.visit(Cypress.env("WEBSITE_URL"));
-    cy.contains("Flow Brew", { timeout: 10000 });
-    cy.contains("Скидка").should("not.exist");
-  });
-
-  it("Should be NO bonus on not relevant page views", () => {
+  it("Should be given on the first landing page view", () => {
     const url = Cypress.env("WEBSITE_URL")
 
-    cy.visit(url + encodeURI("контакты"));
-    cy.contains("Контакты", { timeout: 10000 });
-    cy.visit(url + encodeURI("контакты"));
-    cy.contains("Контакты", { timeout: 10000 });
-    cy.visit(url);
-    cy.contains("Flow Brew", { timeout: 10000 });
-    cy.contains("Скидка").should("not.exist");
-  });
-
-  it("Should be given on the second landing page view", () => {
-    const url = Cypress.env("WEBSITE_URL")
-
-    cy.visit(url);
-    cy.contains("Flow Brew", { timeout: 10000 });
     cy.visit(url);
     cy.contains("Flow Brew", { timeout: 10000 });
     cy.contains("Скидка").should("exist");

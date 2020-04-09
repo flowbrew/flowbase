@@ -17,7 +17,7 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-const Hero = () => {
+const Hero = ({ children }) => {
   const data = useStaticQuery(graphql`
     query {
       file(relativePath: { regex: "/ravi-pinisetti-ySQXoZLAsmc-unsplash/" }) {
@@ -39,7 +39,7 @@ const Hero = () => {
     <Box style={{ overflow: "Hidden" }}>
       <Parallax speed={-3}>
         <BackgroundImage fluid={img}>
-          <Box style={{ height: "100vh" }}></Box>
+          <Box style={{ height: "100vh" }}>{children}</Box>
         </BackgroundImage>
       </Parallax>
 
@@ -53,15 +53,15 @@ const Hero = () => {
             <Typography variant="h2" component="h1" gutterBottom>
               <Box fontWeight="fontWeightBold">Чай Матча</Box>
             </Typography>
-              <Typography variant="h5" component="h2" gutterBottom>
-                <Box fontWeight="fontWeightBold">
-                  Времена перемен
-                  <br />
-                  Приносят дары
-                  <br />
-                  Тем, кто мудр и спокоен
-                </Box>
-              </Typography>
+            <Typography variant="h5" component="h2" gutterBottom>
+              <Box fontWeight="fontWeightBold">
+                Времена перемен
+                <br />
+                Приносят дары
+                <br />
+                Тем, кто мудр и спокоен
+              </Box>
+            </Typography>
           </Box>
           <Box mt={5}>
             <ArrowDownwardIcon fontSize="large" />

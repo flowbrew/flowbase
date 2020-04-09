@@ -125,3 +125,7 @@
 - name: theanine_dopamine_chart
   image: theanine_dopamine_chart.png
   alt: Чай матча увеличивает концентрацию дофамина в мозге
+
+- name: uv_egcg
+  image: uv_egcg.png
+  alt: EGCG защищает от УФ излучения

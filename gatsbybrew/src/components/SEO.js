@@ -12,6 +12,7 @@ function SEO({
   image,
   isBlogPost,
   index,
+  pathname,
 }) {
   const { site } = useStaticQuery(
     graphql`
@@ -35,6 +36,7 @@ function SEO({
   )
 
   const siteURL = `https://${site.siteMetadata.github.branch ? site.siteMetadata.github.branch : "www"}.${site.siteMetadata.domain}`
+  const href = siteURL + pathname
 
   const metaIndex =
     index &&
@@ -63,11 +65,13 @@ function SEO({
         <meta name="github-branch" content={site.siteMetadata.github.branch} />
         <meta name="github-commit-sha" content={site.siteMetadata.github.sha} />
 
+        <meta property="og:url" content={href} />
         <meta property="og:type" content={isBlogPost ? "article" : "website"} />
         <meta property="og:title" content={title} />
         <meta property="og:description" content={metaDescription} />
         <meta property="og:image" content={metaImage} />
 
+        <meta name="twitter:url" content={href} />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:site" content={site.siteMetadata.twitter} />
         <meta name="twitter:creator" content={site.siteMetadata.twitter} />
@@ -92,6 +96,7 @@ SEO.propTypes = {
   lang: PropTypes.string,
   meta: PropTypes.arrayOf(PropTypes.object),
   title: PropTypes.string.isRequired,
+  pathname: PropTypes.string.isRequired,
 }
 
 export default SEO

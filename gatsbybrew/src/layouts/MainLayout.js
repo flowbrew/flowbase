@@ -344,6 +344,7 @@ const MainLayout = ({
             <SEO
               {...pageContext.frontmatter}
               isBlogPost={isBlogPost}
+              pathname={location.pathname}
             />
             <CssBaseline />
             <Header navigation={data.navigation} fixedHeader={true} />

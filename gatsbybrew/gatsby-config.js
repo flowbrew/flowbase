@@ -1,6 +1,7 @@
 module.exports = {
   siteMetadata: {
     title: "Flow Brew",
+    domain: "flowbrew.ru",
     description:
       "Обволакивающий вкус, кремово-ореховое послевкусие и ягодный аромат. Бесплатная доставка по Спб и Москве. Flow Brew",
     image: "flow_brew_banner",
@@ -9,7 +10,7 @@ module.exports = {
       branch: process.env.GATSBY_BRANCH || "",
       sha: process.env.GATSBY_SHA || "",
     },
-    twitter: "@flow_brew",
+    twitter: "@flow_brew", 
   },
   plugins: [
     {

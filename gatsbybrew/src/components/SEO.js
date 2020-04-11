@@ -12,9 +12,6 @@ function SEO({
   image,
   isBlogPost,
   index,
-  pathname,
-  href,
-  origin
 }) {
   const { site } = useStaticQuery(
     graphql`
@@ -22,6 +19,7 @@ function SEO({
         site {
           siteMetadata {
             title
+            domain
             description
             image
             github {
@@ -36,6 +34,8 @@ function SEO({
     `
   )
 
+  const siteURL = `https://${site.siteMetadata.github.branch ? site.siteMetadata.github.branch : "www"}.${site.siteMetadata.domain}`
+
   const metaIndex =
     index &&
     (site.siteMetadata.github.branch === "www" ||
@@ -43,7 +43,7 @@ function SEO({
   const metaDescription = description || site.siteMetadata.description
 
   const imgId = image ? image : site.siteMetadata.image
-  const metaImage = origin + useImage(imgId).imageSharp.fluid.src
+  const metaImage = siteURL + useImage(imgId).imageSharp.fluid.src
 
   return (
     <>
@@ -63,7 +63,6 @@ function SEO({
         <meta name="github-branch" content={site.siteMetadata.github.branch} />
         <meta name="github-commit-sha" content={site.siteMetadata.github.sha} />
 
-        <meta property="og:url" content={href} />
         <meta property="og:type" content={isBlogPost ? "article" : "website"} />
         <meta property="og:title" content={title} />
         <meta property="og:description" content={metaDescription} />
@@ -74,7 +73,6 @@ function SEO({
         <meta name="twitter:creator" content={site.siteMetadata.twitter} />
         <meta name="twitter:title" content={title} />
         <meta name="twitter:description" content={metaDescription} />
-        <meta name="twitter:url" content={href} />
         <meta name="twitter:image" content={metaImage} />
       </Helmet>
     </>
@@ -94,9 +92,6 @@ SEO.propTypes = {
   lang: PropTypes.string,
   meta: PropTypes.arrayOf(PropTypes.object),
   title: PropTypes.string.isRequired,
-  pathname: PropTypes.string.isRequired,
-  href: PropTypes.string.isRequired,
-  origin: PropTypes.string.isRequired,
 }
 
 export default SEO

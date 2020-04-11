@@ -343,9 +343,6 @@ const MainLayout = ({
           <IsDesktopContextProvider>
             <SEO
               {...pageContext.frontmatter}
-              pathname={location.pathname}
-              href={location.href}
-              origin={location.origin}
               isBlogPost={isBlogPost}
             />
             <CssBaseline />

@@ -112,6 +112,20 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: theme.palette.error.main,
     color: theme.palette.error.contrastText,
   },
+  selected: {
+    border: `5px solid ${theme.palette.secondary.main}`,
+    borderRadius: 25,
+    // padding: 20,
+    // marginTop: 10
+  },
+  unselected: {
+    // backgroundColor: "#FFFFFF99",
+    //  position: "absolute",
+    //   width: "100%", 
+    //   height: "100%", 
+    //   zIndex: 9,
+    //   padding: 30,
+    },
 }))
 
 const SimpleInDepthBenefits = ({ data }) => {
@@ -224,13 +238,18 @@ const OfferImages = () => {
   }
 
   const PreviewImage = ({ image, id }) => {
+    const classes = useStyles()
     const { imageSharp } = useImage(image)
+
+    const isSelected = image === state.selectedImage
+
     return (
       <Grid item xs={3}>
-        <Box onClick={() => click(image)}>
+        <Box onClick={() => click(image)} >
           <FLBPaper>
-            <div id={id}>
-              <Img fluid={{ ...imageSharp.fluid, aspectRatio: 1 }} />
+            <div id={id} style={{position: "relative"}}>
+              {!isSelected && <Box color="secondary" className={classes.unselected}/> }
+              <Img fluid={{ ...imageSharp.fluid, aspectRatio: 1 }} className={isSelected ? classes.selected : null} />
             </div>
           </FLBPaper>
         </Box>
@@ -585,14 +604,14 @@ const Warning = () => {
     <Box className={classes.warning}>
       <Section>
         <Container>
-        <Box pt={2} pb={1}>
-          <P>
-            <Strong>Flow Brew предпринимает меры борьбы с COVID-19</Strong>
-          </P>
-          <UL>
-            <LI>Перед доставкой упаковка обрабатывается санитайзером</LI>
-          </UL>
-        </Box>
+          <Box pt={2} pb={1}>
+            <P>
+              <Strong>Flow Brew предпринимает меры борьбы с COVID-19</Strong>
+            </P>
+            <UL>
+              <LI>Перед доставкой упаковка обрабатывается санитайзером</LI>
+            </UL>
+          </Box>
         </Container>
       </Section>
     </Box>

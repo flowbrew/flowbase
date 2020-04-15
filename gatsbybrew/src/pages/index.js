@@ -175,10 +175,10 @@ const SimpleInDepthBenefits = ({ data }) => {
         image="gift_matcha_tea_box_from_front"
       >
         <GiftCounter product={data.product} />
-        <P>
+        {/* <P>
           Для заварки чая матча следует использовать венчик часен и чашу чаван.
           Иначе в чае останутся комочки, которые испортят вкус.
-        </P>
+        </P> */}
       </Benefit>
       <Benefit title="Программа замены венчика" image="whisk" swap={true}>
         <P>Я бесплатно заменю вам венчик в случае его износа.</P>
@@ -428,7 +428,7 @@ const OfferSection = ({ data }) => {
       to: "/оплата",
     },
     {
-      text: "100% гарантия возврата денег",
+      text: "Верну деньги, если вам не понравится чай",
       to: "/гарантии+и+возврат",
     },
     {
@@ -587,7 +587,7 @@ const Warning = () => {
         <Container>
         <Box pt={2} pb={1}>
           <P>
-            <Strong>Flow Brew предпринимает меры борьбы с коронавирусом</Strong>
+            <Strong>Flow Brew предпринимает меры борьбы с COVID-19</Strong>
           </P>
           <UL>
             <LI>Перед доставкой упаковка обрабатывается санитайзером</LI>

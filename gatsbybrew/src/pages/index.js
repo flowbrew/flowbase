@@ -459,7 +459,7 @@ const OfferSection = ({ data }) => {
 
   const rejections = [
     {
-      text: "Оплата после получения",
+      text: "Оплата после того, как вы попробуете чай",
       to: "/оплата",
     },
     {
@@ -488,14 +488,14 @@ const OfferSection = ({ data }) => {
         <PriceBlock product={state.product} />
         <OfferBenefits />
         <BuyButton id="buybutton_1" />
-        <Container>
+        {/* <Container>
           <GiftCounter
             product={data.product}
             fontStyle="italic"
             mt={4}
             mb={0}
           />
-        </Container>
+        </Container> */}
         <Box p={1} mb={4}>
           <Paper elevation={0}>
             <WorkWithRejections rejections={rejections} />
@@ -515,14 +515,14 @@ const OfferSection = ({ data }) => {
                 <PriceBlock product={state.product} />
                 <OfferBenefits />
                 <BuyButton id="buybutton_1" />
-                <Container>
+                {/* <Container>
                   <GiftCounter
                     product={data.product}
                     fontStyle="italic"
                     mt={4}
                     mb={0}
                   />
-                </Container>
+                </Container> */}
               </Grid>
             </Grid>
           </FLBPaper>

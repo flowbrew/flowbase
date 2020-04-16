@@ -273,7 +273,7 @@ const ImageBlock = ({
 const SmallImageBlock = ({
   image,
   noTitle,
-  ratio,
+  ratio = 1,
   centered = false,
   ...props
 }) => {

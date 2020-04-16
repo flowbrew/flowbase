@@ -113,7 +113,7 @@ const useStyles = makeStyles(theme => ({
     color: theme.palette.error.contrastText,
   },
   selected: {
-    border: `5px solid ${theme.palette.secondary.main}`,
+    border: `3px solid ${theme.palette.secondary.main}`,
     borderRadius: 25,
     // padding: 20,
     // marginTop: 10

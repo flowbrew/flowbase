@@ -35,6 +35,9 @@ def glvrd_proofread_io(text, use_cache=True):
         if (hint['name'] == 'Канцеляризм' and
                 text_.lower() == 'лицо'):
             return
+        if (hint['name'] == 'Возможно, причастие' and
+                text_.lower() == 'шуршащий'):
+            return
 
         return {
             'tab': hint['tab'],

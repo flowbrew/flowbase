@@ -121,11 +121,11 @@ const useStyles = makeStyles(theme => ({
   unselected: {
     // backgroundColor: "#FFFFFF99",
     //  position: "absolute",
-    //   width: "100%", 
-    //   height: "100%", 
+    //   width: "100%",
+    //   height: "100%",
     //   zIndex: 9,
     //   padding: 30,
-    },
+  },
 }))
 
 const SimpleInDepthBenefits = ({ data }) => {
@@ -177,7 +177,7 @@ const SimpleInDepthBenefits = ({ data }) => {
         <P>
           Я попробовал 20 сортов японского чая матча и выбрал для вас яркий,
           тонизирующий и успокаивающий чай. Он поможет вам справиться с
-          ежедневным давлением стресса.
+          ежедневным давлением тревоги и стресса.
         </P>
         <UL>
           <LI>Кофеин в чае матча активирует мозг</LI>
@@ -187,15 +187,26 @@ const SimpleInDepthBenefits = ({ data }) => {
       <Benefit
         title="Венчик и чаша в подарок"
         image="gift_matcha_tea_box_from_front"
+        caption={true}
       >
         <GiftCounter product={data.product} />
         {/* <P>
           Для заварки чая матча следует использовать венчик часен и чашу чаван.
           Иначе в чае останутся комочки, которые испортят вкус.
         </P> */}
+        <P>В вашей первой коробке будут:</P>
+        <UL>
+          <LI>60 г чая матча Флоу Брю</LI>
+          <LI>Бамбуковый шуршащий венчик для заварки чая</LI>
+          <LI>Керамическая чаша в черной глазури</LI>
+          <LI>
+            Письмо с инструкцией по заварке чая матча и моей благодарностью
+          </LI>
+          <LI>Джутовый мешочек с подарком</LI>
+        </UL>
       </Benefit>
       <Benefit title="Программа замены венчика" image="whisk" swap={true}>
-        <P>Я бесплатно заменю вам венчик в случае его износа.</P>
+        <P>Я бесплатно заменю вам бамбуковый венчик в случае его износа.</P>
       </Benefit>
     </>
   )
@@ -245,11 +256,16 @@ const OfferImages = () => {
 
     return (
       <Grid item xs={3}>
-        <Box onClick={() => click(image)} >
+        <Box onClick={() => click(image)}>
           <FLBPaper>
-            <div id={id} style={{position: "relative"}}>
-              {!isSelected && <Box color="secondary" className={classes.unselected}/> }
-              <Img fluid={{ ...imageSharp.fluid, aspectRatio: 1 }} className={isSelected ? classes.selected : null} />
+            <div id={id} style={{ position: "relative" }}>
+              {!isSelected && (
+                <Box color="secondary" className={classes.unselected} />
+              )}
+              <Img
+                fluid={{ ...imageSharp.fluid, aspectRatio: 1 }}
+                className={isSelected ? classes.selected : null}
+              />
             </div>
           </FLBPaper>
         </Box>
@@ -291,11 +307,11 @@ const OfferBenefits = () => {
       <List>
         <Benefit
           icon={<FavoriteBorderOutlined color="primary" />}
-          text="Обволакивающий вкус и кремово-ореховое послевкусие. Ягодный аромат."
+          text="Сладкий ягодный аромат, насыщенный вкус и кремово-ореховое послевкусие."
         />
         <Benefit
           icon={<EcoOutlined color="primary" />}
-          text="Изготовлен в Японии, Киото."
+          text="Энергия и японское спокойствие."
         />
         <Benefit
           icon={<LocalShippingOutlined color="primary" />}

@@ -24,7 +24,7 @@
 
 - name: gift_matcha_tea_box_from_front
   image: gift_matcha_tea_box_from_front.jpg
-  alt: Подарочный набор Флоу Брю
+  alt: Ваша первая коробка Флоу Брю
 
 - name: whisk
   image: whisk.jpg

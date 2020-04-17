@@ -1,10 +1,20 @@
 - pid: flowbrew60
-  name: Чай матча Flow Brew 60 г
+  name: Чай матча Флоу Брю
   description: benefits/вкус
 
   currency: RUB
-  price: 4100
-  weight: 60
+
+  default_offer: 1
+  offers:
+    - extra: венчик
+      weight: 30
+      price: 92
+    - extra: венчик и чаша
+      weight: 60
+      price: 72
+    - extra: венчик и чаша
+      weight: 90
+      price: 61
 
   shipping:
     - destination: "Москва"

@@ -270,11 +270,25 @@ const ImageBlock = ({
   )
 }
 
+const applyOffer = R.curry((n, product) => {
+  const offer =
+    n < 0 || n >= product.offers.length || n === undefined
+      ? product.offers[product.default_offer]
+      : product.offers[n]
+  return {
+    ...product,
+    price: offer.price * offer.weight,
+    weight: offer.weight,
+    extra: offer.extra
+  }
+})
+
 const SmallImageBlock = ({
   image,
   noTitle,
   ratio = 1,
   centered = false,
+  title = "",
   ...props
 }) => {
   const classes = useStyles()
@@ -294,7 +308,7 @@ const SmallImageBlock = ({
                 variant="subtitle1"
                 paragraph={true}
               >
-                {imageData.alt}
+                {title === "" ? imageData.alt : title}
               </Typography>
             </Box>
           )}
@@ -314,7 +328,7 @@ const SmallImageBlock = ({
                   variant="subtitle1"
                   paragraph={true}
                 >
-                  {imageData.alt}
+                  {title === "" ? imageData.alt : title}
                 </Typography>
               </Box>
             )}
@@ -488,4 +502,5 @@ export {
   Enegry,
   formatPrice,
   TextBlock,
+  applyOffer,
 }

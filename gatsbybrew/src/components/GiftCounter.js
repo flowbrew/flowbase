@@ -4,12 +4,14 @@ import { useEffectOnlyOnce, P } from "../common"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faGift } from "@fortawesome/free-solid-svg-icons"
 
-export default ({ product, children, ...props }) => {
+export default ({ product, children, small = false, ...props }) => {
   const [count, setCount] = React.useState({
     count: 0,
   })
 
   useEffectOnlyOnce(() => {
+    let mounted = true;
+
     const fetchData = async () => {
       const response = await fetch(
         process.env.GATSBY_REST_API + "/product?pid=" + product.pid
@@ -17,18 +19,20 @@ export default ({ product, children, ...props }) => {
 
       const json = await response.json()
 
-      if (json.product) {
+      if (mounted && json.product) {
         setCount(json.product.quantity)
       }
     }
 
     fetchData()
+
+    return () => mounted = false;
   })
 
   return (
     <Box {...props}>
       <P>
-        Я дарю бесплатный набор для заварки новым клиентам.{" "}
+        {small ? "" : "Я дарю бесплатный набор для заварки новым клиентам."}{" "}
         {count > 0 && (
           <>
             Осталось {count} <FontAwesomeIcon icon={faGift} />

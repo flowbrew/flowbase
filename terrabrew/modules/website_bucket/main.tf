@@ -9,7 +9,7 @@ resource "aws_s3_bucket" "bucket" {
 
   website {
     index_document = "index.html"
-    error_document = "404/"
+    error_document = "404.html"
     routing_rules  = file(local.routing_rules_path)
   }
 }

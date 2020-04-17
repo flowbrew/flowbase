@@ -14,7 +14,7 @@ from botocore.exceptions import ClientError
 
 dynamodb = boto3.resource('dynamodb')
 
-THANK_YOU = 'Flow Brew. Благодарю за ваш заказ. Скоро он будет отправлен. Телефон для связи +79219203135'
+THANK_YOU = 'Благодарю за ваш заказ. Скоро он будет отправлен. Телефон/WhatsApp/Telegram для связи +79219203135'
 
 
 def product(pid):
@@ -129,11 +129,12 @@ def on_checkout(params):
 
     if not is_test_run:
         try:
+            body = f'{THANK_YOU}\n\n{params.get("description", "")} – {params.get("total_order_price", "")} руб'
             pids = set(
                 [x['pid'] for x in params.get('order', []) if 'pid' in x]
             )
             [decrease_product_quantity(x) for x in pids]
-            send_sms(to=params.get('phone', ''), body=THANK_YOU)
+            send_sms(to=params.get('phone', ''), body=body)
         except Exception as e:
             print('error', e)
             pass

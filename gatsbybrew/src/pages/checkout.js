@@ -17,6 +17,8 @@ import {
   CrossedBox,
   useEffectOnlyOnce,
   formatPrice,
+  parseLocation,
+  applyOffer,
 } from "../common"
 import {
   Container,
@@ -58,20 +60,22 @@ const useStyles = makeStyles(theme => ({
 
 const MARGIN = 2
 
-const OutlinedSection = ({ children }) => (
-  <Box mt={MARGIN}>
-    <Container>
-      <Paper variant="outlined">
-        <Box pl={MARGIN} pr={MARGIN} pt={MARGIN}>
-          {children}
-        </Box>
-      </Paper>
-    </Container>
-  </Box>
-)
+const OutlinedSection = ({ children }) => {
+  return (
+    <Box mt={MARGIN}>
+      <Container>
+        <Paper variant="outlined">
+          <Box pl={MARGIN} pr={MARGIN} pt={MARGIN}>
+            {children}
+          </Box>
+        </Paper>
+      </Container>
+    </Box>
+  )
+}
 
 const ProductImage = ({ product }) => {
-  return <SmallImageBlock image={product.images[0]} />
+  return <SmallImageBlock image={product.images[0]} title={`${product.name} ${product.weight} г`} />
 }
 
 const TF = ({ children, name, ...props }) => {
@@ -198,7 +202,11 @@ const OrderRow = ({ price, description, old_price, old_price_description }) => {
   )
 }
 
-const totalOrderPrice = R.compose(R.sum, R.map(R.path(["price"])))
+const totalOrderPrice = R.compose(
+  R.sum,
+  R.filter(x => x),
+  R.map(R.path(["price"]))
+)
 
 const OrderTable = ({ order }) => {
   return (
@@ -236,9 +244,12 @@ const Order = ({ order }) => {
         <OrderTable order={order} />
       </Box>
       <P>Оплата после получения.</P>
-      {R.find(R.propEq('description', 'Набор для заварки'), order) && <P>
-        Если это ваш первый заказ, то вы получите бесплатный набор для заварки.
-      </P>}
+      {R.find(x => R.contains("Набор для заварки", x.description), order) && (
+        <P>
+          Если это ваш первый заказ, то вы получите бесплатный набор для
+          заварки.
+        </P>
+      )}
     </OutlinedSection>
   )
 }
@@ -320,7 +331,7 @@ const onPurchaseError = (product, e) => {
   navigate("/ошибка")
 }
 
-const CheckoutForm = ({ data }) => {
+const CheckoutForm = ({ data, order_offer }) => {
   const [state, setState] = React.useState({
     name: "",
     phone: "",
@@ -333,8 +344,11 @@ const CheckoutForm = ({ data }) => {
   })
 
   useEffectOnlyOnce(() => {
-    const product = applyCoupon(data.product)
     setState(prevState => {
+      const product = R.compose(
+        applyCoupon,
+        applyOffer(order_offer)
+      )(data.product)
       return {
         ...prevState,
         promocode: product.promocode || "",
@@ -344,11 +358,14 @@ const CheckoutForm = ({ data }) => {
 
   useEffect(() => {
     setActivePromocode(data.product, state.promocode)
-    const product = applyCoupon(data.product)
     setState(prevState => {
+      const product = R.compose(
+        applyCoupon,
+        applyOffer(order_offer)
+      )(data.product)
       return { ...prevState, product: product }
     })
-  }, [data.product, state.promocode])
+  }, [data.product, state.promocode, order_offer])
 
   const findErrorInForm = () => {
     const items = R.map(([k, v]) => [k, validate(k, v)], R.toPairs(state))
@@ -391,13 +408,13 @@ const CheckoutForm = ({ data }) => {
   const order = [
     {
       ...state.product,
-      description: state.product.name,
+      description: `${state.product.name} ${state.product.weight} г`,
     },
-    ...(!state.product.no_whisk
+    ...(!state.product.no_whisk && state.product.extra
       ? [
           {
             price: 0.0,
-            description: "Набор для заварки",
+            description: `Набор для заварки (${state.product.extra})`,
           },
         ]
       : []),
@@ -424,6 +441,7 @@ const CheckoutForm = ({ data }) => {
         method: "POST",
         cache: "no-cache",
         body: JSON.stringify({
+          description: order[0].description,
           name: state.name,
           phone: state.phone,
           total_order_price: totalOrderPrice(order),
@@ -432,7 +450,7 @@ const CheckoutForm = ({ data }) => {
           shipping: shipping,
           promocode: state.product.promocode,
           comment: state.comment,
-          order: order,
+          order: order
         }),
       })
       const json = await response.json()
@@ -473,7 +491,6 @@ export default ({ location }) => {
       product: productsYaml(pid: { eq: "flowbrew60" }) {
         name
         pid
-        price
         images
         benefits
         in_depth_benefits
@@ -482,10 +499,19 @@ export default ({ location }) => {
           cost
           description
         }
-        weight
+        default_offer
+        offers {
+          extra
+          weight
+          price
+        }
       }
     }
   `)
+
+  const query = parseLocation(location)
+  const order_offer =
+    "offer" in query ? query.offer : data.product.default_offer
 
   return (
     <PageLayout
@@ -497,7 +523,7 @@ export default ({ location }) => {
         },
       }}
     >
-      <CheckoutForm data={data} />
+      <CheckoutForm data={data} order_offer={order_offer} />
     </PageLayout>
   )
 }

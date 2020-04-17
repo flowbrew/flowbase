@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useEffect } from "react"
 import Img from "gatsby-image"
 import { useStaticQuery, graphql, navigate } from "gatsby"
 import { makeStyles } from "@material-ui/core/styles"
@@ -25,6 +25,9 @@ import {
   GridListTile,
   Tabs,
   Tab,
+  RadioGroup,
+  FormControlLabel,
+  Radio,
 } from "@material-ui/core"
 import Rating from "@material-ui/lab/Rating"
 import {
@@ -52,11 +55,15 @@ import {
   useEffectOnlyOnce,
   formatPrice,
   Strong,
+  applyOffer,
 } from "../common"
 import Hero from "../components/Hero"
 import { applyCoupon } from "../components/Coupon"
 import ContactsButton from "../components/ContactsButton"
 import GiftCounter from "../components/GiftCounter"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faGift } from "@fortawesome/free-solid-svg-icons"
+import * as R from "ramda"
 
 const useStyles = makeStyles(theme => ({
   lnk: {
@@ -115,17 +122,8 @@ const useStyles = makeStyles(theme => ({
   selected: {
     border: `3px solid ${theme.palette.secondary.main}`,
     borderRadius: 25,
-    // padding: 20,
-    // marginTop: 10
   },
-  unselected: {
-    // backgroundColor: "#FFFFFF99",
-    //  position: "absolute",
-    //   width: "100%",
-    //   height: "100%",
-    //   zIndex: 9,
-    //   padding: 30,
-  },
+  unselected: {},
 }))
 
 const SimpleInDepthBenefits = ({ data }) => {
@@ -193,9 +191,9 @@ const SimpleInDepthBenefits = ({ data }) => {
           Для заварки чая матча следует использовать венчик часен и чашу чаван.
           Иначе в чае останутся комочки, которые испортят вкус.
         </P> */}
-        <P>В вашей первой коробке будут:</P>
+        <P>В вашей первой коробке будут (при заказе от 60 г):</P>
         <UL>
-          <LI>60 г чая матча Флоу Брю</LI>
+          <LI>Чай матча Флоу Брю</LI>
           <LI>Бамбуковый шуршащий венчик для заварки чая</LI>
           <LI>Керамическая чаша в черной глазури</LI>
           <LI>
@@ -206,6 +204,7 @@ const SimpleInDepthBenefits = ({ data }) => {
       </Benefit>
       <Benefit title="Программа замены венчика" image="whisk" swap={true}>
         <P>Я бесплатно заменю вам бамбуковый венчик в случае его износа.</P>
+        <P>При заказе чая вы можете попросить меня прислать вам новый венчик.</P>
       </Benefit>
     </>
   )
@@ -321,7 +320,7 @@ const OfferBenefits = () => {
   )
 }
 
-const BuyButton = ({ id }) => {
+const BuyButton = ({ id, order_offer }) => {
   const desktop = useIsDesktop()
 
   return (
@@ -332,7 +331,7 @@ const BuyButton = ({ id }) => {
           variant="contained"
           color="secondary"
           fullWidth={!desktop}
-          onClick={() => navigate("/checkout")}
+          onClick={() => navigate(`/checkout?offer=${order_offer}`)}
         >
           Купить
         </Button>
@@ -413,8 +412,13 @@ const WorkWithRejectionsList = ({ rejections }) => {
   )
 }
 
-const PriceDiscountDisplay = ({ price, old_price, old_price_description }) => {
-  const title = " · 60 г · 60 чашек"
+const PriceDiscountDisplay = ({
+  price,
+  old_price,
+  old_price_description,
+  weight,
+}) => {
+  const title = ` · ${weight} г · ${weight} чашек`
   if (old_price) {
     return (
       <Typography variant="body1" component="span">
@@ -438,27 +442,59 @@ const PriceDiscountDisplay = ({ price, old_price, old_price_description }) => {
 
 const PriceBlock = ({ product }) => {
   return (
-    <Box ml={2} mt={4}>
+    <Box ml={0} mt={0}>
       <PriceDiscountDisplay {...product} />
     </Box>
   )
 }
 
-const OfferSection = ({ data }) => {
-  const [state, setState] = React.useState({
-    product: data.product || {},
-  })
+const MARGIN = 3
 
-  useEffectOnlyOnce(() => {
-    const product = applyCoupon(data.product)
-    setState(prevState => {
-      return { ...prevState, product: product }
-    })
-  })
+const OutlinedSection = ({ children, isMobile = false }) => {
+  const inner = (
+    <Paper variant="outlined">
+      <Box pl={MARGIN} pt={MARGIN}>
+        {children}
+      </Box>
+    </Paper>
+  )
+  return (
+    <Box mt={MARGIN}>
+      {!isMobile ? (
+        <Box ml={2} mr={3}>
+          {inner}
+        </Box>
+      ) : (
+        <Container>{inner}</Container>
+      )}
+    </Box>
+  )
+}
 
+const VolumeSelect = ({ product, order_offer, onChange }) => {
+  return (
+    <Box ml={0} mt={2} mb={2}>
+      <RadioGroup value={order_offer} name="order_offer" onChange={onChange}>
+        {mapi(
+          ({ extra, weight, price }, i) => (
+            <FormControlLabel
+              value={i}
+              control={<Radio />}
+              label={(<>{weight} г ({price} руб / г) + <FontAwesomeIcon icon={faGift} /> {extra}</>)}
+              key={i}
+            />
+          ),
+          product.offers || []
+        )}
+      </RadioGroup>
+    </Box>
+  )
+}
+
+const OfferSection = ({ state, handleInputChange }) => {
   const rejections = [
     {
-      text: "Оплата после того, как вы попробуете чай",
+      text: "Оплата после получения",
       to: "/оплата",
     },
     {
@@ -473,20 +509,20 @@ const OfferSection = ({ data }) => {
 
   return (
     <Section>
-      {/* <Box mt={10} mb={10} fontStyle="italic">
-        <Typography>
-          <Typography variant="h4" component="h4" paragraph={true}>
-            "...чай матча зарядит вас энергией и настроением..."
-          </Typography>
-        </Typography>
-      </Box> */}
-
       <Hidden smUp>
         <OfferHeader />
         <OfferImages />
-        <PriceBlock product={state.product} />
+        <OutlinedSection isMobile={true}>
+          <PriceBlock product={state.product} />
+          <VolumeSelect
+            product={state.product}
+            order_offer={state.order_offer}
+            onChange={handleInputChange}
+          />
+          <GiftCounter product={state.product} small/>
+        </OutlinedSection>
+        <BuyButton id="buybutton_1" order_offer={state.order_offer} />
         <OfferBenefits />
-        <BuyButton id="buybutton_1" />
         {/* <Container>
           <GiftCounter
             product={data.product}
@@ -511,9 +547,17 @@ const OfferSection = ({ data }) => {
               </Grid>
               <Grid item xs={12} sm={6}>
                 <OfferHeader />
-                <PriceBlock product={state.product} />
+                <OutlinedSection isMobile={false}>
+                  <PriceBlock product={state.product} />
+                  <VolumeSelect
+                    product={state.product}
+                    order_offer={state.order_offer}
+                    onChange={handleInputChange}
+                  />
+                  <GiftCounter product={state.product} small/>
+                </OutlinedSection>
+                <BuyButton id="buybutton_1" order_offer={state.order_offer} />
                 <OfferBenefits />
-                <BuyButton id="buybutton_1" />
                 {/* <Container>
                   <GiftCounter
                     product={data.product}
@@ -716,11 +760,11 @@ const FAQSection = () => {
   )
 }
 
-const BuyButtonSection = () => (
+const BuyButtonSection = ({ state }) => (
   <Box mb={15}>
     <Section>
       <Hidden smUp>
-        <BuyButton id="buybutton_2" />
+        <BuyButton id="buybutton_2" order_offer={state.order_offer} />
       </Hidden>
     </Section>
   </Box>
@@ -788,14 +832,58 @@ export default ({ location, ...props }) => {
       product: productsYaml(pid: { eq: "flowbrew60" }) {
         name
         pid
-        price
         images
         benefits
-        weight
         in_depth_benefits
+        default_offer
+        offers {
+          extra
+          weight
+          price
+        }
       }
     }
   `)
+
+  const [state, setState] = React.useState({
+    product: data.product || {},
+    order_offer: data.product.default_offer,
+  })
+
+  useEffectOnlyOnce(() => {
+    setState(prevState => {
+      const product = R.compose(
+        applyCoupon,
+        applyOffer(prevState.order_offer)
+      )(data.product)
+      return { ...prevState, product: product }
+    })
+  })
+
+  useEffect(() => {
+    setState(prevState => {
+      const product = R.compose(
+        applyCoupon,
+        applyOffer(prevState.order_offer)
+      )(data.product)
+      return { ...prevState, product: product }
+    })
+  }, [data.product, state.order_offer])
+
+  const handleInputChange = event => {
+    const target = event.target
+    const value = target.type === "checkbox" ? target.checked : target.value
+    const name = target.name
+
+    const value2 = name === "order_offer" ? parseInt(value) : value
+
+    setState(prevState => {
+      return {
+        ...prevState,
+        [name]: value2,
+      }
+    })
+  }
 
   return (
     <MainLayout
@@ -813,9 +901,9 @@ export default ({ location, ...props }) => {
         <Warning />
       </Box>
       <SimpleInDepthBenefits data={data} />
-      <OfferSection data={data} />
+      <OfferSection state={state} handleInputChange={handleInputChange} />
       <BottomSection />
-      <BuyButtonSection />
+      <BuyButtonSection state={state} />
     </MainLayout>
   )
 }

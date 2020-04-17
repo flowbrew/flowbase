@@ -117,7 +117,7 @@ const NavMenuButton = ({ anchor, navigation, ...props }) => {
               <ListItemText primary={title} />
             </ListItem>
           ),
-          navigation.nodes
+          navigation
         )}
       </List>
     </div>
@@ -247,7 +247,7 @@ const Footer = ({ navigation }) => {
                 </StyledLink>
               </Grid>
             ),
-            navigation.nodes
+            navigation
           )}
         </Grid>
         <ShortDivider />
@@ -334,8 +334,13 @@ const MainLayout = ({
     }
   `)
 
-  usePromotion(data.product, location)
+  const navigation2 = R.filter(
+    x => x.link !== location.pathname, 
+    data.navigation.nodes
+  )
 
+  usePromotion(data.product, location)
+  
   return (
     <Theme>
       <ImageContextProvider>
@@ -347,10 +352,10 @@ const MainLayout = ({
               pathname={location.pathname}
             />
             <CssBaseline />
-            <Header navigation={data.navigation} fixedHeader={true} />
+            <Header navigation={navigation2} fixedHeader={true} />
             <Main>{children}</Main>
             {!noBottom && <BottomAppBar />}
-            <Footer navigation={data.navigation} />
+            <Footer navigation={navigation2} />
           </IsDesktopContextProvider>
         </MdxContextProvider>
       </ImageContextProvider>

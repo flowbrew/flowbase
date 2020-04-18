@@ -96,6 +96,6 @@ module.exports = {
         icon: `content/images/flow_brew_logo_top.png`,
       },
     },
-    `gatsby-plugin-offline`,
+    // `gatsby-plugin-offline`,
   ],
 }

@@ -17,7 +17,6 @@ if docker pull ${DOCKERNAME} 2>/dev/null; then
     BUILDPARAMS="$BUILDPARAMS --cache-from ${DOCKERNAME}"
 fi
 
-docker system prune -f
 if DOCKER_BUILDKIT=1 docker build \
     ${BUILDPARAMS} \
     --shm-size 2048M \

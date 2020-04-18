@@ -38,7 +38,10 @@ COPY terrabrew/modules ./modules
 
 # 
 
-FROM jupyter/datascience-notebook:latest AS pybrew
+FROM python:3.8.2-alpine3.11 AS pybrew
+RUN apk add --no-cache \
+        util-linux \
+        build-base gcc autoconf automake libtool zlib-dev libpng-dev nasm
 WORKDIR /flowbase/pybrew
 COPY pybrew/requirements.txt .
 RUN pip install -r requirements.txt

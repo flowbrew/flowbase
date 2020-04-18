@@ -14,14 +14,14 @@ oauth2client==4.1.3
 google-api-python-client==1.7.11
 html2text
 pyyaml
-numpy
-scipy
-matplotlib
-ipython
-jupyter
-pandas
-sympy
-nose
-jupyterlab
-statsmodels
+# numpy
+# scipy
+# matplotlib
+# ipython
+# jupyter
+# pandas
+# sympy
+# nose
+# jupyterlab
+# statsmodels
 boto3

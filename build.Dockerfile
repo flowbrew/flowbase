@@ -85,10 +85,16 @@ RUN apk add --no-cache \
         libjpeg-turbo-utils \
         util-linux \
         build-base gcc autoconf automake libtool zlib-dev libpng-dev nasm
-
+RUN apk --no-cache add --virtual native-deps \
+  g++ gcc libgcc libstdc++ linux-headers make python && \
+  npm install --quiet node-gyp -g &&\
+  npm install --quiet && \
+  apk del native-deps
 WORKDIR /flowbase/gatsbybrew
 RUN npm install -g gatsby-cli && gatsby telemetry --disable
 COPY gatsbybrew/package*.json .
+RUN apk add --update python make g++\
+   && rm -rf /var/cache/apk/*
 RUN npm install
 
 COPY gatsbybrew/ .

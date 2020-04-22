@@ -894,15 +894,14 @@ export default ({ location, ...props }) => {
         },
       }}
     >
-      {/* <Box mb={4}>
+      <Box mb={4}>
         <Container disableGutters={true} maxWidth={false}>
           <Hero />
         </Container>
         <Warning />
-      </Box> */}
-      <Box mt={10} />
-      <OfferSection state={state} handleInputChange={handleInputChange} />
+      </Box>
       <SimpleInDepthBenefits data={data} />
+      <OfferSection state={state} handleInputChange={handleInputChange} />
       <BottomSection />
       <BuyButtonSection state={state} />
     </MainLayout>

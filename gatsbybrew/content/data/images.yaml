@@ -129,3 +129,39 @@
 - name: uv_egcg
   image: uv_egcg.png
   alt: EGCG защищает от УФ излучения
+
+- name: i1
+  image: i1.jpeg
+  alt: Козин Алексей директор Flow Brew
+
+- name: i2
+  image: i2.jpg
+  alt: 
+
+- name: i3
+  image: i3.jpg
+  alt: 
+
+- name: i4
+  image: i4.jpeg
+  alt: Победители конкурса Flow Brew ➡️
+
+- name: i5
+  image: i5.jpg
+  alt: 
+
+- name: i6
+  image: i6.jpg
+  alt: Лекция о пользе чая матча
+
+- name: i7
+  image: i7.jpeg
+  alt: 
+
+- name: i8
+  image: i8.jpeg
+  alt: 
+
+- name: i9
+  image: i9.jpeg
+  alt: 

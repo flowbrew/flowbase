@@ -40,6 +40,8 @@ import {
   CircularProgress,
 } from "@material-ui/core"
 import { makeStyles } from "@material-ui/core/styles"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faGift } from "@fortawesome/free-solid-svg-icons"
 
 const useStyles = makeStyles(theme => ({
   buttonProgress: {
@@ -75,7 +77,12 @@ const OutlinedSection = ({ children }) => {
 }
 
 const ProductImage = ({ product }) => {
-  return <SmallImageBlock image={product.images[0]} title={`${product.name} ${product.weight} г`} />
+  return (
+    <SmallImageBlock
+      image={product.images[0]}
+      title={`${product.name} ${product.weight} г`}
+    />
+  )
 }
 
 const TF = ({ children, name, ...props }) => {
@@ -331,6 +338,30 @@ const onPurchaseError = (product, e) => {
   navigate("/ошибка")
 }
 
+const VolumeSelect = ({ product, order_offer, onChange }) => {
+  return (
+    <Box ml={0} mt={2} mb={2}>
+      <RadioGroup value={order_offer} name="order_offer" onChange={onChange}>
+        {mapi(
+          ({ extra, weight, price }, i) => (
+            <FormControlLabel
+              value={i}
+              control={<Radio />}
+              label={
+                <>
+                  {weight} г ({price} руб / г)
+                </>
+              }
+              key={i}
+            />
+          ),
+          product.offers || []
+        )}
+      </RadioGroup>
+    </Box>
+  )
+}
+
 const CheckoutForm = ({ data, order_offer }) => {
   const [state, setState] = React.useState({
     name: "",
@@ -341,13 +372,14 @@ const CheckoutForm = ({ data, order_offer }) => {
     promocode: "",
     purchasing: false,
     product: data.product || {},
+    order_offer: order_offer,
   })
 
   useEffectOnlyOnce(() => {
     setState(prevState => {
       const product = R.compose(
         applyCoupon,
-        applyOffer(order_offer)
+        applyOffer(state.order_offer)
       )(data.product)
       return {
         ...prevState,
@@ -361,11 +393,11 @@ const CheckoutForm = ({ data, order_offer }) => {
     setState(prevState => {
       const product = R.compose(
         applyCoupon,
-        applyOffer(order_offer)
+        applyOffer(state.order_offer)
       )(data.product)
       return { ...prevState, product: product }
     })
-  }, [data.product, state.promocode, order_offer])
+  }, [data.product, state.promocode, state.order_offer])
 
   const findErrorInForm = () => {
     const items = R.map(([k, v]) => [k, validate(k, v)], R.toPairs(state))
@@ -450,7 +482,7 @@ const CheckoutForm = ({ data, order_offer }) => {
           shipping: shipping,
           promocode: state.product.promocode,
           comment: state.comment,
-          order: order
+          order: order,
         }),
       })
       const json = await response.json()
@@ -478,6 +510,13 @@ const CheckoutForm = ({ data, order_offer }) => {
         onChange={handleInputChange}
         onBlur={handleValidation}
       />
+      <OutlinedSection isMobile={true}>
+        <VolumeSelect
+          product={state.product}
+          order_offer={state.order_offer}
+          onChange={handleInputChange}
+        />
+      </OutlinedSection>
       <Order order={order} />
       <Misc state={state} onChange={handleInputChange} />
       <BuyButton state={state} handleCheckout={handleCheckout} />

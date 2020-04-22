@@ -28,6 +28,14 @@ import {
   RadioGroup,
   FormControlLabel,
   Radio,
+  Drawer,
+  TextField,
+  Dialog,
+  DialogTitle,
+  DialogContentText,
+  DialogActions,
+  DialogContent,
+  GridListTileBar,
 } from "@material-ui/core"
 import Rating from "@material-ui/lab/Rating"
 import {
@@ -45,6 +53,7 @@ import {
   mapi,
   Section,
   H2,
+  H3,
   P,
   UL,
   LI,
@@ -56,6 +65,7 @@ import {
   formatPrice,
   Strong,
   applyOffer,
+  H4,
 } from "../common"
 import Hero from "../components/Hero"
 import { applyCoupon } from "../components/Coupon"
@@ -64,6 +74,8 @@ import GiftCounter from "../components/GiftCounter"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faGift } from "@fortawesome/free-solid-svg-icons"
 import * as R from "ramda"
+import ReactPlayer from "react-player"
+import Ratio from "react-ratio"
 
 const useStyles = makeStyles(theme => ({
   lnk: {
@@ -80,6 +92,12 @@ const useStyles = makeStyles(theme => ({
   },
   gridList: {
     flexWrap: "nowrap",
+    transform: "translateZ(0)",
+  },
+  gridList2: {
+    width: 500,
+    height: 450,
+    // Promote the list into his own layer on Chrome. This cost memory but helps keeping high FPS.
     transform: "translateZ(0)",
   },
   title: {
@@ -119,11 +137,38 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: theme.palette.error.main,
     color: theme.palette.error.contrastText,
   },
+  couponFab: {
+    backgroundColor: theme.palette.secondary.main,
+    color: theme.palette.secondary.contrastText,
+    position: "fixed",
+    top: 0,
+    left: "2%",
+    zIndex: 999,
+    height: "48px",
+    lineHeight: "48px",
+    width: "96%",
+    textAlign: "center",
+    borderRadius: "0 0 20px 20px",
+    cursor: "pointer",
+    // right: 0,
+  },
   selected: {
     border: `3px solid ${theme.palette.secondary.main}`,
     borderRadius: 25,
   },
   unselected: {},
+  titleBar: {
+    background:
+      "linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, " +
+      "rgba(0,0,0,0.3) 70%, rgba(0,0,0,0) 100%)",
+  },
+  groot: {
+    display: "flex",
+    flexWrap: "wrap",
+    justifyContent: "space-around",
+    overflow: "hidden",
+    backgroundColor: theme.palette.background.paper,
+  },
 }))
 
 const SimpleInDepthBenefits = ({ data }) => {
@@ -204,7 +249,9 @@ const SimpleInDepthBenefits = ({ data }) => {
       </Benefit>
       <Benefit title="Программа замены венчика" image="whisk" swap={true}>
         <P>Я бесплатно заменю вам бамбуковый венчик в случае его износа.</P>
-        <P>При заказе чая вы можете попросить меня прислать вам новый венчик.</P>
+        <P>
+          При заказе чая вы можете попросить меня прислать вам новый венчик.
+        </P>
       </Benefit>
     </>
   )
@@ -278,7 +325,7 @@ const OfferImages = () => {
           <ImageBlock image={state.selectedImage} caption={false} />
         </div>
       </Grid>
-      <PreviewImage id="preview_image_1" image="flowbrew" />
+      {/* <PreviewImage id="preview_image_1" image="flowbrew" />
       <PreviewImage id="preview_image_2" image="matcha_tea_in_hand" />
       <PreviewImage
         id="preview_image_3"
@@ -287,7 +334,7 @@ const OfferImages = () => {
       <PreviewImage
         id="preview_image_4"
         image="matcha_tea_dry_in_bowl_flowbrew"
-      />
+      /> */}
     </Grid>
   )
 }
@@ -320,7 +367,7 @@ const OfferBenefits = () => {
   )
 }
 
-const BuyButton = ({ id, order_offer }) => {
+const BuyButton = ({ id, order_offer, title = "Купить" }) => {
   const desktop = useIsDesktop()
 
   return (
@@ -333,7 +380,7 @@ const BuyButton = ({ id, order_offer }) => {
           fullWidth={!desktop}
           onClick={() => navigate(`/checkout?offer=${order_offer}`)}
         >
-          Купить
+          {title}
         </Button>
       </div>
     </Box>
@@ -480,13 +527,103 @@ const VolumeSelect = ({ product, order_offer, onChange }) => {
             <FormControlLabel
               value={i}
               control={<Radio />}
-              label={(<>{weight} г ({price} руб / г) + <FontAwesomeIcon icon={faGift} /> {extra}</>)}
+              label={
+                <>
+                  {weight} г ({price} руб / г) +{" "}
+                  <FontAwesomeIcon icon={faGift} /> {extra}
+                </>
+              }
               key={i}
             />
           ),
           product.offers || []
         )}
       </RadioGroup>
+    </Box>
+  )
+}
+
+const NewImagesList = () => {
+  const classes = useStyles()
+
+  const Review = ({ image }) => {
+    const avatar = useImage(image)
+    return (
+      <Box minWidth="sm">
+        <Card elevation={0}>
+          <ImageBlock image={image} caption={false} />
+        </Card>
+      </Box>
+    )
+  }
+
+  const tileData = [
+    {
+      image: "flowbrew",
+    },
+    {
+      image: "gift_matcha_tea_box_from_front",
+    },
+    {
+      image: "matcha_tea_in_bowl",
+    },
+  ]
+
+  const cols = useIsDesktop() ? 3.0 : 1.2
+
+  return (
+    <Section>
+      <GridList
+        cellHeight="auto"
+        className={classes.gridList}
+        cols={cols}
+        spacing={5}
+      >
+        {tileData.map(tile => (
+          <GridListTile key={tile.image}>
+            <Review author={tile.author} image={tile.image} text={tile.text} />
+          </GridListTile>
+        ))}
+      </GridList>
+    </Section>
+  )
+}
+
+const NewOfferSection = ({ state, handleInputChange }) => {
+  return (
+    <Box mb={6}>
+      <Section>
+        {/* <NewImagesList /> */}
+        <OfferImages />
+        <Container>
+          <Box textAlign="center" pt={2} pb={2}>
+            <P>
+              <Strong>Божественный чай матча</Strong>
+            </P>
+            <P>
+              {state.product.offers[0].weight}/{state.product.offers[2].weight}{" "}
+              г
+            </P>
+            <P>
+              <Strong>
+                {state.product.offers[0].price * state.product.offers[0].weight}{" "}
+                –{" "}
+                {state.product.offers[2].price * state.product.offers[2].weight}{" "}
+                руб
+              </Strong>
+            </P>
+            <Button
+              size="large"
+              variant="contained"
+              color="secondary"
+              fullWidth={false}
+              onClick={() => navigate(`/checkout`)}
+            >
+              Быстрая покупка
+            </Button>
+          </Box>
+        </Container>
+      </Section>
     </Box>
   )
 }
@@ -519,7 +656,7 @@ const OfferSection = ({ state, handleInputChange }) => {
             order_offer={state.order_offer}
             onChange={handleInputChange}
           />
-          <GiftCounter product={state.product} small/>
+          <GiftCounter product={state.product} small />
         </OutlinedSection>
         <BuyButton id="buybutton_1" order_offer={state.order_offer} />
         <OfferBenefits />
@@ -554,7 +691,7 @@ const OfferSection = ({ state, handleInputChange }) => {
                     order_offer={state.order_offer}
                     onChange={handleInputChange}
                   />
-                  <GiftCounter product={state.product} small/>
+                  <GiftCounter product={state.product} small />
                 </OutlinedSection>
                 <BuyButton id="buybutton_1" order_offer={state.order_offer} />
                 <OfferBenefits />
@@ -761,11 +898,13 @@ const FAQSection = () => {
 }
 
 const BuyButtonSection = ({ state }) => (
-  <Box mb={15}>
+  <Box mb={10} textAlign="center" mt={5}>
     <Section>
-      <Hidden smUp>
-        <BuyButton id="buybutton_2" order_offer={state.order_offer} />
-      </Hidden>
+      <BuyButton
+        id="buybutton_2"
+        order_offer={state.order_offer}
+        title="Купить божественный чай матча"
+      />
     </Section>
   </Box>
 )
@@ -820,6 +959,339 @@ const BottomSection = () => {
               <FAQSection />
             </TabPanel>
           </Paper>
+        </Box>
+      </Section>
+    </Box>
+  )
+}
+
+const TF = ({ children, name, ...props }) => {
+  const classes = useStyles()
+
+  return (
+    <Box mb={MARGIN}>
+      <Box id={name} component="div" className={classes.anchor} />
+      <TextField variant="outlined" name={name} {...props} fullWidth>
+        {children}
+      </TextField>
+    </Box>
+  )
+}
+
+const CouponButton = () => {
+  const classes = useStyles()
+
+  const [state, setState] = React.useState({
+    drawer: false,
+    alert: false,
+  })
+
+  const toggleDrawer = () => {
+    setState({ ...state, drawer: !state.drawer, alert: false })
+  }
+
+  const handleInputChange = event => {
+    const target = event.target
+    const value = target.type === "checkbox" ? target.checked : target.value
+    const name = target.name
+    const value2 = name === "promocode" ? value.toUpperCase() : value
+    setState(prevState => {
+      return { ...prevState, [name]: value2, [name + "_error"]: false }
+    })
+  }
+
+  const handleSub = async () => {
+    try {
+      const response = await fetch(process.env.GATSBY_REST_API + "/checkout", {
+        method: "POST",
+        cache: "no-cache",
+        body: JSON.stringify({
+          type: "Подписка",
+          email: state.email,
+          name: state.name,
+        }),
+      })
+      const json = await response.json()
+    } catch (e) {
+    } finally {
+      setState({ ...state, alert: true })
+    }
+  }
+
+  return (
+    <>
+      <Box className={classes.couponFab} onClick={() => toggleDrawer()}>
+        <Typography variant="body1" style={{ lineHeight: "48px" }}>
+          <Strong>КУПОН НА СКИДКУ</Strong>
+        </Typography>
+      </Box>
+      <Drawer anchor={"bottom"} open={state.drawer} onClose={toggleDrawer}>
+        <Box pt={5} pb={1} textAlign="center">
+          <Container>
+            <H4>БЫСТРЫЕ ДЕНЬГИ</H4>
+            <P>Успейте подписаться</P>
+            <TF name="email" label="Email" onChange={handleInputChange} />
+            <TF name="name" label="Имя" onChange={handleInputChange} />
+            <Box mb={2}>
+              <Button
+                size="large"
+                variant="contained"
+                color="secondary"
+                fullWidth={true}
+                onClick={handleSub}
+              >
+                Подписаться
+              </Button>
+            </Box>
+            <Typography variant="caption">
+              * Вы соглашаетесь получать от нас письма, и вы можете отписаться
+              от нас в любое время
+            </Typography>
+          </Container>
+        </Box>
+      </Drawer>
+      <Dialog
+        open={state.alert}
+        onClose={toggleDrawer}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">{"Супер"}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            В течение суток вы получите код на скидку.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={toggleDrawer} color="secondary" autoFocus>
+            OK
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </>
+  )
+}
+
+const Try = () => {
+  const classes = useStyles()
+
+  return (
+    <Box mt={3} mb={10} textAlign="center">
+      <Section>
+        <Container>
+          <H4>
+            <Box style={{ lineHeight: "40px" }}>
+              <Box
+                style={{ fontStyle: "italic" }}
+                className={classes.secondaryColor}
+              >
+                Насладитесь
+              </Box>{" "}
+              <Strong>ЭНЕРГИЕЙ чая матча</Strong>
+            </Box>
+          </H4>
+        </Container>
+      </Section>
+    </Box>
+  )
+}
+
+const Video = () => {
+  return (
+    <Box mb={6}>
+      <Section>
+        <ReactPlayer
+          url="https://www.youtube.com/watch?v=RUmlkOngxaM"
+          width="100%"
+        />
+      </Section>
+    </Box>
+  )
+}
+
+const Video2 = () => {
+  return (
+    <Box mb={6}>
+      <Section>
+        <ReactPlayer
+          url="https://www.youtube.com/watch?v=sa41REdIiJU"
+          width="100%"
+          playing
+          volume={0}
+          loop={true}
+        />
+      </Section>
+    </Box>
+  )
+}
+
+const AboutProduct = ({ data }) => {
+  const classes = useStyles()
+
+  const Benefit = ({ children, image, title, swap, caption = false }) => {
+    const imageBlock = (
+      <ImageBlock image={image} ratio={1 / 1} caption={caption} />
+    )
+
+    const textBlock = (
+      <Container className={classes.text}>
+        <H2>{title}</H2>
+        {children}
+      </Container>
+    )
+
+    const swap2 = false
+
+    return (
+      <Box mb={4}>
+        <Section>
+          <Grid className={classes.feature} container>
+            <Grid item xs={12} sm={12}>
+              {swap2 ? textBlock : imageBlock}
+            </Grid>
+            <Grid item xs={12} sm={12}>
+              {!swap2 ? textBlock : imageBlock}
+            </Grid>
+          </Grid>
+        </Section>
+      </Box>
+    )
+  }
+
+  return (
+    <>
+      <Benefit
+        title="Ваше японское спокойствие"
+        image="matcha_tea_in_test_tube"
+        swap={false}
+        caption={true}
+      >
+        <P>
+          Я попробовал 20 сортов японского чая матча и выбрал для вас яркий,
+          тонизирующий и успокаивающий чай.
+        </P>
+        <UL>
+          <LI>Кофеин в чае матча активирует мозг</LI>
+          <LI>Л-Теанин в чае матча снимает стресс</LI>
+        </UL>
+      </Benefit>
+    </>
+  )
+}
+
+const SocialProof = () => {
+  const classes = useStyles()
+
+  const Review = ({ image }) => {
+    const avatar = useImage(image)
+    return (
+      <Box minWidth="sm">
+        <Card elevation={0}>
+          <ImageBlock image={image} caption={true} />
+        </Card>
+      </Box>
+    )
+  }
+
+  const tileData = [
+    {
+      image: "i4",
+    },
+    {
+      image: "i7",
+    },
+    {
+      image: "i5",
+    },
+    {
+      image: "i9",
+    },
+    {
+      image: "i6",
+    },
+    {
+      image: "i1",
+    },
+    {
+      image: "i8",
+    },
+  ]
+
+  const cols = useIsDesktop() ? 3.0 : 1.2
+
+  return (
+    <Box>
+      <GridList
+        cellHeight="auto"
+        className={classes.gridList}
+        cols={cols}
+        spacing={5}
+      >
+        {tileData.map(tile => (
+          <GridListTile key={tile.image} cols={tile.cols || 1}>
+            <Review author={tile.author} image={tile.image} text={tile.text} />
+          </GridListTile>
+        ))}
+      </GridList>
+    </Box>
+  )
+}
+
+const SocialProof2 = () => {
+  const classes = useStyles()
+
+  const tileData = [
+    {
+      img: "i1",
+      title: "Image",
+      author: "author",
+      featured: true,
+    },
+    {
+      img: "i2",
+      title: "Image",
+      author: "author",
+      featured: false,
+    },
+    {
+      img: "i3",
+      title: "Image",
+      author: "author",
+      featured: false,
+    },
+  ]
+
+  const Tile = ({ img, title, author, featured }) => {
+    const { imageSharp, imageData } = useImage(img)
+
+    return (
+      <Box>
+        <Img fluid={{ ...imageSharp.fluid }} alt={imageData.alt}></Img>
+        <GridListTileBar
+          title={title}
+          titlePosition="top"
+          actionPosition="left"
+          className={classes.titleBar}
+        />
+      </Box>
+    )
+  }
+
+  return (
+    <Box>
+      <Section>
+        <Box className={classes.groot}>
+          <GridList cellHeight={200} spacing={1} className={classes.gridList2}>
+            {tileData.map(tile => (
+              <GridListTile
+                key={tile.img}
+                cols={tile.featured ? 2 : 1}
+                rows={tile.featured ? 2 : 1}
+              >
+                <Tile {...tile} />
+              </GridListTile>
+            ))}
+          </GridList>
         </Box>
       </Section>
     </Box>
@@ -888,23 +1360,35 @@ export default ({ location, ...props }) => {
   return (
     <MainLayout
       location={location}
+      prominent
       pageContext={{
         frontmatter: {
           title: "Чай матча",
         },
       }}
+      maxWidth="700px"
+      style={{ margin: "auto" }}
     >
-      {/* <Box mb={4}>
-        <Container disableGutters={true} maxWidth={false}>
-          <Hero />
-        </Container>
-        <Warning />
-      </Box> */}
-      <Box mt={10} />
-      <OfferSection state={state} handleInputChange={handleInputChange} />
-      <SimpleInDepthBenefits data={data} />
-      <BottomSection />
-      <BuyButtonSection state={state} />
+      <Box>
+        <CouponButton />
+        <Box mb={4}>
+          <Container disableGutters={true} maxWidth={false}>
+            <Hero />
+          </Container>
+          {/* <Warning /> */}
+        </Box>
+        <Try />
+        {/* <Box mt={10} /> */}
+        <NewOfferSection state={state} handleInputChange={handleInputChange} />
+        {/* <OfferSection state={state} handleInputChange={handleInputChange} /> */}
+        <Video />
+        <AboutProduct data={data} />
+        <SocialProof />
+        <Video2 />
+        {/* <SimpleInDepthBenefits data={data} /> */}
+        {/* <BottomSection /> */}
+        <BuyButtonSection state={state} />
+      </Box>
     </MainLayout>
   )
 }

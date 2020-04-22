@@ -1,7 +1,9 @@
 import React from "react"
 import { useStaticQuery, graphql, Link } from "gatsby"
+import Img from "gatsby-image"
 import PropTypes from "prop-types"
 import * as R from "ramda"
+import Ratio from "react-ratio"
 import {
   AppBar,
   Box,
@@ -27,7 +29,7 @@ import StyledLink from "../components/StyledLink"
 import ContactsButton from "../components/ContactsButton"
 import LogoText from "../../content/images/logo_text.svg"
 import Theme, { lowContrastText } from "../components/Theme"
-import { ImageContextProvider } from "../components/ImageContext"
+import { ImageContextProvider, useImage } from "../components/ImageContext"
 import {
   IsDesktopContextProvider,
   useIsDesktop,
@@ -55,6 +57,7 @@ const useStyles = makeStyles(theme => ({
     minHeight: "100vh",
     overflowX: "hidden",
     counterReset: "links",
+    backgroundColor: "white",
   },
   footer: {
     textAlign: "center",
@@ -80,6 +83,16 @@ const useStyles = makeStyles(theme => ({
     left: 0,
     right: 0,
     margin: "0 auto",
+  },
+  fab1: {
+    position: "fixed",
+    bottom: theme.spacing(2),
+    left: theme.spacing(2),
+  },
+  fab2: {
+    position: "fixed",
+    bottom: theme.spacing(2),
+    right: theme.spacing(2),
   },
 }))
 
@@ -138,6 +151,7 @@ const NavMenuButton = ({ anchor, navigation, ...props }) => {
         open={state.drawer}
         onClick={toggleDrawer}
         onClose={toggleDrawer}
+        style={{ zIndex: 9999 }}
       >
         {sideList()}
       </Drawer>
@@ -145,14 +159,39 @@ const NavMenuButton = ({ anchor, navigation, ...props }) => {
   )
 }
 
-const Header = ({ navigation, toggleContacts, fixedHeader }) => {
+const Header = ({
+  navigation,
+  toggleContacts,
+  fixedHeader,
+  prominent = false,
+}) => {
   const classes = useStyles()
   const isDesktop = useIsDesktop()
 
+  const data = useImage("flow_brew_logo_top")
+  const { imageData, imageSharp } = data
+  const ratio = 1.0
+  const img = (
+    <Img
+      fluid={{ ...imageSharp.fluid, aspectRatio: ratio }}
+      alt={imageData.alt}
+      style={{
+        filter: "invert(1)",
+        height: "70px",
+        width: "70px",
+        margin: "0px",
+      }}
+    >
+      {/* <Ratio ratio={ratio} /> */}
+    </Img>
+  )
+
   return (
     <HideOnScroll disabled={fixedHeader}>
-      <AppBar>
-        <Toolbar>
+      <AppBar position="static">
+        <Toolbar
+          style={prominent ? { minHeight: 128, alignItems: "flex-end" } : {}}
+        >
           {isDesktop ? (
             <>
               <IconButton color="inherit" className={classes.hidden}>
@@ -175,7 +214,8 @@ const Header = ({ navigation, toggleContacts, fixedHeader }) => {
 
           <Box style={{ flexGrow: 1 }} align="center">
             <StyledLink to="/" style={{ display: "contents" }}>
-              <LogoText className={classes.logo} />
+              {img}
+              {/* <LogoText className={classes.logo} /> */}
             </StyledLink>
           </Box>
 
@@ -232,6 +272,26 @@ const ShortDivider = styled(Divider)({
 const Footer = ({ navigation }) => {
   const classes = useStyles()
 
+  const data = useImage("flow_brew_logo_top")
+  const { imageData, imageSharp } = data
+  const ratio = 1.0
+  const img = (
+    <Box textAlign="center" mb={2}>
+      <Img
+        fluid={{ ...imageSharp.fluid, aspectRatio: ratio }}
+        alt={imageData.alt}
+        style={{
+          filter: "invert(1)",
+          height: "140px",
+          width: "140px",
+          margin: "auto",
+        }}
+      >
+        {/* <Ratio ratio={ratio} /> */}
+      </Img>
+    </Box>
+  )
+
   return (
     <footer className={classes.footer}>
       <Box mt={2} />
@@ -251,6 +311,7 @@ const Footer = ({ navigation }) => {
           )}
         </Grid>
         <ShortDivider />
+        {img}
         <Copyright />
         <Box className={classes.skipper} />
         <Box className={classes.skipper} />
@@ -289,28 +350,46 @@ function HideOnScroll({ disabled, ...props }) {
 const BottomAppBar = () => {
   const classes = useStyles()
 
+  // return (
+  //   <ShowOnScroll>
+  //     <AppBar position="fixed" color="primary" className={classes.appBar}>
+  //       <Toolbar>
+  //         <ContactsButton>
+  //           <Fab
+  //             color="secondary"
+  //             aria-label="add"
+  //             className={classes.fabButton}
+  //           >
+  //             <LiveHelp />
+  //           </Fab>
+  //         </ContactsButton>
+  //       </Toolbar>
+  //     </AppBar>
+  //   </ShowOnScroll>
+  // )
+
   return (
-    <ShowOnScroll>
-      <AppBar position="fixed" color="primary" className={classes.appBar}>
-        <Toolbar>
-          <ContactsButton>
-            <Fab
-              color="secondary"
-              aria-label="add"
-              className={classes.fabButton}
-            >
-              <LiveHelp />
-            </Fab>
-          </ContactsButton>
-        </Toolbar>
-      </AppBar>
-    </ShowOnScroll>
+    <>
+      {/* <Box className={classes.fab1}>
+        <Fab color="secondary" aria-label="add">
+          <LiveHelp />
+        </Fab>
+      </Box> */}
+      <Box className={classes.fab2}>
+        <ContactsButton>
+          <Fab color="secondary" aria-label="add">
+            <LiveHelp />
+          </Fab>
+        </ContactsButton>
+      </Box>
+    </>
   )
 }
 
 const MainLayout = ({
   children,
   location,
+  prominent = false,
   pageContext = { frontmatter: {} },
   fixedHeader,
   isBlogPost = false,
@@ -335,12 +414,12 @@ const MainLayout = ({
   `)
 
   const navigation2 = R.filter(
-    x => x.link !== location.pathname, 
+    x => x.link !== location.pathname,
     data.navigation.nodes
   )
 
   usePromotion(data.product, location)
-  
+
   return (
     <Theme>
       <ImageContextProvider>
@@ -352,10 +431,16 @@ const MainLayout = ({
               pathname={location.pathname}
             />
             <CssBaseline />
-            <Header navigation={navigation2} fixedHeader={true} />
-            <Main>{children}</Main>
-            {!noBottom && <BottomAppBar />}
-            <Footer navigation={navigation2} />
+            <Box {...props}>
+              <Header
+                prominent={prominent}
+                navigation={navigation2}
+                fixedHeader={true}
+              />
+              <Main>{children}</Main>
+              {!noBottom && <BottomAppBar />}
+              <Footer navigation={navigation2} />
+            </Box>
           </IsDesktopContextProvider>
         </MdxContextProvider>
       </ImageContextProvider>

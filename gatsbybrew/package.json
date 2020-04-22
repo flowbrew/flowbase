@@ -44,6 +44,7 @@
     "react-helmet": "^5.2.1",
     "react-input-mask": "^3.0.0-alpha.2",
     "react-parallax": "^3.0.3",
+    "react-player": "^1.15.3",
     "react-ratio": "^0.1.5",
     "react-rellax": "^1.0.3",
     "styled-components": "^4.4.1",

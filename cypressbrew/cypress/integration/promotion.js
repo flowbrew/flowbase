@@ -38,10 +38,6 @@ describe("Promocode", () => {
     cy.contains("Оформление заказа", { timeout: 10000 });
     cy.get('input[name="promocode"]').should("have.value", "GIFT10");
     cy.contains("Скидка").should("exist");
-
-    cy.visit(url);
-    cy.contains("Flow Brew", { timeout: 10000 });
-    cy.contains("Скидка").should("exist");
   });
 
   it("Can be used only once", () => {

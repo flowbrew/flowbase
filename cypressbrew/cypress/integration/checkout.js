@@ -8,7 +8,7 @@ const getscroll = x => cy.get(x).scrollIntoView();
 describe("Checkout", () => {
   it("Can get to checkout from landing page", () => {
     cy.visit(Cypress.env("WEBSITE_URL"));
-    cy.get("#buybutton_1 > .MuiButtonBase-root").click();
+    cy.get('#buybutton_1').click();
     cy.url().should("include", "/checkout");
     cy.contains("Оформление заказа").should("be.visible");
   });

@@ -479,7 +479,7 @@ const VolumeSelect = ({ product, order_offer, onChange }) => {
             <FormControlLabel
               value={i}
               control={<Radio />}
-              label={(<>{weight} г ({price} руб / г) + <FontAwesomeIcon icon={faGift} /> {extra}</>)}
+              label={(<>{weight} г ({price} руб / г) + <FontAwesomeIcon icon={faGift} /></>)}
               key={i}
             />
           ),
@@ -893,11 +893,11 @@ export default ({ location, ...props }) => {
         },
       }}
     >
-      <Box mb={4}>
+      <Box mb={0}>
         <Container disableGutters={true} maxWidth={false}>
           <Hero />
         </Container>
-        <Warning />
+        {/* <Warning /> */}
       </Box>
       <SimpleInDepthBenefits data={data} />
       <OfferSection state={state} handleInputChange={handleInputChange} />

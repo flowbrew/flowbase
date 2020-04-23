@@ -39,7 +39,7 @@ const Hero = ({ children }) => {
     <Box style={{ overflow: "Hidden" }}>
       <Parallax speed={-3}>
         <BackgroundImage fluid={img}>
-          <Box style={{ height: "100vh" }}>{children}</Box>
+          <Box style={{ height: "85vh" }}>{children}</Box>
         </BackgroundImage>
       </Parallax>
 
@@ -51,21 +51,12 @@ const Hero = ({ children }) => {
         >
           <Box mt={8}>
             <Typography variant="h2" component="h1" gutterBottom>
-              <Box fontWeight="fontWeightBold">Чай Матча</Box>
-            </Typography>
-            <Typography variant="h5" component="h2" gutterBottom>
-              <Box fontWeight="fontWeightBold">
-                Времена перемен
-                <br />
-                Приносят дары
-                <br />
-                Тем, кто мудр и спокоен
-              </Box>
+              <Box fontWeight="fontWeightBold">БОЖЕСТВЕННЫЙ чай матча Flow Brew</Box>
             </Typography>
           </Box>
-          <Box mt={5}>
+          {/* <Box mt={5}>
             <ArrowDownwardIcon fontSize="large" />
-          </Box>
+          </Box> */}
         </Container>
       </Box>
     </Box>

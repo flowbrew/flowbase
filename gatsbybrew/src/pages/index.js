@@ -1162,19 +1162,21 @@ const AboutProduct = ({ data }) => {
   return (
     <>
       <Benefit
-        title="Ваше японское спокойствие"
-        image="matcha_tea_in_test_tube"
+        title="Матча Flow Brew"
+        image="matcha_tea_flowbrew"
         swap={false}
-        caption={true}
+        caption={false}
       >
         <P>
-          Я попробовал 20 сортов японского чая матча и выбрал для вас яркий,
-          тонизирующий и успокаивающий чай.
+           Чай матча Flow Brew приготовлен из лучших верхних чайных листочков, перемолотых традиционными японскими каменными жерновами.
         </P>
-        <UL>
-          <LI>Кофеин в чае матча активирует мозг</LI>
-          <LI>Л-Теанин в чае матча снимает стресс</LI>
-        </UL>
+        <P>
+          Flow Brew подарит вам сладкий ягодный аромат, насыщенный вкус и
+          кремово-ореховое послевкусие.
+        </P>
+        <P>
+          Flow Brew наполнит ваше тело ЭНЕРГИЕЙ.
+        </P>
       </Benefit>
     </>
   )
@@ -1237,7 +1239,12 @@ const SocialProof = () => {
       >
         {tileData.map(tile => (
           <GridListTile key={tile.image} cols={tile.cols || 1}>
-            <Review author={tile.author} image={tile.image} text={tile.text} caption={tile.caption} />
+            <Review
+              author={tile.author}
+              image={tile.image}
+              text={tile.text}
+              caption={tile.caption}
+            />
           </GridListTile>
         ))}
       </GridList>
@@ -1389,10 +1396,11 @@ export default ({ location, ...props }) => {
         {/* <Box mt={10} /> */}
         <NewOfferSection state={state} handleInputChange={handleInputChange} />
         {/* <OfferSection state={state} handleInputChange={handleInputChange} /> */}
+        <Video2 />
         <Video />
         <AboutProduct data={data} />
         <SocialProof />
-        <Video2 />
+
         {/* <SimpleInDepthBenefits data={data} /> */}
         {/* <BottomSection /> */}
         <BuyButtonSection state={state} />

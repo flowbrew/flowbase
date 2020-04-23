@@ -345,7 +345,7 @@ const VolumeSelect = ({ product, order_offer, onChange }) => {
         {mapi(
           ({ extra, weight, price }, i) => (
             <FormControlLabel
-              value={i}
+              value={`${i}`}
               control={<Radio />}
               label={
                 <>

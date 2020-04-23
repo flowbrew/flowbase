@@ -616,6 +616,7 @@ const NewOfferSection = ({ state, handleInputChange }) => {
               size="large"
               variant="contained"
               color="secondary"
+              id="buybutton_1"
               fullWidth={false}
               onClick={() => navigate(`/checkout`)}
             >

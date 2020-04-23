@@ -78,20 +78,3 @@ describe("Promocode", () => {
     cy.contains("Скидка").should("not.exist");
   });
 });
-
-describe("Welcome bonus", () => {
-  it("Should be given on the first landing page view", () => {
-    const url = Cypress.env("WEBSITE_URL")
-
-    cy.visit(url);
-    cy.contains("Flow Brew", { timeout: 10000 });
-    cy.contains("Скидка").should("exist");
-  });
-
-  it("Should be given on the first checkout view", () => {
-    cy.visit(Cypress.env("WEBSITE_URL") + "checkout");
-    cy.contains("Оформление заказа", { timeout: 10000 });
-    cy.get('input[name="promocode"]').should("have.value", "WELCOME10");
-    cy.contains("Скидка").should("exist");
-  });
-});

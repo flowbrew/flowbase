@@ -132,15 +132,15 @@
 
 - name: i1
   image: i1.jpeg
-  alt: Козин Алексей директор Flow Brew
+  alt: Директор Flow Brew Козин Алексей
 
 - name: i2
   image: i2.jpg
-  alt: 
+  alt: Дегустация чая матча Flow Brew
 
 - name: i3
   image: i3.jpg
-  alt: 
+  alt: Дегустация чая матча Flow Brew
 
 - name: i4
   image: i4.jpeg
@@ -148,7 +148,7 @@
 
 - name: i5
   image: i5.jpg
-  alt: 
+  alt: Дегустация чая матча Flow Brew
 
 - name: i6
   image: i6.jpg
@@ -156,12 +156,12 @@
 
 - name: i7
   image: i7.jpeg
-  alt: 
+  alt: Первая проданная коробка Flow Brew
 
 - name: i8
   image: i8.jpeg
-  alt: 
+  alt: Дегустация чая матча Flow Brew
 
 - name: i9
   image: i9.jpeg
-  alt: 
+  alt: Чай матча и венчик часен

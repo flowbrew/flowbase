@@ -1182,12 +1182,12 @@ const AboutProduct = ({ data }) => {
 const SocialProof = () => {
   const classes = useStyles()
 
-  const Review = ({ image }) => {
+  const Review = ({ image, caption = false }) => {
     const avatar = useImage(image)
     return (
       <Box minWidth="sm">
         <Card elevation={0}>
-          <ImageBlock image={image} caption={true} />
+          <ImageBlock image={image} caption={caption} />
         </Card>
       </Box>
     )
@@ -1196,24 +1196,31 @@ const SocialProof = () => {
   const tileData = [
     {
       image: "i4",
+      caption: true,
     },
     {
       image: "i7",
+      caption: true,
     },
     {
       image: "i5",
+      caption: true,
     },
     {
       image: "i9",
+      caption: true,
     },
     {
       image: "i6",
+      caption: true,
     },
     {
       image: "i1",
+      caption: true,
     },
     {
       image: "i8",
+      caption: true,
     },
   ]
 
@@ -1229,7 +1236,7 @@ const SocialProof = () => {
       >
         {tileData.map(tile => (
           <GridListTile key={tile.image} cols={tile.cols || 1}>
-            <Review author={tile.author} image={tile.image} text={tile.text} />
+            <Review author={tile.author} image={tile.image} text={tile.text} caption={tile.caption} />
           </GridListTile>
         ))}
       </GridList>

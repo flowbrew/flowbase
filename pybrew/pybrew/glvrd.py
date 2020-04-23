@@ -21,7 +21,10 @@ def glvrd_proofread_io(text, use_cache=True):
         hint = hints[fragment['hint']]
         text_ = text[fragment['start']:fragment['end']]
 
-        if text in ['Быстрая покупка']:
+        if text in [
+            'Быстрая покупка',
+            'Первая проданная коробка Flow Brew',
+            ]:
             return
 
         if (hint['name'] == 'Неверное использование косой черты'):

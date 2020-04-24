@@ -1077,7 +1077,7 @@ const Try = () => {
   const classes = useStyles()
 
   return (
-    <Box mt={3} mb={10} textAlign="center">
+    <Box mt={0} mb={10} textAlign="center">
       <Section>
         <Container>
           <H4>
@@ -1386,7 +1386,7 @@ export default ({ location, ...props }) => {
     >
       <Box>
         <CouponButton />
-        <Box mb={4}>
+        <Box mb={0}>
           <Container disableGutters={true} maxWidth={false}>
             <Hero />
           </Container>

@@ -21,8 +21,7 @@ def glvrd_proofread_io(text, use_cache=True):
         hint = hints[fragment['hint']]
         text_ = text[fragment['start']:fragment['end']]
 
-        if (hint['name'] == 'Неверное использование косой черты' and
-                text_.lower() == 'мг/г'):
+        if (hint['name'] == 'Неверное использование косой черты'):
             return
         if (hint['name'] == 'Необъективная оценка' and
                 text_.lower() == 'простуда'):

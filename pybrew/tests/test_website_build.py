@@ -36,6 +36,7 @@ def all_texts_io(path):
     def _get_text_io(path):
         if any(x in path for x in [
             'политика+конфиденциальности',
+            'quiz'
         ]):
             return
 

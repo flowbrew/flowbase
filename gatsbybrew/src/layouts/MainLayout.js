@@ -1,4 +1,5 @@
 import React from "react"
+import Img from "gatsby-image"
 import { useStaticQuery, graphql, Link } from "gatsby"
 import PropTypes from "prop-types"
 import * as R from "ramda"
@@ -27,7 +28,7 @@ import StyledLink from "../components/StyledLink"
 import ContactsButton from "../components/ContactsButton"
 import LogoText from "../../content/images/logo_text.svg"
 import Theme, { lowContrastText } from "../components/Theme"
-import { ImageContextProvider } from "../components/ImageContext"
+import { ImageContextProvider, useImage } from "../components/ImageContext"
 import {
   IsDesktopContextProvider,
   useIsDesktop,
@@ -213,7 +214,7 @@ const Main = ({ children }) => {
   const classes = useStyles()
 
   return (
-    <Box component="main" className={classes.main}>
+    <Box component="main" className={classes.main} style={{backgroundColor: "white"}}>
       {/* <Box className={classes.skipper} /> */}
       {children}
     </Box>
@@ -231,6 +232,25 @@ const ShortDivider = styled(Divider)({
 
 const Footer = ({ navigation }) => {
   const classes = useStyles()
+
+  const data = useImage("flow_brew_logo_top")
+  const { imageData, imageSharp } = data
+  const ratio = 1.0
+  const img = (
+    <Box textAlign="center" mb={2}>
+      <Img
+        fluid={{ ...imageSharp.fluid, aspectRatio: ratio }}
+        alt={imageData.alt}
+        style={{
+          filter: "invert(1)",
+          height: "140px",
+          width: "140px",
+          margin: "auto",
+        }}
+      >
+      </Img>
+    </Box>
+  )
 
   return (
     <footer className={classes.footer}>
@@ -251,6 +271,7 @@ const Footer = ({ navigation }) => {
           )}
         </Grid>
         <ShortDivider />
+        {img}
         <Copyright />
         <Box className={classes.skipper} />
         <Box className={classes.skipper} />

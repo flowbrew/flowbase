@@ -219,6 +219,7 @@ const Quiz = () => {
     cq: 0,
     answers: [],
     done: false,
+    started: false,
   })
 
   useEffectOnlyOnce(() => {
@@ -252,7 +253,7 @@ const Quiz = () => {
     {
       question: "(2/3) Как вы планируете заваривать чай матча?",
       answers: [
-        "Традиционным способом: венчик + чаша",
+        "Венчиком",
         "Блендером или вспенивателем для молока",
         "Ложкой",
       ],
@@ -260,7 +261,7 @@ const Quiz = () => {
     {
       question: "(3/3) Что для вас самое важное в чае матча?",
       answers: [
-        "Ежедневный утренний ритуал, наполняющий энергией",
+        "Божественный вкус",
         "Здоровая альтернатива кофе",
         "Антиоксиданты для поддержания здорового образа жизни",
       ],
@@ -280,6 +281,15 @@ const Quiz = () => {
         cq: prevState.cq + 1,
         done: prevState.cq + 1 >= questions.length,
         answers: [...prevState.answers, answer],
+      }
+    })
+  }
+
+  const start = () => {
+    setState(prevState => {
+      return {
+        ...prevState,
+        started: true,
       }
     })
   }
@@ -338,8 +348,41 @@ const Quiz = () => {
     )
   }
 
+  const Introduction = () => {
+    return (
+      <Box>
+        <ImageBlock image="matcha_bowl" caption={false} />
+        <Container>
+          <Box minHeight={120} mt={3} mb={4}>
+            <H3>Какой чай матча вам подходит?</H3>
+            <P>Ответьте на {questions.length} вопроса, и мы подберем для вас идеальный чай матча.</P>
+          </Box>
+          <Button
+            id={`quiz_start`}
+            type="submit"
+            size="large"
+            variant="contained"
+            color="secondary"
+            fullWidth={true}
+            onClick={() => start()}
+          >
+            Начать
+          </Button>
+        </Container>
+      </Box>
+    )
+  }
+
+  if (!state.done && !state.started) {
+    return (
+      <Box>
+        <Introduction />
+      </Box>
+    )
+  }
+
   return (
-    <Box>
+    <Box mt={6}>
       <Container>{state.done ? <QuizResult /> : <QuizButtons />}</Container>
     </Box>
   )
@@ -375,7 +418,7 @@ export default ({ location, ...props }) => {
       style={{ backgroundColor: "white" }}
     >
       <Box maxWidth={500} style={{ margin: "auto" }} pb={10}>
-        <Box pt={10} />
+        <Box pt={5} />
         <Quiz />
       </Box>
     </MainLayout>

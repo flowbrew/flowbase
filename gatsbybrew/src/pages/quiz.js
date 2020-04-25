@@ -153,6 +153,7 @@ const AH = () => {
 const ABB = () => (
   <Box>
     <Button
+      id="quiz_buy_button"
       size="large"
       variant="contained"
       color="secondary"
@@ -367,7 +368,7 @@ export default ({ location, ...props }) => {
       location={location}
       pageContext={{
         frontmatter: {
-          title: "Чай матча",
+          title: "Тест: какой чай матча вам подходит?",
         },
       }}
       noBottom

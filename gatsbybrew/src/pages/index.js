@@ -329,6 +329,7 @@ const BuyButton = ({ id, order_offer }) => {
           size="large"
           variant="contained"
           color="secondary"
+          id={id}
           fullWidth={!desktop}
           onClick={() => navigate(`/checkout?offer=${order_offer}`)}
         >

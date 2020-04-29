@@ -36,6 +36,7 @@ import {
 import { MdxContextProvider } from "../components/MdxContext"
 import { usePromotion } from "../components/Coupon"
 import SEO from "../components/SEO"
+import { ScrollToTop } from "../common"
 
 const HEADER_CONTENT_HEIGHT = 4
 
@@ -214,7 +215,11 @@ const Main = ({ children }) => {
   const classes = useStyles()
 
   return (
-    <Box component="main" className={classes.main} style={{backgroundColor: "white"}}>
+    <Box
+      component="main"
+      className={classes.main}
+      style={{ backgroundColor: "white" }}
+    >
       {/* <Box className={classes.skipper} /> */}
       {children}
     </Box>
@@ -247,8 +252,7 @@ const Footer = ({ navigation }) => {
           width: "140px",
           margin: "auto",
         }}
-      >
-      </Img>
+      ></Img>
     </Box>
   )
 
@@ -336,6 +340,7 @@ const MainLayout = ({
   fixedHeader,
   isBlogPost = false,
   noBottom = false,
+  noShopLnk = false,
   ...props
 }) => {
   const data = useStaticQuery(graphql`
@@ -356,12 +361,12 @@ const MainLayout = ({
   `)
 
   const navigation2 = R.filter(
-    x => x.link !== location.pathname, 
+    x => x.link !== location.pathname && (!noShopLnk || x.link !== '/'),
     data.navigation.nodes
   )
 
   usePromotion(data.product, location)
-  
+
   return (
     <Theme>
       <ImageContextProvider>
@@ -373,6 +378,7 @@ const MainLayout = ({
               pathname={location.pathname}
             />
             <CssBaseline />
+            <ScrollToTop />
             <Header navigation={navigation2} fixedHeader={true} />
             <Main>{children}</Main>
             {!noBottom && <BottomAppBar />}

@@ -1,4 +1,5 @@
 import React, { useEffect } from "react"
+import { useLocation } from "@reach/router"
 import Img from "gatsby-image"
 import BackgroundImage from "gatsby-background-image"
 import Ratio from "react-ratio"
@@ -279,7 +280,7 @@ const applyOffer = R.curry((n, product) => {
     ...product,
     price: offer.price * offer.weight,
     weight: offer.weight,
-    extra: offer.extra
+    extra: offer.extra,
   }
 })
 
@@ -470,6 +471,16 @@ const TextBlock = ({ children, ...props }) => {
 
 const useEffectOnlyOnce = func => useEffect(func, [])
 
+const ScrollToTop = () => {
+  const { pathname } = useLocation()
+
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [pathname])
+
+  return null
+}
+
 export {
   SpanBox,
   CrossedBox,
@@ -503,4 +514,5 @@ export {
   formatPrice,
   TextBlock,
   applyOffer,
+  ScrollToTop,
 }

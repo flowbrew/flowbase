@@ -1,103 +1,42 @@
 import React, { useEffect } from "react"
-import Img from "gatsby-image"
-import { useStaticQuery, graphql, navigate, Link } from "gatsby"
-import { makeStyles } from "@material-ui/core/styles"
+import { Link } from "gatsby"
 import Cookies from "universal-cookie"
+import { makeStyles } from "@material-ui/core/styles"
 import {
-  GridList,
   ListItemText,
   ListItemIcon,
   ListItem,
   List,
-  ExpansionPanelSummary,
-  ExpansionPanelDetails,
-  ExpansionPanel,
   Button,
-  Avatar,
-  CardContent,
-  CardHeader,
-  Card,
-  Hidden,
-  Paper,
   Grid,
   Box,
   Container,
   Typography,
-  GridListTile,
-  Tabs,
-  Tab,
-  RadioGroup,
-  FormControlLabel,
-  Radio,
   Stepper,
   Step,
   StepLabel,
-  MobileStepper,
   Fade,
-  Grow,
-  Collapse,
-  Zoom,
 } from "@material-ui/core"
-import Rating from "@material-ui/lab/Rating"
 import {
   CheckCircleOutlineOutlined,
-  FavoriteBorderOutlined,
-  EcoOutlined,
-  LocalShippingOutlined,
-  ExpandMore,
 } from "@material-ui/icons"
 import MainLayout from "../layouts/MainLayout"
-import { useImage } from "../components/ImageContext"
-import { useIsDesktop } from "../components/IsDesktopContext"
-import StyledLink from "../components/StyledLink"
 import {
   mapi,
-  Section,
-  H2,
   H3,
-  H4,
   P,
-  UL,
-  LI,
-  FLBPaper,
   ImageBlock,
-  CrossedBox,
-  RedBox,
   useEffectOnlyOnce,
-  formatPrice,
   Strong,
-  applyOffer,
   ScrollToTop,
 } from "../common"
-import Hero from "../components/Hero"
-import { applyCoupon } from "../components/Coupon"
-import ContactsButton from "../components/ContactsButton"
-import GiftCounter from "../components/GiftCounter"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faGift } from "@fortawesome/free-solid-svg-icons"
-import * as R from "ramda"
 
 const useStyles = makeStyles(theme => ({
-  secondaryColor: {
-    color: theme.palette.secondary.main,
+  button: {
+    minHeight: theme.spacing(8),
   },
 }))
 
-const MARGIN = 2
-
-const OutlinedSection = ({ children }) => {
-  return (
-    <Box mt={MARGIN} mb={MARGIN}>
-      <Container>
-        <Paper variant="outlined">
-          <Box pl={MARGIN} pr={MARGIN} pt={MARGIN}>
-            {children}
-          </Box>
-        </Paper>
-      </Container>
-    </Box>
-  )
-}
 
 const DEFAULT_COOKIE_PARAMS = {
   maxAge: 365 * 24 * 60 * 60,
@@ -115,34 +54,7 @@ const fetchResults = () => {
   return results
 }
 
-const WorkWithRejections = ({ rejections }) => {
-  const Rejection = ({ header, body }) => {
-    return (
-      <ListItem>
-        <ListItemIcon>
-          <CheckCircleOutlineOutlined color="secondary" />
-        </ListItemIcon>
-        <ListItemText primary={header} secondary={body} />
-      </ListItem>
-    )
-  }
-
-  return (
-    <Box mt={3}>
-      <List>
-        {mapi(
-          ({ header, body }, i) => (
-            <Rejection key={i} header={header} body={body} />
-          ),
-          rejections || []
-        )}
-      </List>
-    </Box>
-  )
-}
-
 const AH = ({ speed }) => {
-  const classes = useStyles()
   return (
     <Box textAlign="center" mb={2}>
       <QuizTransition step={speed * 0}>
@@ -340,8 +252,6 @@ const QuizTransition = ({ children, step }) => (
 )
 
 const Quiz = () => {
-  const classes = useStyles()
-
   const [state, setState] = React.useState({
     cq: 0,
     answers: [],
@@ -368,7 +278,7 @@ const Quiz = () => {
     if (state.done) {
       saveResults(state.answers)
     }
-  }, [state.done])
+  }, [state.done, state.answers])
 
   // PAYLOAD
 
@@ -482,8 +392,10 @@ const Quiz = () => {
   }
 
   const Introduction = () => {
+    const classes = useStyles()
+
     return (
-      <Box>
+      <Box mb={10}>
         <QuizTransition step={0}>
           <ImageBlock image="matcha_bowl" caption={false} />
         </QuizTransition>
@@ -507,9 +419,10 @@ const Quiz = () => {
               variant="contained"
               color="secondary"
               fullWidth={true}
+              className={classes.button}
               onClick={() => start()}
             >
-              Начать
+              Начать тест
             </Button>
           </QuizTransition>
         </Container>

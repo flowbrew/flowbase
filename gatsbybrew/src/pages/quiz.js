@@ -17,9 +17,7 @@ import {
   StepLabel,
   Fade,
 } from "@material-ui/core"
-import {
-  CheckCircleOutlineOutlined,
-} from "@material-ui/icons"
+import { CheckCircleOutlineOutlined } from "@material-ui/icons"
 import MainLayout from "../layouts/MainLayout"
 import {
   mapi,
@@ -36,7 +34,6 @@ const useStyles = makeStyles(theme => ({
     minHeight: theme.spacing(8),
   },
 }))
-
 
 const DEFAULT_COOKIE_PARAMS = {
   maxAge: 365 * 24 * 60 * 60,
@@ -69,21 +66,26 @@ const AH = ({ speed }) => {
   )
 }
 
-const ABB = () => (
-  <Box>
-    <Link to="/" style={{ textDecoration: "none" }}>
-      <Button
-        id="quiz_buy_button"
-        size="large"
-        variant="contained"
-        color="secondary"
-        fullWidth={true}
-      >
-        Магазин чая матча
-      </Button>
-    </Link>
-  </Box>
-)
+const ABB = () => {
+  const classes = useStyles()
+
+  return (
+    <Box mt={4}>
+      <Link to="/" style={{ textDecoration: "none" }}>
+        <Button
+          id="quiz_buy_button"
+          size="large"
+          variant="contained"
+          color="secondary"
+          className={classes.button}
+          fullWidth={true}
+        >
+          Магазин чая матча
+        </Button>
+      </Link>
+    </Box>
+  )
+}
 
 const makeWhisk = answers => {
   switch (answers[1]) {

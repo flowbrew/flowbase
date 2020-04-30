@@ -124,6 +124,9 @@ const useStyles = makeStyles(theme => ({
     borderRadius: 25,
   },
   unselected: {},
+  button: {
+    minHeight: theme.spacing(8),
+  },
 }))
 
 const SimpleInDepthBenefits = ({ data }) => {
@@ -320,6 +323,7 @@ const OfferBenefits = () => {
 
 const BuyButton = ({ id, order_offer }) => {
   const desktop = useIsDesktop()
+  const classes = useStyles()
 
   return (
     <Box ml={2} mr={2} mt={3}>
@@ -329,7 +333,8 @@ const BuyButton = ({ id, order_offer }) => {
           variant="contained"
           color="secondary"
           id={id}
-          fullWidth={!desktop}
+          fullWidth={true}
+          className={classes.button}
           onClick={() => navigate(`/checkout?offer=${order_offer}`)}
         >
           Купить

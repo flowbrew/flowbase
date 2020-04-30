@@ -244,10 +244,9 @@ const Order = ({ order }) => {
         <OrderTable order={order} />
       </Box>
       <P>Оплата после получения.</P>
-      {R.find(x => R.contains("Набор для заварки", x.description), order) && (
+      {R.find(x => R.contains("Венчик", x.description), order) && (
         <P>
-          Если это ваш первый заказ, то вы получите бесплатный набор для
-          заварки.
+          Если это ваш первый заказ, то вы получите бесплатный венчик.
         </P>
       )}
     </OutlinedSection>
@@ -414,7 +413,7 @@ const CheckoutForm = ({ data, order_offer }) => {
       ? [
           {
             price: 0.0,
-            description: `Набор для заварки (${state.product.extra})`,
+            description: `${state.product.extra}`,
           },
         ]
       : []),

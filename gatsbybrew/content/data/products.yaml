@@ -6,27 +6,27 @@
 
   default_offer: 1
   offers:
-    - extra: венчик
+    - extra: Венчик
       weight: 30
-      price: 92
-    - extra: венчик и чаша
-      weight: 60
       price: 72
-    - extra: венчик и чаша
+    - extra: Венчик
+      weight: 60
+      price: 47
+    - extra: Венчик
       weight: 90
-      price: 61
+      price: 38
 
   shipping:
     - destination: "Москва"
-      cost: 0
+      cost: 500
       description: Я доставлю заказ курьером в Москву за 2-4 рабочих дня (не смогу доставить в выходные и праздники).
   
     - destination: "Санкт-Петербург"
-      cost: 0
+      cost: 300
       description: Я доставлю заказ курьером за 1 день.
 
     - destination: "Другой город"
-      cost: 100
+      cost: 600
       description: Я доставлю заказ Почтой России за 1-2 недели. Для заказа укажите свое имя и фамилию.
 
   in-depth-benefits:

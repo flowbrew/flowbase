@@ -32,13 +32,13 @@ export default ({ product, children, small = false, ...props }) => {
   return (
     <Box {...props}>
       <P>
-        {small ? "" : "Я дарю бесплатный набор для заварки новым клиентам."}{" "}
-        {count > 0 && (
-          <>
-            Осталось {count} <FontAwesomeIcon icon={faGift} />
-          </>
-        )}
+        {small ? "" : "Я дарю бесплатный бамбуковый венчик для заварки новым клиентам."}
       </P>
+      {count > 0 && (
+          <P>
+            Осталось {count} <FontAwesomeIcon icon={faGift} />
+          </P>
+        )}
       {children}
     </Box>
   )

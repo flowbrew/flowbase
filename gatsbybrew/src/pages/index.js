@@ -180,16 +180,16 @@ const SimpleInDepthBenefits = ({ data }) => {
           <LI>Л-Теанин в чае матча снимает стресс</LI>
         </UL>
       </Benefit>
-      <Benefit
+      {/* <Benefit
         title="Венчик и чаша в подарок"
         image="gift_matcha_tea_box_from_front"
         caption={true}
       >
         <GiftCounter product={data.product} />
-        {/* <P>
+        <P>
           Для заварки чая матча следует использовать венчик часен и чашу чаван.
           Иначе в чае останутся комочки, которые испортят вкус.
-        </P> */}
+        </P>
         <P>В вашей первой коробке будут (при заказе от 60 г):</P>
         <UL>
           <LI>Чай матча Флоу Брю</LI>
@@ -200,11 +200,10 @@ const SimpleInDepthBenefits = ({ data }) => {
           </LI>
           <LI>Джутовый мешочек с подарком</LI>
         </UL>
-      </Benefit>
-      {/* <Benefit title="Программа замены венчика" image="whisk" swap={true}>
-        <P>Я бесплатно заменю вам бамбуковый венчик в случае его износа.</P>
-        <P>При заказе чая вы можете попросить меня прислать вам новый венчик.</P>
       </Benefit> */}
+      <Benefit title="Венчик в подарок" image="whisk" swap={true}>
+        <GiftCounter product={data.product} />
+      </Benefit>
     </>
   )
 }
@@ -306,14 +305,14 @@ const OfferBenefits = () => {
           icon={<FavoriteBorderOutlined color="primary" />}
           text="Сладкий ягодный аромат, насыщенный вкус и кремово-ореховое послевкусие."
         />
-        {/* <Benefit
+        <Benefit
           icon={<EcoOutlined color="primary" />}
           text="Энергия и японское спокойствие."
-        /> */}
-        <Benefit
+        />
+        {/* <Benefit
           icon={<LocalShippingOutlined color="primary" />}
           text="Бесплатная доставка по Москве и Спб."
-        />
+        /> */}
       </List>
     </Box>
   )

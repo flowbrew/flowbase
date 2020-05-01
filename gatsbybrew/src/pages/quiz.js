@@ -484,10 +484,10 @@ export default ({ location, ...props }) => {
       }}
       noBottom
       noShopLnk
+      fixedAppBar
       style={{ backgroundColor: "white" }}
     >
       <Box maxWidth={500} style={{ margin: "auto" }} pb={10}>
-        <Box pt={5} />
         <Quiz />
       </Box>
     </MainLayout>

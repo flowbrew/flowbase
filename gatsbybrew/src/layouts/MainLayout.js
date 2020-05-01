@@ -83,6 +83,7 @@ const useStyles = makeStyles(theme => ({
     right: 0,
     margin: "0 auto",
   },
+  offset: theme.mixins.toolbar,
 }))
 
 /* TODO: hide on scroll down */
@@ -207,6 +208,7 @@ const Header = ({ navigation, toggleContacts, fixedHeader }) => {
           />
         </Toolbar>
       </AppBar>
+      <div className={classes.offset} />
     </HideOnScroll>
   )
 }
@@ -337,7 +339,7 @@ const MainLayout = ({
   children,
   location,
   pageContext = { frontmatter: {} },
-  fixedHeader,
+  fixedHeader = true,
   isBlogPost = false,
   noBottom = false,
   noShopLnk = false,
@@ -361,7 +363,7 @@ const MainLayout = ({
   `)
 
   const navigation2 = R.filter(
-    x => x.link !== location.pathname && (!noShopLnk || x.link !== '/'),
+    x => x.link !== location.pathname && (!noShopLnk || x.link !== "/"),
     data.navigation.nodes
   )
 
@@ -379,7 +381,7 @@ const MainLayout = ({
             />
             <CssBaseline />
             <ScrollToTop />
-            <Header navigation={navigation2} fixedHeader={true} />
+            <Header navigation={navigation2} fixedHeader={fixedHeader} />
             <Main>{children}</Main>
             {!noBottom && <BottomAppBar />}
             <Footer navigation={navigation2} />

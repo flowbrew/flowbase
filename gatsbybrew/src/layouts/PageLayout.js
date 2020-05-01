@@ -9,7 +9,7 @@ const PageLayout = ({ children, pageContext, ...props }) => {
   return (
     <MainLayout pageContext={pageContext} {...props}>
       <MDXProvider components={MDXComponents}>
-        <Box pt={4} pb={8}>
+        <Box pt={0} pb={8}>
           <Section small>
             {pageContext && (
               <Box mb={4}>

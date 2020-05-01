@@ -897,6 +897,7 @@ export default ({ location, ...props }) => {
           title: "Чай матча",
         },
       }}
+      noBottom
     >
       <Box mb={0}>
         <Container disableGutters={true} maxWidth={false}>

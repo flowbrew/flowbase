@@ -129,3 +129,8 @@
 - name: uv_egcg
   image: uv_egcg.png
   alt: EGCG защищает от УФ излучения
+
+- name: cool_review
+  image: cool_review.jpeg
+  alt: Отзыв клиента
+  

@@ -176,7 +176,8 @@ const SimpleInDepthBenefits = ({ data }) => {
         caption={true}
       >
         <P>
-          Я попробовал 20 сортов японского чая матча и выбрал для вас самый яркий, тонизирующий и успокаивающий чай.
+          Я попробовал 20 сортов японского чая матча и выбрал для вас самый
+          яркий, тонизирующий и успокаивающий чай.
         </P>
         <UL>
           <LI>Кофеин в чае матча активирует мозг</LI>
@@ -228,7 +229,7 @@ const OfferHeader = () => {
           <Box ml={1}>
             <Typography variant="body1">
               <a className={classes.lnk} href="#reviews">
-                3 отзыва
+                4 отзыва
               </a>
             </Typography>
           </Box>
@@ -484,7 +485,12 @@ const VolumeSelect = ({ product, order_offer, onChange }) => {
             <FormControlLabel
               value={i}
               control={<Radio />}
-              label={(<>{weight} г ({price} руб / г) + <FontAwesomeIcon icon={faGift} /></>)}
+              label={
+                <>
+                  {weight} г ({price} руб / г) +{" "}
+                  <FontAwesomeIcon icon={faGift} />
+                </>
+              }
               key={i}
             />
           ),
@@ -523,7 +529,7 @@ const OfferSection = ({ state, handleInputChange }) => {
             order_offer={state.order_offer}
             onChange={handleInputChange}
           />
-          <GiftCounter product={state.product} small/>
+          <GiftCounter product={state.product} small />
         </OutlinedSection>
         <BuyButton id="buybutton_1" order_offer={state.order_offer} />
         <OfferBenefits />
@@ -558,7 +564,7 @@ const OfferSection = ({ state, handleInputChange }) => {
                     order_offer={state.order_offer}
                     onChange={handleInputChange}
                   />
-                  <GiftCounter product={state.product} small/>
+                  <GiftCounter product={state.product} small />
                 </OutlinedSection>
                 <BuyButton id="buybutton_1" order_offer={state.order_offer} />
                 <OfferBenefits />
@@ -595,6 +601,26 @@ const ReviewsSection2 = () => {
 
   const Review = ({ author, text, image }) => {
     const avatar = useImage(image)
+    if (!text) {
+      return (
+        <Box minWidth="sm">
+          <Card elevation={0} variant="outlined">
+            <CardHeader avatar={<Avatar alt={author} />} title={author} />
+            {gramma_check_fix_separates_name_and_body}
+            <CardContent>
+              <Box mb={1}>
+                <Rating name="size-medium" defaultValue={5} readOnly />
+              </Box>
+              <Img
+                fluid={{ ...avatar.imageSharp.fluid }}
+                alt={avatar.imageData.alt}
+                ratio={2 / 1}
+              />
+            </CardContent>
+          </Card>
+        </Box>
+      )
+    }
     return (
       <Box minWidth="sm">
         <Card elevation={0} variant="outlined">
@@ -622,6 +648,10 @@ const ReviewsSection2 = () => {
   }
 
   const tileData = [
+    {
+      author: "Виктор",
+      image: "cool_review",
+    },
     {
       author: "Марат",
       image: "marat",

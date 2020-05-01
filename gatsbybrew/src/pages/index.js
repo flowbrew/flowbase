@@ -250,7 +250,7 @@ const OfferImages = () => {
 
   const PreviewImage = ({ image, id }) => {
     const classes = useStyles()
-    const { imageSharp } = useImage(image)
+    const { imageSharp, imageData } = useImage(image)
 
     const isSelected = image === state.selectedImage
 
@@ -264,6 +264,7 @@ const OfferImages = () => {
               )}
               <Img
                 fluid={{ ...imageSharp.fluid, aspectRatio: 1 }}
+                alt={id}
                 className={isSelected ? classes.selected : null}
               />
             </div>
@@ -484,7 +485,7 @@ const VolumeSelect = ({ product, order_offer, onChange }) => {
           ({ extra, weight, price }, i) => (
             <FormControlLabel
               value={i}
-              control={<Radio />}
+              control={<Radio id={`volume_select_${i}`}/>}
               label={
                 <>
                   {weight} г ({price} руб / г) +{" "}
@@ -603,7 +604,7 @@ const ReviewsSection2 = () => {
     const avatar = useImage(image)
     if (!text) {
       return (
-        <Box minWidth="sm">
+        <Box minWidth="sm" id={`review_${image}`}>
           <Card elevation={0} variant="outlined">
             <CardHeader avatar={<Avatar alt={author} />} title={author} />
             {gramma_check_fix_separates_name_and_body}
@@ -622,7 +623,7 @@ const ReviewsSection2 = () => {
       )
     }
     return (
-      <Box minWidth="sm">
+      <Box minWidth="sm" id={`review_${image}`}>
         <Card elevation={0} variant="outlined">
           <CardHeader
             avatar={

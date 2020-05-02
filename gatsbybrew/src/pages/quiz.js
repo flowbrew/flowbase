@@ -66,26 +66,21 @@ const AH = ({ speed }) => {
   )
 }
 
-const ABB = () => {
-  const classes = useStyles()
-
-  return (
-    <Box mt={4}>
-      <Link to="/" style={{ textDecoration: "none" }}>
-        <Button
-          id="quiz_buy_button"
-          size="large"
-          variant="contained"
-          color="secondary"
-          className={classes.button}
-          fullWidth={true}
-        >
-          Магазин чая матча
-        </Button>
-      </Link>
-    </Box>
-  )
-}
+const ABB = () => (
+  <Box>
+    <Link to="/" style={{ textDecoration: "none" }}>
+      <Button
+        id="quiz_buy_button"
+        size="large"
+        variant="contained"
+        color="secondary"
+        fullWidth={true}
+      >
+        Магазин чая матча
+      </Button>
+    </Link>
+  </Box>
+)
 
 const makeWhisk = answers => {
   switch (answers[1]) {

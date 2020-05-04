@@ -163,7 +163,7 @@ const SimpleInDepthBenefits = ({ data }) => {
   }
 
   return (
-    <>
+    <Box mb={8}>
       <Benefit title="Здравствуйте" image="kozin_aleksey">
         <P>
           Меня зовут Алексей Козин. Я директор Флоу Брю. И я обожаю чай матча.
@@ -205,10 +205,10 @@ const SimpleInDepthBenefits = ({ data }) => {
           <LI>Джутовый мешочек с подарком</LI>
         </UL>
       </Benefit> */}
-      <Benefit title="Венчик в подарок" image="whisk" swap={true}>
+      {/* <Benefit title="Венчик в подарок" image="whisk" swap={true}>
         <GiftCounter product={data.product} />
-      </Benefit>
-    </>
+      </Benefit> */}
+    </Box>
   )
 }
 
@@ -218,8 +218,8 @@ const OfferHeader = () => {
 
   return (
     <Box ml={1} mb={isDesktop ? 0 : 2} mt={isDesktop ? 3 : 0}>
-      <Typography variant="h2" component="h2" paragraph={true}>
-        Флоу Брю
+      <Typography variant="h3" component="h2" paragraph={true}>
+        Церемониальный чай матча
       </Typography>
       <Grid container>
         <Grid>
@@ -488,8 +488,7 @@ const VolumeSelect = ({ product, order_offer, onChange }) => {
               control={<Radio id={`volume_select_${i}`}/>}
               label={
                 <>
-                  {weight} г ({price} руб / г) +{" "}
-                  <FontAwesomeIcon icon={faGift} />
+                  {weight} г ({price} руб / г)
                 </>
               }
               key={i}
@@ -530,7 +529,7 @@ const OfferSection = ({ state, handleInputChange }) => {
             order_offer={state.order_offer}
             onChange={handleInputChange}
           />
-          <GiftCounter product={state.product} small />
+          {/* <GiftCounter product={state.product} small /> */}
         </OutlinedSection>
         <BuyButton id="buybutton_1" order_offer={state.order_offer} />
         <OfferBenefits />
@@ -565,7 +564,7 @@ const OfferSection = ({ state, handleInputChange }) => {
                     order_offer={state.order_offer}
                     onChange={handleInputChange}
                   />
-                  <GiftCounter product={state.product} small />
+                  {/* <GiftCounter product={state.product} small /> */}
                 </OutlinedSection>
                 <BuyButton id="buybutton_1" order_offer={state.order_offer} />
                 <OfferBenefits />
@@ -851,9 +850,9 @@ const BottomSection = () => {
                 <ReviewsSection2 />
               </Box>
             </TabPanel>
-            <TabPanel value={value} index={1}>
+            {/* <TabPanel value={value} index={1}>
               <FAQSection />
-            </TabPanel>
+            </TabPanel> */}
           </Paper>
         </Box>
       </Section>

@@ -407,7 +407,7 @@ const CheckoutForm = ({ data, order_offer }) => {
   const order = [
     {
       ...state.product,
-      description: `${state.product.name} ${state.product.weight} г`,
+      description: `${state.product.name} ${state.product.weight}\xa0г`,
     },
     ...(!state.product.no_whisk && state.product.extra
       ? [

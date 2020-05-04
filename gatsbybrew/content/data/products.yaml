@@ -6,15 +6,15 @@
 
   default_offer: 1
   offers:
-    - extra: Венчик
+    - extra: ""
       weight: 30
-      price: 72
-    - extra: Венчик
+      price: 58
+    - extra: ""
       weight: 60
-      price: 47
-    - extra: Венчик
+      price: 37
+    - extra: ""
       weight: 90
-      price: 38
+      price: 32
 
   shipping:
     - destination: "Москва"

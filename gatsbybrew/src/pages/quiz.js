@@ -76,9 +76,22 @@ const ABB = () => (
         color="secondary"
         fullWidth={true}
       >
-        Магазин чая матча
+        активировать скидку + перейти в Магазин
       </Button>
     </Link>
+    {/* <Box mt={2}>
+      <Link to="/quiz" style={{ textDecoration: "none" }}>
+        <Button
+          id="quiz_restart_button"
+          size="large"
+          variant="outlined"
+          color="secondary"
+          fullWidth={true}
+        >
+          заново пройти тест
+        </Button>
+      </Link>
+    </Box> */}
   </Box>
 )
 
@@ -131,10 +144,18 @@ const makeImportant = answers => {
       switch (answers[0]) {
         default:
         case 0:
-          return `, и вам еще не знаком его божественный вкус`
+          return (
+            <>
+              , и вам еще не знаком его <Strong>божественный</Strong> вкус
+            </>
+          )
         case 1:
         case 2:
-          return `, и вы любите его божественный вкус`
+          return (
+            <>
+              , и вам знаком его <Strong>божественный</Strong> вкус
+            </>
+          )
       }
   }
 }
@@ -148,14 +169,11 @@ const makeQuizBlock = ({ answers, whisk, important }) => {
         <>
           <P>
             Вы <Strong>никогда не пробовали</Strong> чай матча{important}.
-            Первое впечатление бывает только раз, важно его не испортить.
           </P>
           <P>
-            Поэтому рекомендую впервые пить настоящий японский чай матча. Для
-            этого я дарю вам код WELCOME10 со скидкой 10% на японский
-            церемониальный чай матча.
+            Первое впечатление бывает только раз, важно его не испортить.
+            Поэтому рекомендую впервые пить настоящий японский чай матча.
           </P>
-          <P>{whisk}</P>
         </>
       )
     case 1:
@@ -166,7 +184,6 @@ const makeQuizBlock = ({ answers, whisk, important }) => {
             достоинству оцените настоящий японский церемониальный сорт чая
             матча.
           </P>
-          <P>{whisk}</P>
         </>
       )
     case 2:
@@ -177,7 +194,6 @@ const makeQuizBlock = ({ answers, whisk, important }) => {
             достоинству оцените настоящий японский церемониальный сорт чая
             матча.
           </P>
-          <P>{whisk}</P>
         </>
       )
   }
@@ -188,7 +204,7 @@ const A1 = ({ answers }) => {
 
   const text = makeQuizBlock({
     answers: answers,
-    whisk: makeWhisk(answers),
+    whisk: "", //makeWhisk(answers),
     important: makeImportant(answers),
   })
 
@@ -203,10 +219,7 @@ const A1 = ({ answers }) => {
       </QuizTransition>
       <QuizTransition step={speed * 4}>{text}</QuizTransition>
       <QuizTransition step={speed * 5}>
-        <ABB />
-      </QuizTransition>
-      <QuizTransition step={speed * 6}>
-        <Box mt={3}>
+        <Box mt={2} mb={2}>
           <List>
             <ListItem>
               <ListItemIcon>
@@ -237,6 +250,12 @@ const A1 = ({ answers }) => {
             </ListItem>
           </List>
         </Box>
+      </QuizTransition>
+      <QuizTransition step={speed * 6}>
+        <P>
+          Для этого я дарю вам скидку 10% на японский церемониальный чай матча.
+        </P>
+        <ABB />
       </QuizTransition>
     </Box>
   )
@@ -287,20 +306,14 @@ const Quiz = () => {
     {
       question: "(2/3) Как вы планируете заваривать чай матча?",
       answers: [
+        "Ложкой",
         "Венчиком",
         "Блендером или вспенивателем для молока",
-        "Ложкой",
-        "Другое",
       ],
     },
     {
-      question: "(3/3) Что для вас самое важное в чае матча?",
-      answers: [
-        "Божественный вкус",
-        "Здоровая альтернатива кофе",
-        "Антиоксиданты для поддержания здорового образа жизни",
-        "Другое",
-      ],
+      question: "(3/3) Что для вас важнее в чае матча?",
+      answers: ["Божественный вкус", "Доступная цена"],
     },
   ]
 

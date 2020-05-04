@@ -76,7 +76,7 @@ const ABB = () => (
         color="secondary"
         fullWidth={true}
       >
-        активировать скидку + перейти в Магазин
+        активировать скидку 10% + перейти в Магазин
       </Button>
     </Link>
     {/* <Box mt={2}>
@@ -219,6 +219,12 @@ const A1 = ({ answers }) => {
       </QuizTransition>
       <QuizTransition step={speed * 4}>{text}</QuizTransition>
       <QuizTransition step={speed * 5}>
+        <P>
+          Для этого я дарю вам скидку 10% на японский церемониальный чай матча.
+        </P>
+        <ABB />
+      </QuizTransition>
+      <QuizTransition step={speed * 6}>
         <Box mt={2} mb={2}>
           <List>
             <ListItem>
@@ -250,12 +256,6 @@ const A1 = ({ answers }) => {
             </ListItem>
           </List>
         </Box>
-      </QuizTransition>
-      <QuizTransition step={speed * 6}>
-        <P>
-          Для этого я дарю вам скидку 10% на японский церемониальный чай матча.
-        </P>
-        <ABB />
       </QuizTransition>
     </Box>
   )

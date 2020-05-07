@@ -205,9 +205,9 @@ const SimpleInDepthBenefits = ({ data }) => {
           <LI>Джутовый мешочек с подарком</LI>
         </UL>
       </Benefit> */}
-      {/* <Benefit title="Венчик в подарок" image="whisk" swap={true}>
+      <Benefit title="Шуршащий венчик в подарок" image="whisk" swap={true}>
         <GiftCounter product={data.product} />
-      </Benefit> */}
+      </Benefit>
     </Box>
   )
 }
@@ -314,10 +314,10 @@ const OfferBenefits = () => {
           icon={<EcoOutlined color="primary" />}
           text="Энергия и японское спокойствие."
         />
-        {/* <Benefit
+        <Benefit
           icon={<LocalShippingOutlined color="primary" />}
           text="Бесплатная доставка по Москве и Спб."
-        /> */}
+        />
       </List>
     </Box>
   )
@@ -488,7 +488,8 @@ const VolumeSelect = ({ product, order_offer, onChange }) => {
               control={<Radio id={`volume_select_${i}`} />}
               label={
                 <>
-                  {weight} г ({price} руб / г)
+                  {weight} г ({price} руб / г) +{" "}
+                  <FontAwesomeIcon icon={faGift} />
                 </>
               }
               key={i}
@@ -504,17 +505,17 @@ const VolumeSelect = ({ product, order_offer, onChange }) => {
 const OfferSection = ({ state, handleInputChange }) => {
   const rejections = [
     {
-      text: "Оплата после получения",
+      text: "Оплата после того, как вы попробуете чай",
       to: "/оплата",
     },
     {
       text: "Верну деньги, если вам не понравится чай",
       to: "/гарантии+и+возврат",
     },
-    // {
-    //   text: "Отвечу на ваши вопросы",
-    //   to: "/контакты",
-    // },
+    {
+      text: "Отвечу на ваши вопросы",
+      to: "/контакты",
+    },
   ]
 
   return (
@@ -529,7 +530,7 @@ const OfferSection = ({ state, handleInputChange }) => {
             order_offer={state.order_offer}
             onChange={handleInputChange}
           />
-          {/* <GiftCounter product={state.product} small /> */}
+          <GiftCounter product={state.product} small />
         </OutlinedSection>
         <BuyButton id="buybutton_1" order_offer={state.order_offer} />
         <OfferBenefits />
@@ -564,7 +565,7 @@ const OfferSection = ({ state, handleInputChange }) => {
                     order_offer={state.order_offer}
                     onChange={handleInputChange}
                   />
-                  {/* <GiftCounter product={state.product} small /> */}
+                  <GiftCounter product={state.product} small />
                 </OutlinedSection>
                 <BuyButton id="buybutton_1" order_offer={state.order_offer} />
                 <OfferBenefits />

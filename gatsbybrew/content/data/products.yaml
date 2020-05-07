@@ -6,13 +6,13 @@
 
   default_offer: 1
   offers:
-    - extra: ""
+    - extra: Венчик
       weight: 30
       price: 73
-    - extra: ""
+    - extra: Венчик
       weight: 60
       price: 47
-    - extra: ""
+    - extra: Венчик
       weight: 90
       price: 36
 

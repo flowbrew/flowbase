@@ -243,7 +243,7 @@ const Order = ({ order }) => {
       <Box mb={MARGIN}>
         <OrderTable order={order} />
       </Box>
-      <P>Оплата после получения.</P>
+      <P>Оплата после того, как вы попробуете чай.</P>
       {R.find(x => R.contains("Венчик", x.description), order) && (
         <P>
           Если это ваш первый заказ, то вы получите бесплатный венчик.

@@ -23,6 +23,10 @@ def glvrd_proofread_io(text, use_cache=True):
 
         if (hint['name'] == 'Неверное использование косой черты'):
             return
+        if (text == 'Шуршащий венчик в подарок'):
+            return
+        if ('Оплата после того, как вы попробуете чай' in text):
+            return
         if (hint['name'] == 'Необъективная оценка' and
                 text_.lower() == 'простуда'):
             return

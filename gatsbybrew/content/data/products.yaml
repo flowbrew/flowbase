@@ -8,25 +8,25 @@
   offers:
     - extra: ""
       weight: 30
-      price: 58
+      price: 73
     - extra: ""
       weight: 60
-      price: 37
+      price: 47
     - extra: ""
       weight: 90
-      price: 32
+      price: 36
 
   shipping:
     - destination: "Москва"
-      cost: 500
+      cost: 0
       description: Я доставлю заказ курьером в Москву за 2-4 рабочих дня (не смогу доставить в выходные и праздники).
   
     - destination: "Санкт-Петербург"
-      cost: 300
+      cost: 0
       description: Я доставлю заказ курьером за 1 день.
 
     - destination: "Другой город"
-      cost: 600
+      cost: 100
       description: Я доставлю заказ Почтой России за 1-2 недели. Для заказа укажите свое имя и фамилию.
 
   in-depth-benefits:

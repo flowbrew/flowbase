@@ -485,7 +485,7 @@ const VolumeSelect = ({ product, order_offer, onChange }) => {
           ({ extra, weight, price }, i) => (
             <FormControlLabel
               value={i}
-              control={<Radio id={`volume_select_${i}`}/>}
+              control={<Radio id={`volume_select_${i}`} />}
               label={
                 <>
                   {weight} г ({price} руб / г)
@@ -843,7 +843,6 @@ const BottomSection = () => {
               centered
             >
               <Tab label="Отзывы" />
-              <Tab label="Частые вопросы" />
             </Tabs>
             <TabPanel value={value} index={0}>
               <Box p={2}>

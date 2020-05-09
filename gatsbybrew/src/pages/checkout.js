@@ -521,6 +521,7 @@ export default ({ location }) => {
           image: "flowbrew",
         },
       }}
+      noBottom
     >
       <CheckoutForm data={data} order_offer={order_offer} />
     </PageLayout>

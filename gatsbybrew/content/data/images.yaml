@@ -134,3 +134,34 @@
   image: cool_review.jpeg
   alt: Отзыв клиента
   
+- name: matcha_latte
+  image: 0318-matcha-green-tea-latte-6.jpg
+  alt: Матча латте
+
+- name: leaf
+  image: leaf.jpg
+  alt: Чайный лист
+
+- name: matcha_powder
+  image: powder.jpg
+  alt: Церемониальный чай матча
+
+- name: ceremonial_matcha_tea
+  image: matchabowl_grande_7d131f50-55c8-4487-af10-7cbdd8550d86_2048x.jpg
+  alt: Церемониальный чай матча
+
+- name: matcha_tea_set
+  image: 4661853fd5f514aa69110206c067beb8.jpg
+  alt: Чай матча, венчик часен и подставка кусенаоши
+
+- name: matcha_latte_2
+  image: matcha-latte.jpg
+  alt: Матча латте
+
+- name: matcha_latte_3
+  image: how-to-make-a-matcha-latte-01.jpg
+  alt: Матча латте
+
+- name: tea_leafs
+  image: tsaiga-qhQEyyHWrAQ-unsplash.jpg
+  alt: Сушка чайных листьев

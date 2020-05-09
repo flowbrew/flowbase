@@ -17,7 +17,7 @@ requests_cache.install_cache(
 )
 
 
-def all_texts_io(path):
+def all_texts_io(path, bettaBuild=False):
     def _check(txt):
         return not any(
             x in txt for x in [
@@ -36,7 +36,7 @@ def all_texts_io(path):
     def _get_text_io(path):
         if any(x in path for x in [
             'политика+конфиденциальности',
-            'quiz'
+            'PLACEHOLDER_FOR_NONE' if bettaBuild else 'quiz'
         ]):
             return
 
@@ -80,7 +80,7 @@ def test_texts_with_yandex_speller_io(WEBSITE_BUILD_PATH):
         all(x)
         for x in [
             [__validate_io(path, text) for text in texts]
-            for path, texts in all_texts_io(WEBSITE_BUILD_PATH)
+            for path, texts in all_texts_io(WEBSITE_BUILD_PATH, bettaBuild=True)
         ]
     )
 

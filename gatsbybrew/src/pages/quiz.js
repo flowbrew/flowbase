@@ -56,472 +56,329 @@ const fetchResults = () => {
   return results
 }
 
-const AH = ({ speed }) => {
-  return (
-    <Box textAlign="center" mb={2}>
-      <QuizTransition step={speed * 0}>
-        <Typography variant="subtitle1">
-          основываясь на ваших ответах
-        </Typography>
-      </QuizTransition>
-      <QuizTransition step={speed * 1}>
-        <H3>Я рекомендую</H3>
-      </QuizTransition>
-    </Box>
-  )
-}
-
-const ABB = ({ shop }) => (
-  <Box mt={4}>
-    {shop && (
-      <Link to="/" style={{ textDecoration: "none" }}>
-        <Button
-          id="quiz_buy_button"
-          size="large"
-          variant="contained"
-          color="secondary"
-          fullWidth={true}
-        >
-          магазин чая матча
-        </Button>
-      </Link>
+const QuizCard = ({ children, img, title, ratio = 1, noTitle }) => (
+  <Box>
+    {img && (
+      <Box mt={-6} mb={2}>
+        <ImageBlock image={img} ratio={ratio} caption={!noTitle} />
+      </Box>
     )}
-    <Box mt={2}>
-      <Link to="/quiz" style={{ textDecoration: "none" }}>
-        <Button
-          id="quiz_restart_button"
-          size="large"
-          variant="outlined"
-          color="secondary"
-          fullWidth={true}
-        >
-          заново пройти тест
-        </Button>
-      </Link>
-    </Box>
+    <Container>
+      <H3>{title}</H3>
+    </Container>
+    <Container>{children}</Container>
   </Box>
 )
 
-const makeWhisk = answers => {
-  switch (answers[1]) {
-    default:
-      return ``
-    case 0:
-      return (
-        <>
-          Вы планируете заваривать чай <Strong>венчиком</Strong>. Сегодня по
-          коду WELCOME10 я бесплатно подарю вам бамбуковый венчик с первым
-          заказом.
-        </>
-      )
-    case 1:
-      return (
-        <>
-          Вы планируете заваривать чай{" "}
-          <Strong>блендером или вспенивателем для молока</Strong>. Так, без
-          сомнения, будет быстрей, однако из-за этого в чае останутся комочки.
-          Если вы хотите чай без комочков, то по коду WELCOME10 я бесплатно
-          подарю вам бамбуковый венчик с первым заказом.
-        </>
-      )
-    case 2:
-      return (
-        <>
-          Вы планируете заваривать чай <Strong>ложкой</Strong>. Так, без
-          сомнения, будет быстрей, однако из-за этого в чае останутся комочки.
-          Если вы хотите чай без комочков, то по коду WELCOME10 я бесплатно
-          подарю вам бамбуковый венчик.
-        </>
-      )
-  }
-}
-
-const makeImportant = answers => {
-  switch (answers[2]) {
-    default:
-      switch (answers[0]) {
-        default:
-        case 0:
-          return ``
-        case 1:
-        case 2:
-          return `, и вам он нравится`
-      }
-    case 0:
-      switch (answers[0]) {
-        default:
-        case 0:
-          return (
-            <>
-              , и вам еще не знаком его <Strong>божественный</Strong> вкус
-            </>
-          )
-        case 1:
-        case 2:
-          return (
-            <>
-              , и вам знаком его <Strong>божественный</Strong> вкус
-            </>
-          )
-      }
-  }
-}
-
-const makeQuizBlock = ({ answers, whisk, important }) => {
-  switch (answers[0]) {
-    default:
-      return ``
-    case 0:
-      return (
-        <>
-          <P>
-            Вы <Strong>никогда не пробовали</Strong> чай матча{important}.
-          </P>
-          <P>
-            Первое впечатление бывает только раз, важно его не испортить.
-            Поэтому рекомендую впервые пить настоящий японский чай матча.
-          </P>
-        </>
-      )
-    case 1:
-      return (
-        <>
-          <P>
-            Вы <Strong>уже пробовали</Strong> чай матча{important}. Вы по
-            достоинству оцените настоящий японский церемониальный сорт чая
-            матча.
-          </P>
-        </>
-      )
-    case 2:
-      return (
-        <>
-          <P>
-            Вы <Strong>разбираетесь</Strong> в чае матча{important}. Вы по
-            достоинству оцените настоящий японский церемониальный сорт чая
-            матча.
-          </P>
-        </>
-      )
-  }
-}
-
-const A1 = ({ answers }) => {
-  const speed = 1
-
-  const text = makeQuizBlock({
-    answers: answers,
-    whisk: "", //makeWhisk(answers),
-    important: makeImportant(answers),
+const QuizResolution = ({ entry = "sometimes_taste" }) => {
+  const [state, setState] = React.useState({
+    page: entry,
   })
 
-  return (
-    <Box>
-      <AH speed={speed} />
-      <QuizTransition step={speed * 2}>
-        <ImageBlock image="flowbrew" caption={false} mb={2} />
-      </QuizTransition>
-      <QuizTransition step={speed * 3}>
-        <H3>Церемониальный чай матча</H3>
-      </QuizTransition>
-      <QuizTransition step={speed * 4}>{text}</QuizTransition>
-      <QuizTransition step={speed * 5}>
-        <P>
-          Для этого я дарю вам скидку 10% на японский церемониальный чай матча.
-        </P>
-        <ABB />
-      </QuizTransition>
-      <QuizTransition step={speed * 6}>
-        <Box mt={2} mb={2}>
-          <List>
-            <ListItem>
-              <ListItemIcon>
-                <CheckCircleOutlineOutlined color="secondary" />
-              </ListItemIcon>
-              <ListItemText
-                primary="Вкус"
-                secondary="Яркий насыщенный растительный вкус и кремово-ореховое послевкусие."
-              />
-            </ListItem>
-            <ListItem>
-              <ListItemIcon>
-                <CheckCircleOutlineOutlined color="secondary" />
-              </ListItemIcon>
-              <ListItemText
-                primary="Аромат"
-                secondary="Божественный сладкий ягодный аромат."
-              />
-            </ListItem>
-            <ListItem>
-              <ListItemIcon>
-                <CheckCircleOutlineOutlined color="secondary" />
-              </ListItemIcon>
-              <ListItemText
-                primary="Сделан в Японии"
-                secondary="Наш чай вырос в предгорьях города Удзи в регионе Киото."
-              />
-            </ListItem>
-          </List>
-        </Box>
-      </QuizTransition>
+  const setPage = x =>
+    setState(prevState => {
+      return {
+        ...prevState,
+        page: x,
+      }
+    })
+
+  const PageButton = ({ label, to }) => (
+    <Box mt={2}>
+      <Button
+        id={`quiz_${to}`}
+        type="submit"
+        size="large"
+        variant="contained"
+        color="secondary"
+        fullWidth={true}
+        onClick={() => setPage(to)}
+      >
+        {label}
+      </Button>
     </Box>
   )
-}
 
-const NoCafeOnCOVID = () => {
-  return (
-    <>
-      <P>
-        В обычное время я порекомендовал бы вам прийти и попробовать чай в
-        японское <Strong>матча-кафе</Strong>. Но сейчас все закрыто из-за
-        карантина.
-      </P>
-      <P>
-        Но не расстраиваетесь, я помогу вам и сориентирую вас в мире чая матча.
-      </P>
-    </>
-  )
-}
-
-const MatchaGrades = ({ taste, price }) => {
-  const TW = taste
-    ? ({ children }) => <Strong>{children}</Strong>
-    : ({ children }) => <>{children}</>
-  const PW = price
-    ? ({ children }) => <Strong>{children}</Strong>
-    : ({ children }) => <>{children}</>
-
-  return (
-    <>
-      {taste && (
+  const pages = {
+    alot_taste: (
+      <QuizCard
+        title="Какой чай матча вам подходит?"
+        img="ceremonial_matcha_tea"
+      >
         <P>
-          <Strong>Вкус</Strong>, аромат и эффект чая матча сильно зависит от его
-          сорта:
+          Вы <Strong>разбираетесь</Strong> в чае матча, и вам хочется
+          лучшего <Strong>вкуса</Strong>.
         </P>
-      )}
-      {price && (
-        <P>
-          <Strong>Цена</Strong> чая матча сильно зависит от его сорта:
-        </P>
-      )}
-      <UL>
-        <LI>
-          Кулинарный сорт <PW>по стоимости на уровне кофе</PW>, из него делают
-          прекрасные десерты, смузи или коктейли. Но в чистом виде кулинарный
-          сорт горчит. Такой чай употребляют только в комбинации с чем-то
-          другим.
-        </LI>
-        <LI>
-          Церемониальный сорт чая матча стоит в 10 раз дороже кофе, а иногда и в
-          100. Такой чай имеет выраженный тонизирующий эффект, наполняющий тело
-          радостью. Церемониальный сорт имеет <TW>божественный яркий вкус</TW>.
-          Его пьют как и в чистом виде, так и добавляют в напитки.
-        </LI>
-      </UL>
-    </>
-  )
-}
+        <P>Вам подходит японский церемониальный сорт чай матча.</P>
+        <PageButton
+          label="Где попробовать японский церемониальный чай матча?"
+          to="where_to_try"
+        />
+        <PageButton
+          label="Что такое церемониальный сорт?"
+          to="what_is_ceremonial_a"
+        />
+      </QuizCard>
+    ),
 
-const MyStoreSellsCeremonealGrade = ({ taste, price }) => {
-  return (
-    <>
-      <P>
-        Мой магазин специализируется на подлинном японском церемониальном сорте
-        чая матча.
-      </P>
-      {taste && (
+    alot_price: (
+      <QuizCard title="Какой чай матча вам подходит?" img="matcha_latte">
+        <P>
+          Вы <Strong>разбираетесь</Strong> в чае матча, и вы ищете{" "}
+          <Strong>доступную цену</Strong>.
+        </P>
+        <P>
+          Вам подойдет матча латте из <Strong>кулинарного</Strong> сорта.
+        </P>
+        <PageButton label="Что такое кулинарный сорт?" to="what_is_cooking_a" />
+      </QuizCard>
+    ),
+
+    sometimes_taste: (
+      <QuizCard
+        title="Какой чай матча вам подходит?"
+        img="ceremonial_matcha_tea"
+      >
+        <P>
+          Вы уже <Strong>несколько раз</Strong> пробовали чай матча, и вы цените
+          его <Strong>вкус</Strong> и добрый тонизирующий эффект.
+        </P>
+        <P>Вам подходит японский церемониальный сорт чай матча.</P>
+        <PageButton
+          label="Что такое церемониальный сорт?"
+          to="what_is_ceremonial_a"
+        />
+        <PageButton label="Что такое чай матча?" to="what_is_matcha" />
+      </QuizCard>
+    ),
+
+    sometimes_price: (
+      <QuizCard
+        title="Какой чай матча вам подходит?"
+        img="matcha_latte_3"
+        ratio={3 / 2}
+      >
+        <P>
+          Вы уже <Strong>несколько раз</Strong> пробовали чай матча, вы цените
+          его вкус и добрый тонизирующий эффект, и вы ищете{" "}
+          <Strong>доступную цену</Strong>.
+        </P>
+        <P>
+          Вам подойдет матча латте из <Strong>кулинарного</Strong> сорта.
+        </P>
+        <P>
+          Взбитое теплое обычное или кокосовое молоко + заваренный чай матча.
+        </P>
+        <PageButton label="Что такое кулинарный сорт?" to="what_is_cooking_a" />
+        <PageButton label="Что такое чай матча?" to="what_is_matcha" />
+      </QuizCard>
+    ),
+
+    never_taste: (
+      <QuizCard title="Какой чай матча вам подходит?" img="matcha_latte">
+        <P>
+          Если вы <Strong>ни разу</Strong> не пробовали чай матча, то вам стоит
+          попробовать матча латте из <Strong>церемониального</Strong> или
+          кулинарного сорта.
+        </P>
+        <P>
+          Взбитое теплое обычное или кокосовое молоко + заваренный чай матча.
+        </P>
+        <PageButton label="Что такое чай матча?" to="what_is_matcha" />
+        <PageButton label="Что такое кулинарный сорт?" to="what_is_cooking_a" />
+        <PageButton
+          label="Что такое церемониальный сорт?"
+          to="what_is_ceremonial_a"
+        />
+      </QuizCard>
+    ),
+
+    never_price: (
+      <QuizCard
+        title="Какой чай матча вам подходит?"
+        img="matcha_latte_3"
+        ratio={3 / 2}
+      >
+        <P>
+          Если вы <Strong>ни разу</Strong> не пробовали чай матча, то вам
+          подойдет матча латте из <Strong>кулинарного</Strong> сорта.
+        </P>
+        <P>
+          Взбитое теплое обычное или кокосовое молоко + заваренный чай матча.
+        </P>
+        <PageButton label="Что такое чай матча?" to="what_is_matcha" />
+        <PageButton label="Что такое кулинарный сорт?" to="what_is_cooking_a" />
+      </QuizCard>
+    ),
+
+    what_is_matcha: (
+      <QuizCard title="Что такое чай матча?" img="leaf">
+        <P>
+          Чай матча делается из того же растения, что и обычный зеленый чай.
+        </P>
+        <P>
+          Но за 20 дней до сбора урожая чайные кусты затеняют сеткой, из-за
+          этого они начинают производить в большом количестве кофеин и ЛТеанин.
+        </P>
+        <P>
+          Затем чайные листочки перемалывают в яркий зеленый чайный порошок.
+        </P>
+        <P>Чай матча делится на кулинарный и церемониальный сорт.</P>
+        <PageButton label="Что такое кулинарный сорт?" to="what_is_cooking_a" />
+        <PageButton
+          label="Что такое церемониальный сорт?"
+          to="what_is_ceremonial_a"
+        />
+      </QuizCard>
+    ),
+
+    what_is_ceremonial_a: (
+      <QuizCard title="Что такое церемониальный сорт?" img="matcha_powder">
+        <P>
+          Церемониальный сорт чая матча изготавливают только из самых лучших
+          верхних листочков, с повышенным содержанием Л-Теанина и кофеина.
+        </P>
+        <P>
+          Листочки высушивают, очищают от прожилок и медленно перемалывают
+          каменными жерновами. Получается яркий зеленый чайный порошок.
+        </P>
+        <P>Затем сомелье тщательно проверяет и отбирает чай.</P>
+        <P>
+          Из-за этого церемониальный сорт чая матча стоит в 10 раз дороже кофе,
+          а иногда и в 100.
+        </P>
+        <P>
+          Такой чай имеет выраженный добрый тонизирующий эффект, наполняющий
+          тело радостью.
+        </P>
+        <P>
+          Церемониальный сорт имеет божественный яркий вкус. Его пьют как и в
+          чистом виде, так и добавляют в напитки.
+        </P>
+        <PageButton
+          label="Где попробовать церемониальный чай матча?"
+          to="where_to_try"
+        />
+        <PageButton label="Что такое кулинарный сорт?" to="what_is_cooking_a" />
+        <PageButton label="Что такое чай матча?" to="what_is_matcha" />
+      </QuizCard>
+    ),
+
+    what_is_cooking_a: (
+      <QuizCard
+        title="Что такое кулинарный сорт чай матча?"
+        img="matcha_macarons"
+      >
+        <P>Чайные листочки высушивают и перемалывают.</P>
+        <P>
+          Чайный порошок получается желто-зеленого оттенка. По цвету он легко
+          отличается от зеленого церемониального сорта.
+        </P>
+        <P>
+          Кулинарный сорт по стоимости на уровне кофе. Из него делают прекрасные
+          десерты, смузи или коктейли.
+        </P>
+        <P>
+          Но в чистом виде кулинарный сорт горчит. Такой чай употребляют только
+          в комбинации с чем-то другим.
+        </P>
+        <PageButton
+          label="Что такое церемониальный сорт?"
+          to="what_is_ceremonial_a"
+        />
+        <PageButton label="Что такое чай матча?" to="what_is_matcha" />
+      </QuizCard>
+    ),
+
+    where_to_try: (
+      <QuizCard
+        title="Где попробовать церемониальный чай матча?"
+        img="matcha_tea_set"
+        ratio={3 / 2}
+      >
+        <P>
+          В обычное время я порекомендовал бы вам прийти и попробовать чай в
+          японское матча-кафе. Но сейчас все закрыто из-за карантина.
+        </P>
+        <P>
+          В данный момент единственная возможность – это заказать чай через
+          интернет.
+        </P>
+        <PageButton
+          label="Где заказать церемониальный чай матча?"
+          to="where_to_order"
+        />
+        <PageButton
+          label="Что такое церемониальный сорт?"
+          to="what_is_ceremonial_a"
+        />
+      </QuizCard>
+    ),
+
+    where_to_order: (
+      <QuizCard
+        title="Где заказать церемониальный чай матча?"
+        img="gift_matcha_tea_box_from_front"
+        noTitle
+      >
+        <P>
+          Мой магазин специализируется на подлинном японском церемониальном
+          сорте чая матча.
+        </P>
+        <P>
+          Я настолько уверен в своем чае, что верну вам деньги, если он вам не
+          понравится.
+        </P>
+        <PageButton label="Расскажите мне о вашем чае матча" to="my_matcha" />
+        <PageButton
+          label="Что такое церемониальный сорт?"
+          to="what_is_ceremonial_a"
+        />
+      </QuizCard>
+    ),
+
+    my_matcha: (
+      <QuizCard title="Церемониальный чай матча" img="flowbrew">
         <P>
           Я продаю тот чай, который сам пьют каждый день – выросший на склонах
           Киото, перемолотый каменными жерновами, отобранный сомелье.
         </P>
-      )}
-      {/* {price && (
         <P>
-          Церемониальный сорт чая матча по определению стоит в 10 раз дороже
-          кофе.
+          Мой чай матча имеет божественный насыщенный растительный вкус,
+          кремово-ореховое послевкусие, а также порадует вас сладким ягодным
+          ароматом.
         </P>
-      )} */}
-      {taste && (
-        <>
-          <P>
-            Мой чай имеет божественный насыщенный растительный{" "}
-            <Strong>вкус</Strong>, кремово-ореховое послевкусие, а также
-            порадует вас сладким ягодный ароматом.
-          </P>
-          <P>
-            Уже через 5 минут церемониальный сорт чай матча наполнит ваше тело
-            энергией, а ваш разум радостью.
-          </P>
-        </>
-      )}
-    </>
-  )
-}
+        <P>
+          Уже через 5 минут чай матча наполнит ваше тело доброй энергией, а ваш
+          разум радостью.
+        </P>
+        <P>
+          <Em>
+            Я настолько уверен в своем чае, что верну вам деньги, если он вам не
+            понравится.
+          </Em>
+        </P>
+        <Link to="/" style={{ textDecoration: "none" }}>
+          <Button
+            id="quiz_buy_button"
+            size="large"
+            variant="contained"
+            color="secondary"
+            fullWidth={true}
+          >
+            магазин церемониального чая матча
+          </Button>
+        </Link>
+      </QuizCard>
+    ),
+  }
 
-const BoldClaimResolution = () => {
-  return (
-    <>
-      <P>
-        <Em>
-          Я настолько уверен в своем чае, что вы можете оплатить его после того,
-          как попробуете.
-        </Em>
-      </P>
-      <ABB shop />
-    </>
-  )
-}
-
-const LowPricerResolution = () => {
-  return (
-    <>
-      <P>
-        Если вы хотите чай матча по <Strong>доступной цене</Strong>, то вам
-        нужно найти магазин с кулинарным сортом. Такого чая у меня, к сожалению,
-        нет.
-      </P>
-      <ABB />
-    </>
-  )
-}
-
-// Ни разу
-// Вкус
-const XA1 = () => {
   return (
     <Box>
-      <P>
-        Вам подойдет матча-латте из <Strong>церемониального</Strong> или
-        кулинарного сорта чая матча. Взбитое теплое обычное или кокосовое молоко
-        влитое в заваренный чай матча.
-      </P>
-      <NoCafeOnCOVID />
-      <P>
-        Если вы <Strong>ни разу</Strong> не пробовали чай матча, то вы
-        столкнетесь с определенными трудностями при выборе.
-      </P>
-      <P>
-        <Em>
-          Как перед покупкой узнать, понравится ли вам <Strong>вкус</Strong> чая
-          матча? Какой чай выбрать?
-        </Em>
-      </P>
-      <MatchaGrades taste />
-      <MyStoreSellsCeremonealGrade taste />
-      <BoldClaimResolution />
-    </Box>
-  )
-}
-
-// Ни разу
-// Доступная цена
-const XA2 = () => {
-  return (
-    <Box>
-      <P>
-        Вам подойдет матча-латте из <Strong>кулинарного</Strong> сорта чая
-        матча. Взбитое теплое обычное или кокосовое молоко влитое в заваренный
-        чай матча.
-      </P>
-      <NoCafeOnCOVID />
-      <P>
-        Если вы <Strong>ни разу</Strong> не пробовали чай матча, то вы
-        столкнетесь с определенными трудностями при выборе.
-      </P>
-      <P>
-        <Em>
-          Как выбрать качественный чай по <Strong>доступной цене</Strong>? Как
-          перед покупкой узнать, понравится ли вам вкус чая матча?
-        </Em>
-      </P>
-      <MatchaGrades price />
-      <MyStoreSellsCeremonealGrade price />
-      <LowPricerResolution />
-    </Box>
-  )
-}
-
-// Несколько раз
-// Вкус
-const XA3 = () => {
-  return (
-    <Box>
-      <P>
-        Вы уже <Strong>несколько раз</Strong> пробовали чай матча, и вы цените
-        его <Strong>вкус</Strong> и добрый тонизирующий эффект.
-      </P>
-      <P>Вам подходит чистый японский церемониальный сорт чая матча.</P>
-      {/* <P>
-        <Em>Но как перед покупкой узнать, что вам понравится чай?</Em>
-      </P> */}
-      <MatchaGrades taste />
-      <MyStoreSellsCeremonealGrade taste />
-      <BoldClaimResolution />
-    </Box>
-  )
-}
-
-// Несколько раз
-// Доступная цена
-const XA4 = () => {
-  return (
-    <Box>
-      <P>
-        Вы уже <Strong>несколько раз</Strong> пробовали чай матча, вы цените его
-        вкус и добрый тонизирующий эффект, и вы ищете{" "}
-        <Strong>доступную цену</Strong>.
-      </P>
-      <P>
-        Вам подойдет матча-латте из <Strong>кулинарного</Strong> сорта чая
-        матча. Взбитое теплое обычное или кокосовое молоко влитое в заваренный
-        чай матча.
-      </P>
-      {/* <P>
-        <Em>
-          Где приобрести чай матча по <Strong>доступной цене</Strong>?
-        </Em>
-      </P> */}
-      <MatchaGrades price />
-      <MyStoreSellsCeremonealGrade price />
-      <LowPricerResolution />
-    </Box>
-  )
-}
-
-// Огромное число раз
-// Вкус
-const XA5 = () => {
-  return (
-    <Box>
-      <P>
-        Вы <Strong>разбираетесь</Strong> в чае матча, вы знаете разницу между
-        кулинарным и церемониальным сортом, усуча и коича, и вам хочется лучшего{" "}
-        <Strong>вкуса</Strong>.
-      </P>
-      <P>Вам подходит чистый японский церемониальный сорт чая матча.</P>
-      {/* <P>Японский церемониальный сорт чая матча.</P> */}
-      <MyStoreSellsCeremonealGrade taste />
-      <BoldClaimResolution />
-    </Box>
-  )
-}
-
-// Огромное число раз
-// Цена
-const XA6 = () => {
-  return (
-    <Box>
-      <P>
-        Вы <Strong>разбираетесь</Strong> в чае матча, вы знаете разницу между
-        кулинарным и церемониальным сортом, усуча и коича, и вы ищете{" "}
-        <Strong>доступную цену</Strong>.
-      </P>
-      <P>
-        Вам подойдет матча-латте из <Strong>кулинарного</Strong> сорта чая
-        матча.
-      </P>
-      <MyStoreSellsCeremonealGrade price />
-      <LowPricerResolution />
+      <QuizTransition step={1} key={Math.random()}>
+        <ScrollToTop />
+        {pages[state.page]}
+      </QuizTransition>
     </Box>
   )
 }
@@ -540,21 +397,6 @@ const Quiz = () => {
     started: false,
   })
 
-  // useEffectOnlyOnce(() => {
-  //   setState(prevState => {
-  //     const results = fetchResults()
-  //     if (!results) {
-  //       return prevState
-  //     }
-  //     return {
-  //       ...prevState,
-  //       cq: questions.length,
-  //       done: true,
-  //       answers: results.map(x => +x),
-  //     }
-  //   })
-  // })
-
   useEffect(() => {
     if (state.done) {
       saveResults(state.answers)
@@ -569,30 +411,10 @@ const Quiz = () => {
       answers: ["Ни разу", "Несколько раз", "Огромное число раз"],
     },
     {
-      question: "(2/2) Что для вас важнее в чае матча?",
+      question: "(2/2) Что для вас важнее?",
       answers: ["Божественный вкус", "Доступная цена"],
     },
   ]
-
-  const getAnswer = answers => {
-    switch (answers.join("")) {
-      case [0, 0].join(""):
-        return <XA1 />
-      case [0, 1].join(""):
-        return <XA2 />
-
-      default:
-      case [1, 0].join(""):
-        return <XA3 />
-      case [1, 1].join(""):
-        return <XA4 />
-
-      case [2, 0].join(""):
-        return <XA5 />
-      case [2, 1].join(""):
-        return <XA6 />
-    }
-  }
 
   // END
 
@@ -621,62 +443,80 @@ const Quiz = () => {
   const QuizButtons = () => (
     <Box>
       <ScrollToTop />
-      <QuizTransition step={0}>
-        <Box minHeight={120}>
-          <H3>{current_question && current_question.question}</H3>
+      <Container>
+        <QuizTransition step={0}>
+          <Box minHeight={120}>
+            <H3>{current_question && current_question.question}</H3>
+          </Box>
+        </QuizTransition>
+        <Box mt={6} mb={3}>
+          <Grid container spacing={3}>
+            {mapi(
+              (x, i) => (
+                <Grid key={x} item xs={12} sm={12}>
+                  <QuizTransition step={i + 1}>
+                    <Button
+                      id={`quiz_${i}`}
+                      type="submit"
+                      size="large"
+                      variant="contained"
+                      color="secondary"
+                      fullWidth={true}
+                      onClick={() => click(i)}
+                    >
+                      {x}
+                    </Button>
+                  </QuizTransition>
+                </Grid>
+              ),
+              (current_question && current_question.answers) || []
+            )}
+          </Grid>
         </Box>
-      </QuizTransition>
-      <Box mt={6} mb={3}>
-        <Grid container spacing={3}>
-          {mapi(
-            (x, i) => (
-              <Grid key={x} item xs={12} sm={12}>
-                <QuizTransition step={i + 1}>
-                  <Button
-                    id={`quiz_${i}`}
-                    type="submit"
-                    size="large"
-                    variant="contained"
-                    color="secondary"
-                    fullWidth={true}
-                    onClick={() => click(i)}
-                  >
-                    {x}
-                  </Button>
-                </QuizTransition>
-              </Grid>
-            ),
-            (current_question && current_question.answers) || []
-          )}
-        </Grid>
-      </Box>
-      <QuizTransition step={current_question.answers.length + 1}>
-        <Stepper alternativeLabel activeStep={state.cq}>
-          {mapi(
-            (x, i) => (
-              <Step key={x.question}>
-                <StepLabel></StepLabel>
-              </Step>
-            ),
-            questions || []
-          )}
-        </Stepper>
-      </QuizTransition>
+        <QuizTransition step={current_question.answers.length + 1}>
+          <Stepper alternativeLabel activeStep={state.cq}>
+            {mapi(
+              (x, i) => (
+                <Step key={x.question}>
+                  <StepLabel></StepLabel>
+                </Step>
+              ),
+              questions || []
+            )}
+          </Stepper>
+        </QuizTransition>
+      </Container>
     </Box>
   )
 
   const QuizResult = () => {
+    const answerToEntry = answers => {
+      switch (answers.join("")) {
+        case [0, 0].join(""):
+          return "never_taste"
+        case [0, 1].join(""):
+          return "never_price"
+
+        default:
+        case [1, 0].join(""):
+          return "sometimes_taste"
+        case [1, 1].join(""):
+          return "sometimes_price"
+
+        case [2, 0].join(""):
+          return "alot_taste"
+        case [2, 1].join(""):
+          return "alot_price"
+      }
+    }
+
     return (
       <Box>
         <ScrollToTop />
         <Box minHeight={120}>
           <QuizTransition step={1}>
-            <H3>Какой чай матча вам подходит?</H3>
+            <QuizResolution entry={answerToEntry(state.answers)} />
           </QuizTransition>
-          {/* <QuizTransition step={1}>
-            <H3>Основываясь на ваших ответах, я рекомендую</H3>
-          </QuizTransition> */}
-          <QuizTransition step={2}>{getAnswer(state.answers)}</QuizTransition>
         </Box>
       </Box>
     )
@@ -697,8 +537,8 @@ const Quiz = () => {
             </QuizTransition>
             <QuizTransition step={2}>
               <P>
-                Ответьте на {questions.length} простых вопроса, и я подберу для вас
-                идеальный чай матча.
+                Ответьте на {questions.length} простых вопроса, и я подберу для
+                вас идеальный чай матча.
               </P>
             </QuizTransition>
           </Box>
@@ -729,40 +569,10 @@ const Quiz = () => {
     )
   }
 
-  return (
-    <Box mt={6}>
-      <Container>{state.done ? <QuizResult /> : <QuizButtons />}</Container>
-    </Box>
-  )
+  return <Box mt={6}>{state.done ? <QuizResult /> : <QuizButtons />}</Box>
 }
 
 export default ({ location, ...props }) => {
-  // const [state, setState] = React.useState({loaded: false})
-
-  // const handleInputChange = event => {
-  //   const target = event.target
-  //   const value = target.type === "checkbox" ? target.checked : target.value
-  //   const name = target.name
-
-  //   const value2 = name === "order_offer" ? parseInt(value) : value
-
-  //   setState(prevState => {
-  //     return {
-  //       ...prevState,
-  //       [name]: value2,
-  //     }
-  //   })
-  // }
-
-  // useEffectOnlyOnce(() => {
-  //   setState(prevState => {
-  //     return {
-  //       ...prevState,
-  //       loaded: true,
-  //     }
-  //   })
-  // })
-
   return (
     <MainLayout
       location={location}
@@ -772,7 +582,6 @@ export default ({ location, ...props }) => {
         },
       }}
       noBottom
-      noShopLnk
       fixedAppBar
       style={{ backgroundColor: "white" }}
     >

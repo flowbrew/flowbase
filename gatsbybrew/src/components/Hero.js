@@ -50,8 +50,8 @@ const Hero = ({ children }) => {
           align="center"
         >
           <Box mt={8}>
-            <Typography variant="h2" component="h1" gutterBottom>
-              <Box fontWeight="fontWeightBold">БОЖЕСТВЕННЫЙ чай матча Flow Brew</Box>
+            <Typography variant="h3" component="h1" gutterBottom>
+              <Box fontWeight="fontWeightBold">Японский церемониальный чай матча Flow Brew</Box>
             </Typography>
           </Box>
           {/* <Box mt={5}>

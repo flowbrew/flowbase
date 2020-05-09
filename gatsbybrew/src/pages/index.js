@@ -505,7 +505,7 @@ const VolumeSelect = ({ product, order_offer, onChange }) => {
 const OfferSection = ({ state, handleInputChange }) => {
   const rejections = [
     {
-      text: "Оплата после того, как вы попробуете чай",
+      text: "Оплата после получения",
       to: "/оплата",
     },
     {

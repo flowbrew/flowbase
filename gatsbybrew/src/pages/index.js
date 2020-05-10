@@ -649,10 +649,10 @@ const ReviewsSection2 = () => {
   }
 
   const tileData = [
-    {
-      author: "Виктор",
-      image: "cool_review",
-    },
+    // {
+    //   author: "Виктор",
+    //   image: "cool_review",
+    // },
     {
       author: "Марат",
       image: "marat",

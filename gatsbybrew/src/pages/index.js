@@ -929,14 +929,14 @@ export default ({ location, ...props }) => {
       }}
       noBottom
     >
-      <Box mb={0}>
+      {/* <Box mb={0}>
         <Container disableGutters={true} maxWidth={false}>
           <Hero />
         </Container>
-        {/* <Warning /> */}
-      </Box>
-      <SimpleInDepthBenefits data={data} />
+      </Box> */}
+      <Box mb={5} />
       <OfferSection state={state} handleInputChange={handleInputChange} />
+      <SimpleInDepthBenefits data={data} />
       <BottomSection />
       <BuyButtonSection state={state} />
     </MainLayout>

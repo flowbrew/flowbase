@@ -36,7 +36,7 @@ import {
 import { MdxContextProvider } from "../components/MdxContext"
 import { usePromotion } from "../components/Coupon"
 import SEO from "../components/SEO"
-import { ScrollToTop } from "../common"
+import { ScrollToTop, useEffectOnlyOnce } from "../common"
 
 const HEADER_CONTENT_HEIGHT = 4
 
@@ -70,6 +70,9 @@ const useStyles = makeStyles(theme => ({
   },
   hidden: {
     visibility: "hidden",
+  },
+  loaded: {
+
   },
   appBar: {
     top: "auto",
@@ -369,6 +372,18 @@ const MainLayout = ({
 
   usePromotion(data.product, location)
 
+  const [state, setState] = React.useState({
+    loaded: false
+  })
+
+  useEffectOnlyOnce(() => {
+    setState(prevState => {
+      return { ...prevState, loaded: true }
+    })
+  })
+
+  const classes = useStyles()
+
   return (
     <Theme>
       <ImageContextProvider>
@@ -381,10 +396,12 @@ const MainLayout = ({
             />
             <CssBaseline />
             <ScrollToTop />
-            <Header navigation={navigation2} fixedHeader={fixedHeader} />
-            <Main>{children}</Main>
-            {!noBottom && <BottomAppBar />}
-            <Footer navigation={navigation2} />
+            <Box className={state.loaded ? classes.loaded : classes.hidden}>
+              <Header navigation={navigation2} fixedHeader={fixedHeader} />
+              <Main>{children}</Main>
+              {!noBottom && <BottomAppBar />}
+              <Footer navigation={navigation2} />
+            </Box>
           </IsDesktopContextProvider>
         </MdxContextProvider>
       </ImageContextProvider>

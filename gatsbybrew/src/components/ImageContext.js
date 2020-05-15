@@ -5,20 +5,24 @@ import * as R from "ramda"
 
 const ImageContext = React.createContext({})
 
-const solveImage = ({ imagesData, imagesSharp }, imageName) => {
+const solveImage = ({ imagesData, imagesSharp, imagesSharpLow }, imageName) => {
   if (!imageName) {
     return null
   }
   const findImageData = y => R.find(x => x.name === y, imagesData.nodes)
   const findImageSharp = y =>
     R.find(x => x.fluid.originalName === y, imagesSharp.nodes)
+  const findImageSharpLow = y =>
+    R.find(x => x.fluid.originalName === y, imagesSharpLow.nodes)
 
   const imageData = findImageData(imageName)
   const imageSharp = findImageSharp(imageData.image)
+  const imageSharpLow = findImageSharpLow(imageData.image)
 
   return {
     imageData: imageData,
     imageSharp: imageSharp,
+    imageSharpLow: imageSharpLow,
   }
 }
 
@@ -43,6 +47,14 @@ const ImageContextProvider = ({ children }) => {
           }
         }
       }
+      imagesSharpLow: allImageSharp {
+        nodes {
+          fluid(maxWidth: 100) {
+            ...GatsbyImageSharpFluid
+            originalName
+          }
+        }
+      }
     }
   `)
 
@@ -51,6 +63,7 @@ const ImageContextProvider = ({ children }) => {
       value={{
         imagesSharp: data.imagesSharp,
         imagesData: data.imagesData,
+        imagesSharpLow: data.imagesSharpLow,
       }}
     >
       {children}

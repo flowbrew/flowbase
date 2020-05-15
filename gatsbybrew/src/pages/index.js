@@ -250,7 +250,7 @@ const OfferImages = () => {
 
   const PreviewImage = ({ image, id }) => {
     const classes = useStyles()
-    const { imageSharp, imageData } = useImage(image)
+    const { imageSharp, imageSharpLow, imageData } = useImage(image)
 
     const isSelected = image === state.selectedImage
 
@@ -263,7 +263,7 @@ const OfferImages = () => {
                 <Box color="secondary" className={classes.unselected} />
               )}
               <Img
-                fluid={{ ...imageSharp.fluid, aspectRatio: 1 }}
+                fluid={{ ...imageSharpLow.fluid, aspectRatio: 1 }}
                 alt={id}
                 className={isSelected ? classes.selected : null}
               />

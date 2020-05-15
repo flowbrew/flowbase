@@ -372,16 +372,6 @@ const MainLayout = ({
 
   usePromotion(data.product, location)
 
-  const [state, setState] = React.useState({
-    loaded: false
-  })
-
-  useEffectOnlyOnce(() => {
-    setState(prevState => {
-      return { ...prevState, loaded: true }
-    })
-  })
-
   const classes = useStyles()
 
   return (
@@ -396,7 +386,7 @@ const MainLayout = ({
             />
             <CssBaseline />
             <ScrollToTop />
-            <Box className={state.loaded ? classes.loaded : classes.hidden}>
+            <Box>
               <Header navigation={navigation2} fixedHeader={fixedHeader} />
               <Main>{children}</Main>
               {!noBottom && <BottomAppBar />}

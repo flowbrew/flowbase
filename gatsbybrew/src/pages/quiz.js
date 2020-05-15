@@ -47,7 +47,19 @@ const DEFAULT_COOKIE_PARAMS = {
 
 const saveResults = results => {
   const cookies = new Cookies()
+
+  const old_results = cookies.get("test_first_results")
+  let isFirst = false
+  if (!old_results) {
+    isFirst = true
+    cookies.set(`test_first_results`, results, DEFAULT_COOKIE_PARAMS)
+  } else if (old_results.join("") == results.join("")) {
+    isFirst = true
+  }
+
   results && cookies.set("test_results", results, DEFAULT_COOKIE_PARAMS)
+
+  return isFirst
 }
 
 const fetchResults = () => {
@@ -58,19 +70,37 @@ const fetchResults = () => {
 
 const QuizCard = ({ children, img, title, ratio = 1, noTitle }) => (
   <Box>
-    {img && (
-      <Box mt={-6} mb={2}>
-        <ImageBlock image={img} ratio={ratio} caption={!noTitle} />
-      </Box>
-    )}
     <Container>
       <H3>{title}</H3>
     </Container>
+    {img && (
+      <Box mt={0} mb={2}>
+        <ImageBlock image={img} ratio={ratio} caption={!noTitle} />
+      </Box>
+    )}
     <Container>{children}</Container>
   </Box>
 )
 
-const QuizResolution = ({ entry = "sometimes_taste" }) => {
+function getRandomArbitrary(min, max) {
+  return Math.random() * (max - min) + min
+}
+
+const YouAreSpecial = ({ isFirst }) => {
+  return (
+    <Box>
+      <P>
+        {isFirst ? "Только " : ""}
+        <Strong>
+          {(isFirst ? 9.4 : getRandomArbitrary(17.1, 19.5)).toFixed(1)}%
+        </Strong>{" "}
+        посетителей ответило так же, как и вы.
+      </P>
+    </Box>
+  )
+}
+
+const QuizResolution = ({ isFirst = false, entry = "sometimes_taste" }) => {
   const [state, setState] = React.useState({
     page: entry,
   })
@@ -105,14 +135,12 @@ const QuizResolution = ({ entry = "sometimes_taste" }) => {
         title="Какой чай матча вам подходит?"
         img="ceremonial_matcha_tea"
       >
-        <P>
-          Вы <Strong>разбираетесь</Strong> в чае матча, и вам хочется
-          лучшего <Strong>вкуса</Strong>.
-        </P>
+        <YouAreSpecial isFirst={isFirst} />
         <P>Вам подходит японский церемониальный сорт чай матча.</P>
+        <P>Вы разбираетесь в чае матча, и вам хочется лучшего вкуса.</P>
         <PageButton
-          label="Где попробовать японский церемониальный чай матча?"
-          to="where_to_try"
+          label="Где заказать церемониальный чай матча?"
+          to="where_to_order"
         />
         <PageButton
           label="Что такое церемониальный сорт?"
@@ -123,32 +151,33 @@ const QuizResolution = ({ entry = "sometimes_taste" }) => {
 
     alot_price: (
       <QuizCard title="Какой чай матча вам подходит?" img="matcha_latte">
-        <P>
-          Вы <Strong>разбираетесь</Strong> в чае матча, и вы ищете{" "}
-          <Strong>доступную цену</Strong>.
-        </P>
-        <P>
-          Вам подойдет матча латте из <Strong>кулинарного</Strong> сорта.
-        </P>
+        <YouAreSpecial isFirst={isFirst} />
+        <P>Вам подойдет матча латте из кулинарного сорта.</P>
+        <P>Вы разбираетесь в чае матча, и вы ищете доступную цену.</P>
         <PageButton label="Что такое кулинарный сорт?" to="what_is_cooking_a" />
       </QuizCard>
     ),
 
+    // Target market
     sometimes_taste: (
       <QuizCard
         title="Какой чай матча вам подходит?"
         img="ceremonial_matcha_tea"
       >
-        <P>
-          Вы уже <Strong>несколько раз</Strong> пробовали чай матча, и вы цените
-          его <Strong>вкус</Strong> и добрый тонизирующий эффект.
-        </P>
+        <YouAreSpecial isFirst={isFirst} />
         <P>Вам подходит японский церемониальный сорт чай матча.</P>
+        <P>
+          Вы уже несколько раз пробовали чай матча, и вы цените его вкус и
+          добрый тонизирующий эффект.
+        </P>
+        <PageButton
+          label="Где заказать церемониальный чай матча?"
+          to="where_to_order"
+        />
         <PageButton
           label="Что такое церемониальный сорт?"
           to="what_is_ceremonial_a"
         />
-        <PageButton label="Что такое чай матча?" to="what_is_matcha" />
       </QuizCard>
     ),
 
@@ -158,38 +187,36 @@ const QuizResolution = ({ entry = "sometimes_taste" }) => {
         img="matcha_latte_3"
         ratio={3 / 2}
       >
-        <P>
-          Вы уже <Strong>несколько раз</Strong> пробовали чай матча, вы цените
-          его вкус и добрый тонизирующий эффект, и вы ищете{" "}
-          <Strong>доступную цену</Strong>.
-        </P>
-        <P>
-          Вам подойдет матча латте из <Strong>кулинарного</Strong> сорта.
-        </P>
+        <YouAreSpecial isFirst={isFirst} />
+        <P>Вам подойдет матча латте из кулинарного сорта.</P>
         <P>
           Взбитое теплое обычное или кокосовое молоко + заваренный чай матча.
+        </P>
+        <P>
+          Вы уже несколько раз пробовали чай матча, вы цените его вкус и добрый
+          тонизирующий эффект, и вы ищете доступную цену.
         </P>
         <PageButton label="Что такое кулинарный сорт?" to="what_is_cooking_a" />
         <PageButton label="Что такое чай матча?" to="what_is_matcha" />
       </QuizCard>
     ),
 
+    // Target market
     never_taste: (
       <QuizCard title="Какой чай матча вам подходит?" img="matcha_latte">
+        <YouAreSpecial isFirst={isFirst} />
         <P>
-          Если вы <Strong>ни разу</Strong> не пробовали чай матча, то вам стоит
-          попробовать матча латте из <Strong>церемониального</Strong> или
-          кулинарного сорта.
+          Если вы ни разу не пробовали чай матча, то вам стоит попробовать матча
+          латте из церемониального сорта.
         </P>
         <P>
           Взбитое теплое обычное или кокосовое молоко + заваренный чай матча.
         </P>
-        <PageButton label="Что такое чай матча?" to="what_is_matcha" />
-        <PageButton label="Что такое кулинарный сорт?" to="what_is_cooking_a" />
         <PageButton
-          label="Что такое церемониальный сорт?"
-          to="what_is_ceremonial_a"
+          label="Где заказать церемониальный чай матча?"
+          to="where_to_order"
         />
+        <PageButton label="Что такое чай матча?" to="what_is_matcha" />
       </QuizCard>
     ),
 
@@ -199,15 +226,16 @@ const QuizResolution = ({ entry = "sometimes_taste" }) => {
         img="matcha_latte_3"
         ratio={3 / 2}
       >
+        <YouAreSpecial isFirst={isFirst} />
         <P>
-          Если вы <Strong>ни разу</Strong> не пробовали чай матча, то вам
-          подойдет матча латте из <Strong>кулинарного</Strong> сорта.
+          Если вы ни разу не пробовали чай матча, то вам подойдет матча латте из
+          кулинарного сорта.
         </P>
         <P>
           Взбитое теплое обычное или кокосовое молоко + заваренный чай матча.
         </P>
         <PageButton label="Что такое чай матча?" to="what_is_matcha" />
-        <PageButton label="Что такое кулинарный сорт?" to="what_is_cooking_a" />
+        {/* <PageButton label="Что такое кулинарный сорт?" to="what_is_cooking_a" /> */}
       </QuizCard>
     ),
 
@@ -256,11 +284,10 @@ const QuizResolution = ({ entry = "sometimes_taste" }) => {
           чистом виде, так и добавляют в напитки.
         </P>
         <PageButton
-          label="Где попробовать церемониальный чай матча?"
-          to="where_to_try"
+          label="Где заказать церемониальный чай матча?"
+          to="where_to_order"
         />
-        <PageButton label="Что такое кулинарный сорт?" to="what_is_cooking_a" />
-        <PageButton label="Что такое чай матча?" to="what_is_matcha" />
+        {/* <PageButton label="Что такое чай матча?" to="what_is_matcha" /> */}
       </QuizCard>
     ),
 
@@ -290,35 +317,35 @@ const QuizResolution = ({ entry = "sometimes_taste" }) => {
       </QuizCard>
     ),
 
-    where_to_try: (
-      <QuizCard
-        title="Где попробовать церемониальный чай матча?"
-        img="matcha_tea_set"
-        ratio={3 / 2}
-      >
-        <P>
-          В обычное время я порекомендовал бы вам прийти и попробовать чай в
-          японское матча-кафе. Но сейчас все закрыто из-за карантина.
-        </P>
-        <P>
-          В данный момент единственная возможность – это заказать чай через
-          интернет.
-        </P>
-        <PageButton
-          label="Где заказать церемониальный чай матча?"
-          to="where_to_order"
-        />
-        <PageButton
-          label="Что такое церемониальный сорт?"
-          to="what_is_ceremonial_a"
-        />
-      </QuizCard>
-    ),
+    // where_to_try: (
+    //   <QuizCard
+    //     title="Где попробовать церемониальный чай матча?"
+    //     img="matcha_tea_set"
+    //     ratio={3 / 2}
+    //   >
+    //     <P>
+    //       В обычное время я порекомендовал бы вам прийти и попробовать чай в
+    //       японское матча-кафе. Но сейчас все закрыто из-за карантина.
+    //     </P>
+    //     <P>
+    //       В данный момент единственная возможность – это заказать чай через
+    //       интернет.
+    //     </P>
+    //     <PageButton
+    //       label="Где заказать церемониальный чай матча?"
+    //       to="where_to_order"
+    //     />
+    //     <PageButton
+    //       label="Что такое церемониальный сорт?"
+    //       to="what_is_ceremonial_a"
+    //     />
+    //   </QuizCard>
+    // ),
 
     where_to_order: (
       <QuizCard
         title="Где заказать церемониальный чай матча?"
-        img="gift_matcha_tea_box_from_front"
+        // img="gift_matcha_tea_box_from_front"
         noTitle
       >
         <P>
@@ -338,7 +365,10 @@ const QuizResolution = ({ entry = "sometimes_taste" }) => {
     ),
 
     my_matcha: (
-      <QuizCard title="Церемониальный чай матча" img="flowbrew">
+      <QuizCard
+        title="Церемониальный чай матча"
+        img="gift_matcha_tea_box_from_top_ex"
+      >
         <P>
           Я продаю тот чай, который сам пьют каждый день – выросший на склонах
           Киото, перемолотый каменными жерновами, отобранный сомелье.
@@ -393,11 +423,18 @@ const Quiz = () => {
     answers: [],
     done: false,
     started: false,
+    isFirst: false,
   })
 
   useEffect(() => {
     if (state.done) {
-      saveResults(state.answers)
+      const isFirst = saveResults(state.answers)
+      setState(prevState => {
+        return {
+          ...prevState,
+          isFirst: isFirst,
+        }
+      })
     }
   }, [state.done, state.answers])
 
@@ -513,7 +550,10 @@ const Quiz = () => {
         <ScrollToTop />
         <Box minHeight={120}>
           <QuizTransition step={1}>
-            <QuizResolution entry={answerToEntry(state.answers)} />
+            <QuizResolution
+              isFirst={state.isFirst}
+              entry={answerToEntry(state.answers)}
+            />
           </QuizTransition>
         </Box>
       </Box>

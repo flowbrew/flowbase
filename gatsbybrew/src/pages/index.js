@@ -929,7 +929,6 @@ export default ({ location, ...props }) => {
         <Container disableGutters={true} maxWidth={false}>
           <Hero />
         </Container>
-        {/* <Warning /> */}
       </Box>
       <SimpleInDepthBenefits data={data} />
       <OfferSection state={state} handleInputChange={handleInputChange} />

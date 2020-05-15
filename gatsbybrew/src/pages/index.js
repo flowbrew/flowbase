@@ -205,7 +205,7 @@ const SimpleInDepthBenefits = ({ data }) => {
           <LI>Джутовый мешочек с подарком</LI>
         </UL>
       </Benefit> */}
-      <Benefit title="Шуршащий венчик в подарок" image="whisk" swap={true}>
+      <Benefit title="Шуршащий венчик в подарок" image="whisk" swap={false}>
         <GiftCounter product={data.product} />
       </Benefit>
     </Box>
@@ -925,14 +925,14 @@ export default ({ location, ...props }) => {
       }}
       noBottom
     >
-      {/* <Box mb={0}>
+      <Box mb={0}>
         <Container disableGutters={true} maxWidth={false}>
           <Hero />
         </Container>
-      </Box> */}
-      <Box mb={5} />
-      <OfferSection state={state} handleInputChange={handleInputChange} />
+        {/* <Warning /> */}
+      </Box>
       <SimpleInDepthBenefits data={data} />
+      <OfferSection state={state} handleInputChange={handleInputChange} />
       <BottomSection />
       <BuyButtonSection state={state} />
     </MainLayout>

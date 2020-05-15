@@ -8,9 +8,6 @@ import {
   ListItemIcon,
   ListItem,
   List,
-  ExpansionPanelSummary,
-  ExpansionPanelDetails,
-  ExpansionPanel,
   Button,
   Avatar,
   CardContent,
@@ -35,7 +32,6 @@ import {
   FavoriteBorderOutlined,
   EcoOutlined,
   LocalShippingOutlined,
-  ExpandMore,
 } from "@material-ui/icons"
 import MainLayout from "../layouts/MainLayout"
 import { useImage } from "../components/ImageContext"
@@ -54,7 +50,6 @@ import {
   RedBox,
   useEffectOnlyOnce,
   formatPrice,
-  Strong,
   applyOffer,
 } from "../common"
 import Hero from "../components/Hero"
@@ -63,7 +58,7 @@ import ContactsButton from "../components/ContactsButton"
 import GiftCounter from "../components/GiftCounter"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faGift } from "@fortawesome/free-solid-svg-icons"
-import * as R from "ramda"
+import { compose } from "ramda"
 
 const useStyles = makeStyles(theme => ({
   lnk: {
@@ -250,7 +245,7 @@ const OfferImages = () => {
 
   const PreviewImage = ({ image, id }) => {
     const classes = useStyles()
-    const { imageSharp, imageSharpLow, imageData } = useImage(image)
+    const { imageSharpLow } = useImage(image)
 
     const isSelected = image === state.selectedImage
 
@@ -324,7 +319,6 @@ const OfferBenefits = () => {
 }
 
 const BuyButton = ({ id, order_offer }) => {
-  const desktop = useIsDesktop()
   const classes = useStyles()
 
   return (
@@ -687,110 +681,6 @@ const ReviewsSection2 = () => {
   )
 }
 
-const Warning = () => {
-  const classes = useStyles()
-
-  return (
-    <Box className={classes.warning}>
-      <Section>
-        <Container>
-          <Box pt={2} pb={1}>
-            <P>
-              <Strong>Flow Brew предпринимает меры борьбы с COVID-19</Strong>
-            </P>
-            <UL>
-              <LI>Перед доставкой упаковка обрабатывается санитайзером</LI>
-            </UL>
-          </Box>
-        </Container>
-      </Section>
-    </Box>
-  )
-}
-
-const FAQSection = () => {
-  const [expanded, setExpanded] = React.useState(false)
-
-  const handleChange = panel => (event, isExpanded) => {
-    setExpanded(isExpanded ? panel : false)
-  }
-
-  return (
-    <>
-      <ExpansionPanel
-        expanded={expanded === "p1"}
-        onChange={handleChange("p1")}
-      >
-        <ExpansionPanelSummary
-          expandIcon={<ExpandMore />}
-          aria-controls={"p1bh-content"}
-          id={"p1bh-header"}
-        >
-          <Typography>Можно ли заварить чай без венчика</Typography>
-        </ExpansionPanelSummary>
-        <ExpansionPanelDetails>
-          <Box>
-            <P>
-              Можно, но вкус будет хуже. В чае будут плавать небольшие комочки.
-              Даже электрический вспениватель для молока оставляет комочки. Для
-              идеального вкуса нужны венчик и чаша.
-            </P>
-          </Box>
-        </ExpansionPanelDetails>
-      </ExpansionPanel>
-      <ExpansionPanel
-        expanded={expanded === "p4"}
-        onChange={handleChange("p4")}
-      >
-        <ExpansionPanelSummary
-          expandIcon={<ExpandMore />}
-          aria-controls={"p4bh-content"}
-          id={"p4bh-header"}
-        >
-          <Typography>Как заваривать чай матча</Typography>
-        </ExpansionPanelSummary>
-        <ExpansionPanelDetails>
-          <Box>
-            <P>
-              Чай матча легко заваривается. При должной практике заварка займет
-              у вас не больше 1 минуты.
-            </P>
-            <UL>
-              <LI>
-                Подготовьте воду, температура которой не превышает 70-80С°
-                (можно использовать холодную воду). Чай матча нельзя заваривать
-                кипятком, иначе он будет горчить. Если у вас нет чайника с
-                термометром, можно заранее смешать горячую и холодную воду в
-                отдельной чашке. Простое правило: если вода обжигает вас, она
-                обожжёт и чай.
-              </LI>
-              <LI>
-                Возьмите 1г чая и положите в чаван. Это половина чайной ложки.
-              </LI>
-              <LI>
-                Добавьте 10 мл воды и аккуратно размешайте порошок венчиком до
-                однородного состояния, чтобы не оставалось комочков. В итоге
-                должна получиться однородная паста.
-              </LI>
-              <LI>
-                Вода активирует свойства чая. Вдохните и насладитесь его
-                ароматом.
-              </LI>
-              <LI>
-                Добавьте воды или молока по вкусу. Дополнительная жидкость
-                изменит вкус чая. Я, как правило, доливаю 40 мл воды. А вот моей
-                жене нравится тёплое кокосовое молоко.
-              </LI>
-              <LI>V-образными движениями взбейте чай венчиком.</LI>
-              <LI>Напиток готов.</LI>
-            </UL>
-          </Box>
-        </ExpansionPanelDetails>
-      </ExpansionPanel>
-    </>
-  )
-}
-
 const BuyButtonSection = ({ state }) => (
   <Box mb={15}>
     <Section>
@@ -882,7 +772,7 @@ export default ({ location, ...props }) => {
 
   useEffectOnlyOnce(() => {
     setState(prevState => {
-      const product = R.compose(
+      const product = compose(
         applyCoupon,
         applyOffer(prevState.order_offer)
       )(data.product)
@@ -892,7 +782,7 @@ export default ({ location, ...props }) => {
 
   useEffect(() => {
     setState(prevState => {
-      const product = R.compose(
+      const product = compose(
         applyCoupon,
         applyOffer(prevState.order_offer)
       )(data.product)

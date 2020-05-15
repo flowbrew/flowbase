@@ -3,15 +3,13 @@ import { useLocation } from "@reach/router"
 import Img from "gatsby-image"
 import BackgroundImage from "gatsby-background-image"
 import Ratio from "react-ratio"
-import * as R from "ramda"
+import { addIndex, map, curry } from "ramda"
 import Parallax from "react-rellax"
 import queryString from "query-string"
-import { motion } from "framer-motion"
 import { makeStyles, styled } from "@material-ui/core/styles"
 import { Container, Typography, Box, Paper, Hidden } from "@material-ui/core"
 import { useIsDesktop } from "./components/IsDesktopContext"
 import { useImage } from "./components/ImageContext"
-import { theme } from "./components/Theme"
 import StyledLink from "./components/StyledLink"
 import CheckCircleIcon from "@material-ui/icons/CheckCircle"
 
@@ -54,7 +52,7 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-const mapi = R.addIndex(R.map)
+const mapi = addIndex(map)
 
 const FLBPaper = ({ children, ...props }) => {
   const isDesktop = useIsDesktop()
@@ -271,7 +269,7 @@ const ImageBlock = ({
   )
 }
 
-const applyOffer = R.curry((n, product) => {
+const applyOffer = curry((n, product) => {
   const offer =
     n < 0 || n >= product.offers.length || n === undefined
       ? product.offers[product.default_offer]
@@ -402,32 +400,6 @@ const CounterLnk = ({ children, ...props }) => {
   )
 }
 
-const Rage = ({ children, ...props }) => {
-  return (
-    <motion.span
-      style={{
-        display: "inline-block",
-        color: theme.palette.error.main,
-      }}
-      {...props}
-    >
-      {children}
-    </motion.span>
-  )
-}
-
-const Enegry = ({ children, ...props }) => (
-  <Rage
-    style={{
-      display: "inline-block",
-      color: theme.palette.secondary.main,
-    }}
-    {...props}
-  >
-    {children}
-  </Rage>
-)
-
 const formatPrice = price => {
   if (!price) {
     return price
@@ -435,27 +407,6 @@ const formatPrice = price => {
   return Math.ceil(price)
     .toString()
     .replace(/\B(?=(\d{3})+(?!\d))/g, "\xa0")
-}
-
-const Calm = ({ children }) => {
-  return (
-    <motion.span
-      style={{
-        display: "inline-block",
-        color: theme.palette.secondary.main,
-      }}
-      animate={{
-        y: -theme.spacing(1),
-      }}
-      transition={{
-        yoyo: Infinity,
-        duration: 1.5,
-        ease: "easeInOut",
-      }}
-    >
-      {children}
-    </motion.span>
-  )
 }
 
 const TextBlock = ({ children, ...props }) => {
@@ -507,10 +458,7 @@ export {
   parseLocation,
   MDXComponents,
   CounterLnk,
-  Rage,
-  Calm,
   useEffectOnlyOnce,
-  Enegry,
   formatPrice,
   TextBlock,
   applyOffer,

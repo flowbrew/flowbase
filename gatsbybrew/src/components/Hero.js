@@ -4,7 +4,6 @@ import BackgroundImage from "gatsby-background-image"
 import Parallax from "react-rellax"
 import { makeStyles } from "@material-ui/core/styles"
 import { Box, Container, Typography } from "@material-ui/core"
-// import ArrowDownwardIcon from "@material-ui/icons/ArrowDownward"
 
 const useStyles = makeStyles(theme => ({
   insideStyles: {

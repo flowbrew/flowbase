@@ -17,6 +17,6 @@
     "libmime": "^4.2.1",
     "quoted-printable": "^1.0.1",
     "ramda": "^0.27.0",
-    "minimist": ">=1.2.3"
+    "minimist": ">=1.2.6"
   }
 }
